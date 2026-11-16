@@ -264,7 +264,7 @@
             <div class="flex justify-between items-center mb-4">
               <div>
                 <h3 class="font-bold text-white text-lg flex items-center gap-2"><i class="fa-regular fa-calendar-days text-brand-400"></i> 30-Day Study Heatmap</h3>
-                <p class="text-xs text-slate-400">Tracks actual lessons & cards completed each day.</p>
+                <p class="text-xs text-slate-400">Tracks actual lessons & tests completed each day.</p>
               </div>
               <span class="text-xs text-emerald-400 font-semibold px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full font-mono" id="heatmap-active-days">0 Days Active</span>
             </div>
@@ -298,12 +298,12 @@
 
         </div>
 
-        <!-- ACTIVE CURRICULUMS GRID (SIMPLIFIED SUBJECTS) -->
+        <!-- ACTIVE CURRICULUMS GRID -->
         <div class="space-y-4 pt-2">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h2 class="text-2xl font-bold text-white tracking-tight">Interactive Curriculums & AI Tutor</h2>
-              <p class="text-xs text-slate-400">Open any subject to study core lessons, toggle ELI5 vs. Advanced explanations, and explore deep-dive prompts.</p>
+              <h2 class="text-2xl font-bold text-white tracking-tight">Interactive Curriculums & Final Tests</h2>
+              <p class="text-xs text-slate-400">Open any subject to study core lessons, take quizzes, and conquer the end-of-course Final Test!</p>
             </div>
             
             <div class="flex items-center gap-3">
@@ -482,7 +482,7 @@
   </div>
 
   <!-- =========================================================================
-       INTERACTIVE LESSON & AI TUTOR MODAL (SIMPLIFIED SUBJECTS)
+       INTERACTIVE LESSON, QUIZ & FINAL TEST MODAL
        ========================================================================= -->
   <div id="lesson-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
     <div class="glass-panel bg-[#0d0f1d] border border-white/15 rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 relative space-y-6">
@@ -501,14 +501,14 @@
         </button>
       </div>
 
-      <!-- Lesson Selector Pills -->
+      <!-- Lesson & Test Selector Pills -->
       <div>
-        <div class="text-xs font-mono text-slate-400 uppercase mb-2">Select Module Lesson:</div>
+        <div class="text-xs font-mono text-slate-400 uppercase mb-2">Select Module or Final Test:</div>
         <div id="modal-lesson-pills" class="flex flex-wrap gap-2"></div>
       </div>
 
-      <!-- Explanation Depth Mode Switcher -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-dark-bg/90 p-3 rounded-2xl border border-white/10">
+      <!-- Explanation Depth Mode Switcher (Hidden during Test) -->
+      <div id="mode-switcher-container" class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-dark-bg/90 p-3 rounded-2xl border border-white/10">
         <div class="flex items-center gap-2 text-xs text-slate-300 font-semibold">
           <i class="fa-solid fa-graduation-cap text-brand-purple"></i>
           <span>Tutor Explanation Depth:</span>
@@ -523,51 +523,78 @@
         </div>
       </div>
 
-      <!-- Active Lesson Content Card -->
-      <div class="glass-panel rounded-2xl p-6 border border-white/10 space-y-4">
-        <div class="flex items-center justify-between flex-wrap gap-2">
-          <h3 id="lesson-title" class="text-xl font-bold text-white">Lesson Title</h3>
-          <span id="lesson-status-badge" class="text-xs font-mono px-3 py-1 rounded-full bg-brand-500/15 text-brand-400 border border-brand-500/30">In Progress</span>
-        </div>
-
-        <div id="lesson-explanation-body" class="text-slate-200 text-sm sm:text-base leading-relaxed space-y-3">
-          <!-- Dynamic explanation -->
-        </div>
-
-        <div id="lesson-formula-box" class="p-4 rounded-xl bg-dark-bg border border-brand-500/20 font-mono text-xs sm:text-sm text-brand-300">
-          <!-- Key formula -->
-        </div>
-      </div>
-
-      <!-- DIVE DEEPER INTO HARDER PROMPTS LAB -->
-      <div class="glass-panel rounded-2xl p-6 border border-brand-purple/25 bg-brand-purple/5 space-y-4">
-        <div class="flex items-center justify-between flex-wrap gap-2">
-          <div class="flex items-center gap-2">
-            <span class="text-lg">🔬</span>
-            <h4 class="font-bold text-white text-base">Dive Deeper: Practice Problems & Extensions</h4>
+      <!-- Active Lesson Content Card (Hidden during Test) -->
+      <div id="lesson-content-view" class="space-y-6">
+        <div class="glass-panel rounded-2xl p-6 border border-white/10 space-y-4">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <h3 id="lesson-title" class="text-xl font-bold text-white">Lesson Title</h3>
+            <span id="lesson-status-badge" class="text-xs font-mono px-3 py-1 rounded-full bg-brand-500/15 text-brand-400 border border-brand-500/30">In Progress</span>
           </div>
-          <span class="text-[11px] font-mono text-brand-purple">Click any prompt to check solutions</span>
+
+          <div id="lesson-explanation-body" class="text-slate-200 text-sm sm:text-base leading-relaxed space-y-3"></div>
+
+          <div id="lesson-formula-box" class="p-4 rounded-xl bg-dark-bg border border-brand-500/20 font-mono text-xs sm:text-sm text-brand-300"></div>
         </div>
 
-        <div id="deep-prompts-list" class="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <!-- Harder prompt buttons rendered dynamically -->
+        <!-- DIVE DEEPER / PRACTICE PROBLEMS -->
+        <div class="glass-panel rounded-2xl p-6 border border-brand-purple/25 bg-brand-purple/5 space-y-4">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center gap-2">
+              <span class="text-lg">🔬</span>
+              <h4 class="font-bold text-white text-base">Practice Problems & Step-by-Step Solutions</h4>
+            </div>
+            <span class="text-[11px] font-mono text-brand-purple">Click any prompt to view solutions</span>
+          </div>
+
+          <div id="deep-prompts-list" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+
+          <div id="deep-prompt-answer-box" class="hidden p-4 rounded-xl bg-dark-bg/95 border border-brand-purple/40 text-sm text-slate-200 leading-relaxed space-y-2">
+            <div class="text-xs font-mono text-brand-purple uppercase font-bold" id="deep-prompt-selected-title">Solution Guide</div>
+            <p id="deep-prompt-selected-text"></p>
+          </div>
         </div>
 
-        <div id="deep-prompt-answer-box" class="hidden p-4 rounded-xl bg-dark-bg/95 border border-brand-purple/40 text-sm text-slate-200 leading-relaxed space-y-2">
-          <div class="text-xs font-mono text-brand-purple uppercase font-bold" id="deep-prompt-selected-title">Solution Guide</div>
-          <p id="deep-prompt-selected-text"></p>
+        <!-- Interactive Quiz Check -->
+        <div class="glass-panel rounded-2xl p-6 border border-emerald-500/20 space-y-4">
+          <div class="flex items-center gap-2">
+            <span class="text-lg">✅</span>
+            <h4 class="font-bold text-white text-base">Module Quiz Check (+50 XP)</h4>
+          </div>
+          <p id="quiz-question-text" class="text-sm text-slate-300 font-medium"></p>
+          <div id="quiz-options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+          
+          <!-- AI Review & Why You Got It Wrong Box -->
+          <div id="quiz-feedback-box" class="hidden p-4 rounded-xl bg-dark-bg border border-white/10 space-y-3">
+            <div id="quiz-feedback" class="text-xs font-bold"></div>
+            <div id="ai-explanation-box" class="text-xs text-slate-300 leading-relaxed border-t border-white/5 pt-2"></div>
+          </div>
         </div>
       </div>
 
-      <!-- Interactive Mastery Quiz Check -->
-      <div class="glass-panel rounded-2xl p-6 border border-emerald-500/20 space-y-4">
-        <div class="flex items-center gap-2">
-          <span class="text-lg">✅</span>
-          <h4 class="font-bold text-white text-base">Mastery Check (Complete to Earn +50 XP)</h4>
+      <!-- FINAL TEST VIEW (Hidden by default, shown when Final Test pill is clicked) -->
+      <div id="final-test-view" class="hidden space-y-6">
+        <div class="glass-panel rounded-2xl p-6 border border-amber-500/30 bg-amber-500/5 space-y-4">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <h3 class="text-xl font-bold text-amber-300"><i class="fa-solid fa-file-lines mr-2"></i> End-of-Course Final Test</h3>
+            <span class="text-xs font-mono px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40" id="test-score-badge">Complete all questions (+200 XP)</span>
+          </div>
+          <p class="text-xs text-slate-300">Answer all final test questions below. Review your answers and click "Ask AI Why I Got It Wrong" on any incorrect response for personalized tutoring.</p>
         </div>
-        <p id="quiz-question-text" class="text-sm text-slate-300 font-medium"></p>
-        <div id="quiz-options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
-        <div id="quiz-feedback" class="text-xs font-semibold min-h-[1.25rem]"></div>
+
+        <div id="final-test-questions-container" class="space-y-6">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <div class="flex justify-end pt-4">
+          <button onclick="submitFinalTest()" class="px-8 py-3.5 bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-black rounded-xl shadow-lg shadow-amber-500/30 hover:scale-105 transition text-xs">
+            Submit Final Test 🚀
+          </button>
+        </div>
+
+        <div id="final-test-results-box" class="hidden glass-panel rounded-2xl p-6 border border-emerald-500/30 space-y-4">
+          <h4 class="text-lg font-bold text-white" id="final-test-result-title">Test Results</h4>
+          <div id="final-test-review-list" class="space-y-4"></div>
+        </div>
       </div>
 
     </div>
@@ -586,6 +613,7 @@
       xp: 0,
       streak: 0,
       completedLessons: [],
+      completedTests: [],
       cardsMastered: 0,
       cardsReviewing: 0,
       dailyActivity: {}
@@ -594,16 +622,17 @@
     function loadUserData() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return { ...defaultUserData, completedLessons: [], dailyActivity: {} };
+        if (!raw) return { ...defaultUserData, completedLessons: [], completedTests: [], dailyActivity: {} };
         const parsed = JSON.parse(raw);
         return {
           ...defaultUserData,
           ...parsed,
           completedLessons: Array.isArray(parsed.completedLessons) ? parsed.completedLessons : [],
+          completedTests: Array.isArray(parsed.completedTests) ? parsed.completedTests : [],
           dailyActivity: parsed.dailyActivity && typeof parsed.dailyActivity === 'object' ? parsed.dailyActivity : {}
         };
       } catch (e) {
-        return { ...defaultUserData, completedLessons: [], dailyActivity: {} };
+        return { ...defaultUserData, completedLessons: [], completedTests: [], dailyActivity: {} };
       }
     }
 
@@ -663,7 +692,7 @@
     }
 
     // =========================================================================
-    // 2. SIMPLIFIED CURRICULUM DATABASE (6 SUBJECTS × 4 LESSONS = 24 LESSONS)
+    // 2. CURRICULUM DATABASE WITH FINAL TESTS
     // =========================================================================
     const curriculums = [
       {
@@ -683,60 +712,51 @@
               {
                 prompt: 'Evaluate: 8 + 4 × (2 + 3)² ÷ 2',
                 answer: 'Step 1 (Parentheses): (2 + 3) = 5. Expression becomes: 8 + 4 × 5² ÷ 2. Step 2 (Exponents): 5² = 25. Expression becomes: 8 + 4 × 25 ÷ 2. Step 3 (Multiplication & Division left to right): 4 × 25 = 100, then 100 ÷ 2 = 50. Step 4 (Addition): 8 + 50 = 58.'
-              },
-              {
-                prompt: 'Why does division come before addition in the standard sequence?',
-                answer: 'Multiplication and division are higher-priority operations representing repeated scaling/scaling-down, which take precedence over linear combination (addition/subtraction).'
               }
             ],
             quiz: {
               question: 'In PEMDAS, what operation should be evaluated first in 5 + 3 × (4 - 2)?',
               options: ['Addition (5 + 3)', 'Multiplication (3 × 4)', 'Parentheses (4 - 2)', 'Subtraction from 5'],
-              correctIndex: 2
+              correctIndex: 2,
+              explanation: 'Parentheses always come first in PEMDAS. You must evaluate (4 - 2) before performing multiplication or addition.'
             }
           },
           {
             id: 'prealg-2',
             title: 'Fractions, Decimals & Percentages',
             eli5: 'Fractions, decimals, and percentages are just three different ways of writing the exact same piece of pizza! If you eat half a pizza, that is 1/2, 0.5, or 50%.',
-            college: 'Fractions represent ratio parts a/b, decimals represent base-10 fractional expansions, and percentages represent parts per hundred. Converting between them relies on proportional scaling.',
+            college: 'Fractions represent ratio parts a/b, decimals represent base-10 fractional expansions, and percentages represent parts per hundred.',
             keyTakeaway: 'Conversion: 3/4 = 0.75 = 75%',
             deepPrompts: [
               {
                 prompt: 'Convert 5/8 into a decimal and a percentage.',
                 answer: 'Decimal: 5 ÷ 8 = 0.625. Percentage: 0.625 × 100 = 62.5%.'
-              },
-              {
-                prompt: 'If a $80 jacket is on sale for 20% off, what is the final price?',
-                answer: '20% of $80 is 0.20 × 80 = $16 discount. Final price = $80 − $16 = $64.'
               }
             ],
             quiz: {
               question: 'What is 3/5 expressed as a percentage?',
               options: ['30%', '40%', '60%', '75%'],
-              correctIndex: 2
+              correctIndex: 2,
+              explanation: 'To convert 3/5 to a percentage, divide 3 by 0.6 to get 0.6, then multiply by 100 to get 60%.'
             }
           },
           {
             id: 'prealg-3',
             title: 'Negative Numbers & Absolute Value',
             eli5: 'Negative numbers are like owing money or digging a hole below ground level. Absolute value is just how far away a number is from zero, ignoring whether you are above or below ground.',
-            college: 'Negative numbers lie to the left of zero on the real number line. The absolute value |x| defines the non-negative magnitude of x, representing its distance from zero regardless of sign.',
+            college: 'Negative numbers lie to the left of zero on the real number line. The absolute value |x| defines the non-negative magnitude of x.',
             keyTakeaway: 'Rule: |-5| = 5 and |5| = 5',
             deepPrompts: [
               {
                 prompt: 'Calculate: −12 + (−5) − (−8)',
                 answer: 'First, −12 + (−5) = −17. Next, subtracting −8 is the same as adding 8: −17 + 8 = −9.'
-              },
-              {
-                prompt: 'Why is the absolute value of any real number never negative?',
-                answer: 'Because distance magnitude cannot be negative by definition; it measures scalar displacement from origin 0.'
               }
             ],
             quiz: {
               question: 'What is the value of |-15|?',
               options: ['-15', '0', '15', '30'],
-              correctIndex: 2
+              correctIndex: 2,
+              explanation: 'Absolute value measures distance from zero, which is always expressed as a positive number. Therefore, |-15| = 15.'
             }
           },
           {
@@ -749,18 +769,21 @@
               {
                 prompt: 'Solve for x in the proportion: 3/4 = x / 20',
                 answer: 'Cross-multiply: 3 × 20 = 4 × x  ⇒  60 = 4x  ⇒  x = 15.'
-              },
-              {
-                prompt: 'If a car travels 150 miles in 3 hours, what is its unit rate per hour?',
-                answer: '150 miles ÷ 3 hours = 50 miles per hour (mph).'
               }
             ],
             quiz: {
               question: 'Solve for x if 2/5 = x / 25.',
               options: ['5', '10', '15', '20'],
-              correctIndex: 1
+              correctIndex: 1,
+              explanation: 'Cross-multiply: 2 × 25 = 5 × x ⇒ 50 = 5x ⇒ x = 10.'
             }
           }
+        ],
+        finalTest: [
+          { q: 'Evaluate: 6 + 2 × (3² - 5)', options: ['14', '18', '22', '32'], correctIndex: 0, explanation: 'Parentheses first: (9 - 5) = 4. Then multiplication: 2 × 4 = 8. Then addition: 6 + 8 = 14.' },
+          { q: 'What is 7/8 as a decimal?', options: ['0.75', '0.825', '0.875', '0.9'], correctIndex: 2, explanation: 'Dividing 7 by 8 yields 0.875.' },
+          { q: 'Calculate: -20 - (-12) + 5', options: ['-3', '-13', '3', '17'], correctIndex: 0, explanation: '-20 + 12 = -8. Then -8 + 5 = -3.' },
+          { q: 'Solve for x in 4/5 = 12 / x', options: ['10', '15', '20', '25'], correctIndex: 1, explanation: 'Cross-multiply: 4x = 60 ⇒ x = 15.' }
         ]
       },
       {
@@ -773,91 +796,65 @@
           {
             id: 'alg1-1',
             title: 'Solving One and Two-Step Equations',
-            eli5: 'An equation is like a balanced playground seesaw. Whatever you do to one side (like adding or subtracting a number), you must do to the exact other side to keep the seesaw balanced and find out what mystery letter x is hiding!',
+            eli5: 'An equation is like a balanced playground seesaw. Whatever you do to one side, you must do to the exact other side to keep the seesaw balanced!',
             college: 'Algebraic equations maintain equality through inverse operations. To isolate variable x, undo operations in reverse PEMDAS order.',
             keyTakeaway: 'Golden Rule: What you do to one side of the equals sign, you must do to the other.',
-            deepPrompts: [
-              {
-                prompt: 'Solve for x: 3x + 7 = 22',
-                answer: 'Subtract 7 from both sides: 3x = 15. Divide both sides by 3: x = 5.'
-              },
-              {
-                prompt: 'Solve for x: 2(x - 4) = 14',
-                answer: 'Method A (Distribute): 2x - 8 = 14 ⇒ 2x = 22 ⇒ x = 11. Method B (Divide first): x - 4 = 7 ⇒ x = 11.'
-              }
-            ],
+            deepPrompts: [{ prompt: 'Solve for x: 3x + 7 = 22', answer: 'Subtract 7 from both sides: 3x = 15. Divide by 3: x = 5.' }],
             quiz: {
               question: 'Solve for x: 4x - 5 = 11',
               options: ['x = 2', 'x = 3', 'x = 4', 'x = 6'],
-              correctIndex: 2
+              correctIndex: 2,
+              explanation: 'Add 5 to both sides (4x = 16), then divide by 4 (x = 4).'
             }
           },
           {
             id: 'alg1-2',
             title: 'Slope-Intercept Form (y = mx + b)',
             eli5: 'Think of y = mx + b like renting a bicycle. The b is the flat starting fee, and m is how much money you pay for every mile (x) you ride!',
-            college: 'The slope-intercept form represents linear functions where m is the slope (rise over run) and b is the y-intercept (where the line crosses the vertical axis).',
+            college: 'The slope-intercept form represents linear functions where m is the slope and b is the y-intercept.',
             keyTakeaway: 'Equation: y = mx + b  (m = slope, b = y-intercept)',
-            deepPrompts: [
-              {
-                prompt: 'Find the slope of the line passing through points (2, 3) and (4, 7).',
-                answer: 'Slope m = (y₂ - y₁) / (x₂ - x₁) = (7 - 3) / (4 - 2) = 4 / 2 = 2.'
-              },
-              {
-                prompt: 'Write the equation of a line with slope m = -3 passing through (0, 5).',
-                answer: 'Since b = 5 (y-intercept at x = 0), the equation is y = -3x + 5.'
-              }
-            ],
+            deepPrompts: [{ prompt: 'Find the slope between (2, 3) and (4, 7).', answer: 'm = (7 - 3) / (4 - 2) = 4 / 2 = 2.' }],
             quiz: {
               question: 'In y = 4x - 7, what is the y-intercept (b)?',
               options: ['4', '-7', '7', '1'],
-              correctIndex: 1
+              correctIndex: 1,
+              explanation: 'In y = mx + b, b represents the constant y-intercept term, which is -7 here.'
             }
           },
           {
             id: 'alg1-3',
             title: 'Systems of Linear Equations',
-            eli5: 'Sometimes you have two secrets (like two mystery numbers). By using two different clues (equations) together—either by substitution or elimination—you can crack both secrets at once!',
-            college: 'A system of linear equations involves finding simultaneous values satisfying multiple equations. Solved via Substitution, Elimination, or Matrix representation.',
+            eli5: 'Sometimes you have two secrets. By using two different clues together, you can crack both secrets at once!',
+            college: 'A system of linear equations involves finding simultaneous values satisfying multiple equations.',
             keyTakeaway: 'Methods: Substitution, Elimination, or Graphing intersection point (x, y)',
-            deepPrompts: [
-              {
-                prompt: 'Solve the system: x + y = 10 and x - y = 2',
-                answer: 'Add both equations using elimination: (x + y) + (x - y) = 10 + 2 ⇒ 2x = 12 ⇒ x = 6. Plug back in: 6 + y = 10 ⇒ y = 4. Solution: (6, 4).'
-              },
-              {
-                prompt: 'What does it mean if a linear system yields 0 = 5 when solved?',
-                answer: 'It means the lines are parallel and never intersect, so there is no solution (inconsistent system).'
-              }
-            ],
+            deepPrompts: [{ prompt: 'Solve: x + y = 10 and x - y = 2', answer: 'Add equations: 2x = 12 ⇒ x = 6. Plug in: 6 + y = 10 ⇒ y = 4. Solution: (6, 4).' }],
             quiz: {
               question: 'What is the solution (x, y) to x + y = 5 and x - y = 1?',
               options: ['(3, 2)', '(4, 1)', '(5, 0)', '(2, 3)'],
-              correctIndex: 0
+              correctIndex: 0,
+              explanation: 'Adding equations gives 2x = 6 (x = 3). Plugging into x + y = 5 gives y = 2.'
             }
           },
           {
             id: 'alg1-4',
             title: 'Factoring Quadratic Expressions',
-            eli5: 'Multiplying polynomials is like wrapping a present. Factoring is the reverse puzzle: unwrapping the present back into two clean multiplying pieces (like (x + 2)(x + 3)).',
-            college: 'Factoring converts standard quadratic polynomials ax² + bx + c into product of binomials by finding two numbers that multiply to c and add up to b.',
+            eli5: 'Multiplying polynomials is like wrapping a present. Factoring is unwrapping it back into multiplying pieces.',
+            college: 'Factoring converts standard quadratic polynomials ax² + bx + c into products of binomials.',
             keyTakeaway: 'Example: x² + 5x + 6 = (x + 2)(x + 3)',
-            deepPrompts: [
-              {
-                prompt: 'Factor completely: x² - 9',
-                answer: 'This is a Difference of Squares: a² - b² = (a - b)(a + b). Therefore, x² - 9 = (x - 3)(x + 3).'
-              },
-              {
-                prompt: 'Solve x² - 7x + 12 = 0 by factoring.',
-                answer: 'Find two numbers that multiply to 12 and add to -7 (-3 and -4). So (x - 3)(x - 4) = 0, yielding roots x = 3 and x = 4.'
-              }
-            ],
+            deepPrompts: [{ prompt: 'Factor completely: x² - 9', answer: 'Difference of squares: (x - 3)(x + 3).' }],
             quiz: {
               question: 'What are the factors of x² + 8x + 15?',
               options: ['(x + 1)(x + 15)', '(x + 3)(x + 5)', '(x - 3)(x - 5)', '(x + 2)(x + 6)'],
-              correctIndex: 1
+              correctIndex: 1,
+              explanation: '3 and 5 multiply to 15 and add up to 8, yielding (x + 3)(x + 5).'
             }
           }
+        ],
+        finalTest: [
+          { q: 'Solve for x: 5x + 3 = 23', options: ['x = 3', 'x = 4', 'x = 5', 'x = 6'], correctIndex: 1, explanation: 'Subtract 3 (5x = 20) and divide by 5 (x = 4).' },
+          { q: 'What is the slope of y = -3x + 8?', options: ['8', '-3', '3', '1'], correctIndex: 1, explanation: 'In y = mx + b, m is the coefficient of x, which is -3.' },
+          { q: 'Solve the system: 2x + y = 7 and x - y = 2', options: ['(2, 3)', '(3, 1)', '(4, 2)', '(1, 1)'], correctIndex: 1, explanation: 'Add equations: 3x = 9 (x = 3). Then y = 1.' },
+          { q: 'Factor: x² - 16', options: ['(x - 4)(x - 4)', '(x + 4)(x + 4)', '(x - 4)(x + 4)', '(x - 8)(x + 2)'], correctIndex: 2, explanation: 'Difference of squares: a² - b² = (a - b)(a + b).' }
         ]
       },
       {
@@ -870,91 +867,65 @@
           {
             id: 'geo-1',
             title: 'Pythagorean Theorem',
-            eli5: 'If you build squares on the two shorter sides of a right triangle, their combined area equals the giant square built on the longest slanted side (the hypotenuse)!',
+            eli5: 'If you build squares on the two shorter sides of a right triangle, their combined area equals the giant square built on the longest slanted side!',
             college: 'In any right-angled triangle, the sum of squared leg lengths equals the squared hypotenuse length: a² + b² = c².',
             keyTakeaway: 'Formula: a² + b² = c²',
-            deepPrompts: [
-              {
-                prompt: 'Find the hypotenuse c if leg a = 6 and leg b = 8.',
-                answer: '6² + 8² = 36 + 64 = 100. Since c² = 100, c = 10.'
-              },
-              {
-                prompt: 'Is a triangle with side lengths 7, 24, and 25 a right triangle?',
-                answer: 'Check 7² + 24² = 49 + 576 = 625. Since 25² = 625, yes, it satisfies the Pythagorean theorem.'
-              }
-            ],
+            deepPrompts: [{ prompt: 'Find hypotenuse c if a = 6 and b = 8.', answer: '6² + 8² = 36 + 64 = 100 ⇒ c = 10.' }],
             quiz: {
-              question: 'In a right triangle with legs 3 and 4, what is the length of the hypotenuse?',
+              question: 'In a right triangle with legs 3 and 4, what is the hypotenuse?',
               options: ['5', '7', '12', '25'],
-              correctIndex: 0
+              correctIndex: 0,
+              explanation: '3² + 4² = 9 + 16 = 25. The square root of 25 is 5.'
             }
           },
           {
             id: 'geo-2',
             title: 'Angles, Triangles & Polygons',
-            eli5: 'Every triangle in the universe is like a strict club: no matter what shape or size it is, the three inside corner angles always add up to exactly 180 degrees!',
-            college: 'The interior angle sum of an n-sided polygon is given by (n − 2) × 180°. For triangles, n = 3, yielding 180°.',
+            eli5: 'Every triangle in the universe is like a strict club: the three inside corner angles always add up to exactly 180 degrees!',
+            college: 'The interior angle sum of an n-sided polygon is given by (n − 2) × 180°.',
             keyTakeaway: 'Triangle Angle Sum Theorem: ∠A + ∠B + ∠C = 180°',
-            deepPrompts: [
-              {
-                prompt: 'What is the sum of interior angles in a regular octagon (8 sides)?',
-                answer: '(8 - 2) × 180° = 6 × 180° = 1080°.'
-              },
-              {
-                prompt: 'If two angles of a triangle measure 50° and 60°, what is the third angle?',
-                answer: '180° - (50° + 60°) = 180° - 110° = 70°.'
-              }
-            ],
+            deepPrompts: [{ prompt: 'Find the third angle of a triangle with angles 50° and 60°.', answer: '180° - 110° = 70°.' }],
             quiz: {
               question: 'What is the sum of interior angles in any standard triangle?',
               options: ['90°', '180°', '270°', '360°'],
-              correctIndex: 1
+              correctIndex: 1,
+              explanation: 'The interior angles of any Euclidean triangle always sum to 180°.'
             }
           },
           {
             id: 'geo-3',
             title: 'Area, Perimeter & Circumference',
-            eli5: 'Perimeter is walking all the way around the outside fence of a yard. Area is how much grass carpet you need to cover the flat ground inside.',
-            college: 'Perimeter measures linear boundary length, area measures 2D surface coverage, and circumference measures circle boundary distance (C = 2πr).',
+            eli5: 'Perimeter is walking around the outside fence. Area is how much grass carpet you need to cover the flat ground inside.',
+            college: 'Perimeter measures linear boundary length, area measures 2D surface coverage.',
             keyTakeaway: 'Circle Area = πr², Circumference = 2πr',
-            deepPrompts: [
-              {
-                prompt: 'Find the area of a circle with radius r = 7 cm (use π ≈ 22/7).',
-                answer: 'Area = πr² = (22/7) × 7² = (22/7) × 49 = 154 cm².'
-              },
-              {
-                prompt: 'What is the perimeter of a rectangle with length 12m and width 5m?',
-                answer: 'Perimeter = 2(length + width) = 2(12 + 5) = 2(17) = 34 meters.'
-              }
-            ],
+            deepPrompts: [{ prompt: 'Find area of circle with radius r = 7 cm (π ≈ 22/7).', answer: '(22/7) × 7² = 154 cm².' }],
             quiz: {
               question: 'What is the formula for the area of a circle?',
               options: ['2πr', 'πr²', '4πr²', 'bh / 2'],
-              correctIndex: 1
+              correctIndex: 1,
+              explanation: 'Circle area formula is πr².'
             }
           },
           {
             id: 'geo-4',
             title: 'Volume & Surface Area of 3D Solids',
-            eli5: 'Volume is how much water a swimming pool can hold inside. Surface area is how much wrapping paper you need to cover the outside of a box.',
+            eli5: 'Volume is how much water a pool can hold. Surface area is how much wrapping paper you need to cover the outside.',
             college: 'Volume measures 3D spatial capacity, while surface area computes the sum of all 2D boundary face areas.',
-            keyTakeaway: 'Rectangular Prism Volume = length × width × height (lwh)',
-            deepPrompts: [
-              {
-                prompt: 'Find the volume of a cylinder with radius r = 3 cm and height h = 10 cm (use π ≈ 3.14).',
-                answer: 'Volume = πr²h = 3.14 × 3² × 10 = 3.14 × 9 × 10 = 282.6 cm³.'
-              },
-              {
-                prompt: 'What is the volume of a cube with side length s = 4 cm?',
-                answer: 'Volume = s³ = 4³ = 4 × 4 × 4 = 64 cm³.'
-              }
-            ],
+            keyTakeaway: 'Rectangular Prism Volume = length × width × height',
+            deepPrompts: [{ prompt: 'Find volume of a box with length 5, width 2, height 3.', answer: '5 × 2 × 3 = 30.' }],
             quiz: {
               question: 'What is the volume of a rectangular box with length 5, width 2, and height 3?',
               options: ['10', '25', '30', '60'],
-              correctIndex: 2
+              correctIndex: 2,
+              explanation: 'Volume = l × w × h = 5 × 2 × 3 = 30.'
             }
           }
+        ],
+        finalTest: [
+          { q: 'Find hypotenuse if legs are 9 and 12.', options: ['13', '15', '18', '21'], correctIndex: 1, explanation: '9² + 12² = 81 + 144 = 225. √225 = 15.' },
+          { q: 'What is the sum of interior angles in a pentagon (5 sides)?', options: ['360°', '540°', '720°', '1080°'], correctIndex: 1, explanation: '(5 - 2) × 180° = 3 × 180° = 540°.' },
+          { q: 'What is the circumference of a circle with radius 10 cm (π ≈ 3.14)?', options: ['31.4 cm', '62.8 cm', '314 cm', '100 cm'], correctIndex: 1, explanation: 'C = 2πr = 2 × 3.14 × 10 = 62.8 cm.' },
+          { q: 'What is the volume of a cube with side length 4 cm?', options: ['16 cm³', '32 cm³', '64 cm³', '128 cm³'], correctIndex: 2, explanation: 'Volume = 4³ = 64 cm³.' }
         ]
       },
       {
@@ -967,91 +938,65 @@
           {
             id: 'chem-1',
             title: 'Atomic Structure & Subatomic Particles',
-            eli5: 'Every atom is like a tiny solar system! In the center (nucleus), you have heavy protons (positive) and neutrons (neutral), while speedy little electrons (negative) zip around the outside like planets.',
-            college: 'Atoms consist of a dense nucleus containing protons and neutrons, surrounded by electrons in quantum orbitals. Atomic number Z equals protons, while mass number A includes neutrons.',
+            eli5: 'Every atom is like a tiny solar system! In the center you have protons and neutrons, while speedy electrons zip around the outside.',
+            college: 'Atoms consist of a dense nucleus containing protons and neutrons, surrounded by electrons in quantum orbitals.',
             keyTakeaway: 'Particles: Proton (+), Neutron (0), Electron (-)',
-            deepPrompts: [
-              {
-                prompt: 'How many protons, neutrons, and electrons are in a neutral Carbon-12 atom (Z = 6)?',
-                answer: 'Protons = 6 (atomic number), Electrons = 6 (neutral charge balance), Neutrons = 12 - 6 = 6.'
-              },
-              {
-                prompt: 'What is an isotope?',
-                answer: 'Isotopes are atoms of the same element with identical proton counts (Z) but differing neutron counts, resulting in different atomic masses.'
-              }
-            ],
+            deepPrompts: [{ prompt: 'Protons, neutrons, and electrons in Carbon-12 (Z = 6)?', answer: '6 protons, 6 electrons, 6 neutrons (12 - 6).' }],
             quiz: {
-              question: 'Which subatomic particle carries a negative electrical charge?',
+              question: 'Which subatomic particle carries a negative charge?',
               options: ['Proton', 'Neutron', 'Electron', 'Nucleon'],
-              correctIndex: 2
+              correctIndex: 2,
+              explanation: 'Electrons carry a negative electrical charge, balancing positive protons.'
             }
           },
           {
             id: 'chem-2',
             title: 'The Periodic Table & Chemical Bonding',
-            eli5: 'Elements on the periodic table love to trade or share electrons like trading cards so they can complete their outer shell and feel happy and stable (the Octet Rule)!',
-            college: 'Elements organize by periodic atomic number and electron configurations. Ionic bonds form via electron transfer, whereas covalent bonds form via electron sharing to satisfy valence octets.',
-            keyTakeaway: 'Octet Rule: Atoms strive for 8 valence electrons for maximum stability.',
-            deepPrompts: [
-              {
-                prompt: 'Why does Sodium (Na) readily bond with Chlorine (Cl) to form table salt (NaCl)?',
-                answer: 'Sodium has 1 valence electron it easily gives away (becoming Na⁺), and chlorine has 7 valence electrons and gladly accepts one (becoming Cl⁻). The resulting electrostatic attraction creates a strong ionic bond.'
-              },
-              {
-                prompt: 'What distinguishes a polar covalent bond from a nonpolar covalent bond?',
-                answer: 'Polar covalent bonds occur when atoms have differing electronegativities, causing unequal electron sharing (e.g., H₂O). Nonpolar bonds share electrons equally between identical or similar atoms (e.g., O₂).'
-              }
-            ],
+            eli5: 'Elements on the periodic table love to trade or share electrons like trading cards so they can complete their outer shell!',
+            college: 'Ionic bonds form via electron transfer, whereas covalent bonds form via electron sharing to satisfy valence octets.',
+            keyTakeaway: 'Octet Rule: Atoms strive for 8 valence electrons for stability.',
+            deepPrompts: [{ prompt: 'Why does Na bond with Cl to form salt?', answer: 'Sodium gives up an electron (Na⁺) and chlorine accepts it (Cl⁻), creating strong electrostatic attraction.' }],
             quiz: {
-              question: 'What type of bond is formed when electrons are completely transferred from metal to nonmetal?',
+              question: 'What bond forms when electrons are transferred from metal to nonmetal?',
               options: ['Ionic bond', 'Covalent bond', 'Metallic bond', 'Hydrogen bond'],
-              correctIndex: 0
+              correctIndex: 0,
+              explanation: 'Transfer of electrons creates oppositely charged ions, forming an ionic bond.'
             }
           },
           {
             id: 'chem-3',
             title: 'Balancing Chemical Equations',
-            eli5: 'Nature is like an accountant that never loses a single atom! Whatever ingredients (reactants) you put into a chemical reaction, you must get the exact same number of each atom out in the final products.',
-            college: 'The Law of Conservation of Mass requires chemical equations to be balanced by placing stoichiometric coefficients in front of reactants and products so atom counts match on both sides.',
+            eli5: 'Nature is like an accountant that never loses a single atom! Whatever ingredients you put in, you must get the exact same number out.',
+            college: 'The Law of Conservation of Mass requires chemical equations to be balanced by placing stoichiometric coefficients.',
             keyTakeaway: 'Rule: Total atoms in = Total atoms out.',
-            deepPrompts: [
-              {
-                prompt: 'Balance the combustion reaction of hydrogen: H₂ + O₂ → H₂O',
-                answer: 'Left side has 2 O atoms; right side has 1. Add coefficient 2 to H₂O (H₂ + O₂ → 2H₂O). Now right side has 4 H atoms, so add coefficient 2 to H₂: 2H₂ + O₂ → 2H₂O.'
-              },
-              {
-                prompt: 'Why can you change coefficients when balancing an equation but never subscripts?',
-                answer: 'Changing subscripts alters the chemical identity of the substance itself (e.g., changing H₂O to H₂O₂ turns water into hydrogen peroxide). Coefficients change only the quantity of molecules.'
-              }
-            ],
+            deepPrompts: [{ prompt: 'Balance: H₂ + O₂ → H₂O', answer: '2H₂ + O₂ → 2H₂O.' }],
             quiz: {
               question: 'What law dictates that chemical equations must be balanced?',
               options: ['Law of Conservation of Mass', 'Newton’s First Law', 'Boyle’s Law', 'Ohm’s Law'],
-              correctIndex: 0
+              correctIndex: 0,
+              explanation: 'Matter cannot be created or destroyed, requiring mass balance in reactions.'
             }
           },
           {
             id: 'chem-4',
             title: 'Acids, Bases & The pH Scale',
-            eli5: 'Acids are sour like lemons and vinegar, while bases (alkalis) are slippery like soap. The pH scale measures how strong they are from 0 (super acidic) to 14 (super basic), with 7 right in the middle as pure neutral water!',
-            college: 'Acids are proton (H⁺) donors increasing hydronium concentration, while bases are proton acceptors (or OH⁻ donors). The pH scale is logarithmic: pH = −log[H⁺].',
-            keyTakeaway: 'pH Scale: 0 to 6 (Acidic), 7 (Neutral), 8 to 14 (Basic/Alkaline)',
-            deepPrompts: [
-              {
-                prompt: 'If a solution has a pH of 3, how many times more acidic is it than a solution with pH of 5?',
-                answer: 'Because the pH scale is logarithmic base-10, each whole pH unit represents a 10-fold change. A difference of 2 units (5 - 3 = 2) means 10² = 100 times more acidic.'
-              },
-              {
-                prompt: 'What happens in a neutralization reaction between HCl (acid) and NaOH (base)?',
-                answer: 'HCl + NaOH → NaCl + H₂O. The acid and base neutralize each other to produce salt (NaCl) and water (H₂O).'
-              }
-            ],
+            eli5: 'Acids are sour like lemons, while bases are slippery like soap. The pH scale measures strength from 0 (acidic) to 14 (basic), with 7 as neutral water!',
+            college: 'Acids are proton donors, bases are proton acceptors. pH = −log[H⁺].',
+            keyTakeaway: 'pH Scale: 0-6 (Acidic), 7 (Neutral), 8-14 (Basic)',
+            deepPrompts: [{ prompt: 'How much more acidic is pH 3 than pH 5?', answer: '10² = 100 times more acidic (logarithmic scale).' }],
             quiz: {
               question: 'What pH value represents a completely neutral solution like pure water?',
               options: ['0', '3', '7', '14'],
-              correctIndex: 2
+              correctIndex: 2,
+              explanation: 'pH 7 is neutral on the standard logarithmic scale.'
             }
           }
+        ],
+        finalTest: [
+          { q: 'How many neutrons are in a neutral atom of Oxygen-16 (Z = 8)?', options: ['6', '8', '10', '16'], correctIndex: 1, explanation: 'Mass number 16 - atomic number 8 = 8 neutrons.' },
+          { q: 'What type of bond holds water (H₂O) molecules together internally?', options: ['Ionic bond', 'Polar covalent bond', 'Metallic bond', 'Hydrogen bond'], correctIndex: 1, explanation: 'Oxygen and hydrogen share electrons unequally, creating polar covalent bonds.' },
+          { q: 'Balance: __N₂ + __H₂ → __NH₃', options: ['1, 3, 2', '2, 3, 1', '1, 2, 3', '3, 1, 2'], correctIndex: 0, explanation: 'N₂ + 3H₂ → 2NH₃ balances both Nitrogen and Hydrogen.' },
+          { q: 'Which substance is classified as a strong base?', options: ['Lemon juice', 'Pure water', 'Sodium hydroxide (NaOH)', 'Vinegar'], correctIndex: 2, explanation: 'NaOH is a strong alkali/base with a very high pH.' }
         ]
       },
       {
@@ -1064,96 +1009,65 @@
           {
             id: 'physics-1',
             title: 'Newton’s Laws of Motion',
-            lef5: 'Newton’s 1st law says objects are lazy—they want to keep doing whatever they are already doing unless pushed. His 2nd law says pushing a heavy boulder is hard (F = ma), and his 3rd law says every action has an equal and opposite reaction (like jumping off a skateboard).',
-            college: 'Newton’s Laws establish classical mechanics: (1) Inertia, (2) Force equals mass times acceleration (F = ma), and (3) Action-reaction pairs.',
+            eli5: 'Objects are lazy and want to keep doing what they are doing. Pushing a heavy boulder is hard (F = ma), and every action has an equal and opposite reaction.',
+            college: 'Newton’s Laws establish classical mechanics: Inertia, F = ma, and Action-Reaction pairs.',
             keyTakeaway: 'Core Formula: F = ma',
-            deepPrompts: [
-              {
-                prompt: 'Calculate the force required to accelerate a 10 kg cart at 3 m/s².',
-                answer: 'F = ma = 10 kg × 3 m/s² = 30 Newtons (N).'
-              },
-              {
-                prompt: 'Why do you lurch forward when a bus suddenly brakes?',
-                answer: 'Inertia (Newton’s 1st Law): your body was moving at the bus’s speed and tends to maintain that velocity until an external braking force acts upon you.'
-              }
-            ],
+            deepPrompts: [{ prompt: 'Force to accelerate 10 kg cart at 3 m/s²?', answer: 'F = 10 × 3 = 30 N.' }],
             quiz: {
               question: 'Which equation represents Newton’s Second Law of Motion?',
               options: ['E = mc²', 'F = ma', 'a = v / t', 'W = mg'],
-              correctIndex: 1
+              correctIndex: 1,
+              explanation: 'Newton’s Second Law states Force equals mass times acceleration (F = ma).'
             }
           },
           {
             id: 'physics-2',
             title: 'Speed, Velocity & Acceleration',
-            eli5: 'Speed is how fast you are driving. Velocity is speed with a specific direction (like 60 mph North). Acceleration is when you step on the gas pedal or brakes to change your speed!',
-            college: 'Speed is scalar distance over time, velocity is vector displacement over time, and acceleration is the time derivative of velocity: a = dv/dt.',
+            eli5: 'Speed is how fast you drive. Velocity is speed with a direction. Acceleration is stepping on the gas or brakes!',
+            college: 'Speed is scalar distance over time, velocity is vector displacement over time, acceleration is dv/dt.',
             keyTakeaway: 'Acceleration Formula: a = (Final Velocity − Initial Velocity) / Time',
-            deepPrompts: [
-              {
-                prompt: 'A car accelerates from rest to 20 m/s in 4 seconds. What is its acceleration?',
-                answer: 'a = (20 m/s - 0 m/s) / 4 s = 5 m/s².'
-              },
-              {
-                prompt: 'Can an object have constant speed while experiencing acceleration?',
-                answer: 'Yes! In uniform circular motion, an object moves at a constant speed, but its velocity vector continuously changes direction toward the center, creating centripetal acceleration.'
-              }
-            ],
+            deepPrompts: [{ prompt: 'Car accelerates from rest to 20 m/s in 4s. Acceleration?', answer: '20 / 4 = 5 m/s².' }],
             quiz: {
               question: 'What is the key difference between speed and velocity?',
-              options: [
-                'Velocity includes direction, while speed does not',
-                'Speed is measured in meters, velocity in seconds',
-                'There is no difference',
-                'Speed only applies to falling objects'
-              ],
-              correctIndex: 0
+              options: ['Velocity includes direction, while speed does not', 'Speed is in meters, velocity in seconds', 'No difference', 'Speed only applies to falling objects'],
+              correctIndex: 0,
+              explanation: 'Velocity is a vector quantity incorporating directional data.'
             }
           },
           {
             id: 'physics-3',
             title: 'Work, Energy & Power',
-            eli5: 'Work is pushing something over a distance. Energy is your stored battery capacity to do work, and power is how fast you burn through that battery!',
-            college: 'Work (W = Fd cosθ) measures energy transfer via force over distance. Kinetic energy (½mv²) and potential energy (mgh) sum to total mechanical energy. Power is the rate of work done (P = W/t).',
+            eli5: 'Work is pushing something over a distance. Energy is stored battery capacity, power is how fast you burn through it!',
+            college: 'Work transfers energy via force over distance. Kinetic and potential energy sum to total mechanical energy.',
             keyTakeaway: 'Power Unit: Watts (Joules per second)',
-            deepPrompts: [
-              {
-                prompt: 'Calculate the potential energy of a 2 kg book lifted 5 meters high (g ≈ 9.8 m/s²).',
-                answer: 'PE = mgh = 2 kg × 9.8 m/s² × 5 m = 98 Joules (J).'
-              },
-              {
-                prompt: 'If a machine does 500 Joules of work in 10 seconds, what is its power output?',
-                answer: 'Power P = W / t = 500 J / 10 s = 50 Watts (W).'
-              }
-            ],
+            deepPrompts: [{ prompt: 'Potential energy of 2 kg book lifted 5m (g = 9.8)?', answer: 'PE = 2 × 9.8 × 5 = 98 J.' }],
             quiz: {
               question: 'What formula defines gravitational potential energy (PE)?',
               options: ['½mv²', 'mgh', 'F / a', 'IR'],
-              correctIndex: 1
+              correctIndex: 1,
+              explanation: 'PE = mass × gravity × height (mgh).'
             }
           },
           {
             id: 'physics-4',
             title: 'Electricity & Ohm’s Law',
-            eli5: 'Electricity flowing through a wire is like water flowing through a pipe. Voltage is water pressure pushing the water, resistance is narrow pipes slowing it down, and current is the actual flow rate of water!',
-            college: 'Ohm’s Law relates electrical voltage (V), current (I), and resistance (R) in a linear circuit.',
-            keyTakeaway: 'Ohm’s Law Formula: V = I × R  (Voltage = Current × Resistance)',
-            deepPrompts: [
-              {
-                prompt: 'Calculate the current (I) in a circuit with 12 Volts and 4 Ohms of resistance.',
-                answer: 'Rearrange Ohm’s law to I = V / R = 12V / 4Ω = 3 Amperes (A).'
-              },
-              {
-                prompt: 'What happens to current if resistance increases while voltage stays constant?',
-                answer: 'Current decreases, because resistance acts as a bottleneck opposing electron flow.'
-              }
-            ],
+            eli5: 'Electricity is like water in a pipe. Voltage is water pressure, resistance is narrow pipes, current is flow rate!',
+            college: 'Ohm’s Law relates electrical voltage (V), current (I), and resistance (R).',
+            keyTakeaway: 'Ohm’s Law Formula: V = I × R',
+            deepPrompts: [{ prompt: 'Current in circuit with 12V and 4Ω resistance?', answer: 'I = 12 / 4 = 3 Amperes.' }],
             quiz: {
               question: 'According to Ohm’s Law, what is voltage (V) equal to?',
               options: ['Current × Resistance (I × R)', 'Current / Resistance', 'Resistance / Current', 'Current + Resistance'],
-              correctIndex: 0
+              correctIndex: 0,
+              explanation: 'V = I × R defines Ohm’s law.'
             }
           }
+        ],
+        finalTest: [
+          { q: 'What is the weight of a 5 kg object on Earth (g ≈ 9.8 m/s²)?', options: ['0.5 N', '5 N', '49 N', '98 N'], correctIndex: 2, explanation: 'Weight W = mg = 5 × 9.8 = 49 N.' },
+          { q: 'A runner sprints 100 meters in 10 seconds. What is their average speed?', options: ['5 m/s', '10 m/s', '20 m/s', '100 m/s'], correctIndex: 1, explanation: 'Speed = Distance / Time = 100 / 10 = 10 m/s.' },
+          { q: 'What is the kinetic energy of a 2 kg ball moving at 4 m/s?', options: ['8 J', '16 J', '32 J', '64 J'], correctIndex: 1, explanation: 'KE = ½mv² = 0.5 × 2 × 4² = 16 J.' },
+          { q: 'If a resistor has 6 ohms and 2 amperes of current, what is the voltage?', options: ['3 V', '8 V', '12 V', '36 V'], correctIndex: 2, explanation: 'V = I × R = 2 × 6 = 12 V.' }
         ]
       },
       {
@@ -1166,96 +1080,65 @@
           {
             id: 'history-1',
             title: 'Ancient Civilizations & Mesopotamia',
-            eli5: 'Thousands of years ago, humans stopped wandering and settled down between two great rivers (the Tigris and Euphrates) because the flooded soil was fantastic for growing crops. That is where writing and cities were born!',
-            college: 'Mesopotamia (“land between rivers”) birthed early urban civilization around 4000 BCE, featuring cuneiform writing, irrigation agriculture, centralized legal codes (Hammurabi), and city-state governance.',
+            eli5: 'Thousands of years ago, humans settled down between two great rivers where flooded soil grew fantastic crops. Writing and cities were born!',
+            college: 'Mesopotamia birthed early urban civilization around 4000 BCE, featuring cuneiform writing and legal codes.',
             keyTakeaway: 'Invention: Cuneiform writing system & Wheel',
-            deepPrompts: [
-              {
-                prompt: 'Why did early civilizations develop near major river valleys?',
-                answer: 'Rivers provided reliable fresh water for drinking, fertile silt deposits from annual floods for agriculture, and efficient water transportation for trade.'
-              },
-              {
-                prompt: 'What was the significance of Hammurabi’s Code?',
-                answer: 'It was one of the earliest deciphered written legal codes, establishing standardized laws and the principle of retributive justice (“an eye for an eye”), though punishments varied by social class.'
-              }
-            ],
+            deepPrompts: [{ prompt: 'Why did early civilizations develop near river valleys?', answer: 'Fresh drinking water, fertile silt from floods, and easy water transport for trade.' }],
             quiz: {
               question: 'Between which two rivers did ancient Mesopotamia flourish?',
-              options: [
-                'Nile and Amazon',
-                'Tigris and Euphrates',
-                'Mississippi and Missouri',
-                'Yangtze and Yellow River'
-              ],
-              correctIndex: 1
+              options: ['Nile and Amazon', 'Tigris and Euphrates', 'Mississippi and Missouri', 'Yangtze and Yellow River'],
+              correctIndex: 1,
+              explanation: 'Mesopotamia translates to the land between the Tigris and Euphrates rivers.'
             }
           },
           {
             id: 'history-2',
             title: 'Ancient Greece & The Birth of Democracy',
-            eli5: 'In ancient Athens, citizens didn’t have kings making all the rules. Instead, they gathered in a public square to debate and vote directly on laws together—inventing the very first democracy!',
-            college: 'Ancient Greece consisted of independent city-states (polis). Athens pioneered direct democracy around the 5th century BCE, alongside monumental contributions in philosophy, drama, and geometry.',
-            keyTakeaway: 'Legacy: Direct democracy, philosophy (Socrates, Plato, Aristotle), and Olympic games',
-            deepPrompts: [
-              {
-                prompt: 'Contrast Athenian direct democracy with modern representative democracy.',
-                answer: 'In Athenian direct democracy, eligible citizens voted directly on legislation and executive decrees in the Assembly. In modern representative democracies, citizens elect representatives to make laws on their behalf.'
-              },
-              {
-                prompt: 'What caused the Peloponnesian War between Athens and Sparta?',
-                answer: 'Sparta grew fearful of the expanding imperial power and naval dominance of the Athenian Delian League, leading to a decades-long war that reshaped the Greek world.'
-              }
-            ],
+            eli5: 'In ancient Athens, citizens didn’t have kings. They gathered in a public square to debate and vote directly on laws together!',
+            college: 'Ancient Greece consisted of independent city-states. Athens pioneered direct democracy in the 5th century BCE.',
+            keyTakeaway: 'Legacy: Direct democracy, philosophy, and Olympic games',
+            deepPrompts: [{ prompt: 'Contrast Athenian direct democracy with modern representative democracy.', answer: 'Athenian citizens voted directly on laws; modern democracies elect representatives.' }],
             quiz: {
               question: 'Which ancient Greek city-state is credited with inventing direct democracy?',
               options: ['Sparta', 'Athens', 'Troy', 'Corinth'],
-              correctIndex: 1
+              correctIndex: 1,
+              explanation: 'Athens established the world’s first direct democratic system.'
             }
           },
           {
             id: 'history-3',
             title: 'The Roman Empire & Its Legacy',
-            eli5: 'Rome started as a small town in Italy and grew into a massive empire that conquered the Mediterranean. They built incredible stone roads, giant arenas like the Colosseum, and laws that influenced the modern world.',
-            college: 'Rising from a republic to a vast Mediterranean empire, Rome engineered advanced infrastructure (aqueducts, concrete roads), established civil law systems, and transitioned under Augustus into the Pax Romana.',
+            eli5: 'Rome grew into a massive empire, building incredible stone roads, giant arenas like the Colosseum, and laws that shaped the modern world.',
+            college: 'Rising from a republic to a vast Mediterranean empire, Rome engineered advanced infrastructure and established civil law.',
             keyTakeaway: 'Legacy: Engineering, legal codes, Romance languages, and architecture',
-            deepPrompts: [
-              {
-                prompt: 'What was the Pax Romana?',
-                answer: 'A ~200-year period of relative peace and stability across the Roman Empire initiated by Augustus Caesar, enabling flourishing trade and cultural exchange.'
-              },
-              {
-                prompt: 'What primary factors contributed to the fall of the Western Roman Empire in 476 CE?',
-                answer: 'Economic inflation, overextended borders, political corruption, military reliance on mercenary soldiers, and recurring Germanic tribal invasions.'
-              }
-            ],
+            deepPrompts: [{ prompt: 'What was the Pax Romana?', answer: 'A 200-year period of relative peace and stability across the Roman Empire.' }],
             quiz: {
-              question: 'What engineering marvel allowed ancient Rome to transport fresh water across long distances?',
+              question: 'What engineering marvel allowed ancient Rome to transport fresh water?',
               options: ['Aqueducts', 'Steam trains', 'Suspension bridges', 'Electric cables'],
-              correctIndex: 0
+              correctIndex: 0,
+              explanation: 'Roman aqueducts transported water across valleys using gravity.'
             }
           },
           {
             id: 'history-4',
             title: 'The Renaissance & Scientific Revolution',
-            eli5: 'After the Middle Ages, Europe went through a massive cultural awakening called the Renaissance (meaning “rebirth”). People started painting with incredible perspective, studying science, and questioning how the universe worked.',
-            college: 'Beginning in 14th-century Italy, the Renaissance revived classical art and humanist philosophy, which directly fueled the Scientific Revolution (Copernicus, Galileo, Newton) moving from scholasticism to empirical observation.',
+            eli5: 'After the Middle Ages, Europe experienced a massive cultural awakening called the Renaissance (rebirth), reviving art, science, and questioning the universe.',
+            college: 'Beginning in 14th-century Italy, the Renaissance revived classical art and humanist philosophy, fueling the Scientific Revolution.',
             keyTakeaway: 'Shift: Transition from dogmatic tradition to empirical scientific inquiry',
-            deepPrompts: [
-              {
-                prompt: 'How did the shift from a geocentric to a heliocentric universe challenge institutions?',
-                answer: 'Copernicus and Galileo’s heliocentric model (Earth orbiting the Sun) challenged established geocentric theological interpretations, leading to intense scientific and doctrinal debates.'
-              },
-              {
-                prompt: 'What role did Italian city-states like Florence play in funding the Renaissance?',
-                answer: 'Wealthy merchant and banking dynasties like the Medici family accumulated vast fortunes through trade and banking, using their wealth to generously patronize artists, sculptors, and scholars.'
-              }
-            ],
+            deepPrompts: [{ prompt: 'What role did the Medici family play?', answer: 'They used their banking wealth in Florence to generously patronize artists and scholars.' }],
             quiz: {
               question: 'What does the word "Renaissance" literally translate to?',
               options: ['Industrial machine', 'Rebirth', 'Dark Age', 'Golden Empire'],
-              correctIndex: 1
+              correctIndex: 1,
+              explanation: 'Renaissance is French for "rebirth".'
             }
           }
+        ],
+        finalTest: [
+          { q: 'What writing system was developed in ancient Mesopotamia?', options: ['Hieroglyphics', 'Cuneiform', 'Alphabet', 'Latin'], correctIndex: 1, explanation: 'Sumerians pressed wedge-shaped styluses into clay to create cuneiform.' },
+          { q: 'Who were famous Greek philosophers?', options: ['Caesar, Augustus, Nero', 'Socrates, Plato, Aristotle', 'Newton, Einstein, Darwin', 'Gutenberg, Da Vinci, Galileo'], correctIndex: 1, explanation: 'Socrates, Plato, and Aristotle are foundational Greek philosophers.' },
+          { q: 'What was the Pax Romana?', options: ['A civil war in Rome', 'A 200-year period of Roman peace', 'A Roman gladiatorial arena', 'A tax reform'], correctIndex: 1, explanation: 'Pax Romana means "Roman Peace".' },
+          { q: 'Where did the European Renaissance originate?', options: ['London, England', 'Paris, France', 'Florence, Italy', 'Madrid, Spain'], correctIndex: 2, explanation: 'Florence, Italy was the vibrant birthplace of the Renaissance.' }
         ]
       }
     ];
@@ -1263,15 +1146,15 @@
     const TOTAL_CURRICULUM_LESSONS = curriculums.reduce((sum, s) => sum + s.lessons.length, 0);
 
     // =========================================================================
-    // 3. INTERACTIVE LESSON & AI TUTOR MODAL LOGIC
+    // 3. INTERACTIVE LESSON, QUIZ & FINAL TEST LOGIC
     // =========================================================================
     let activeSubjectId = null;
-    let activeLessonIndex = 0;
-    let explanationMode = 'eli5'; // 'eli5' or 'college'
+    let activeItemIndex = 0; // 0 to 3 for lessons, 4 for Final Test
+    let explanationMode = 'eli5';
 
-    function openSubjectModal(subjectId, lessonIdx = 0) {
+    function openSubjectModal(subjectId, itemIdx = 0) {
       activeSubjectId = subjectId;
-      activeLessonIndex = lessonIdx;
+      activeItemIndex = itemIdx;
       document.getElementById('lesson-modal').classList.remove('hidden');
       document.body.classList.add('overflow-hidden');
       renderLessonModal();
@@ -1291,18 +1174,15 @@
       const subj = curriculums.find(s => s.id === activeSubjectId);
       if (!subj) return;
 
-      const lesson = subj.lessons[activeLessonIndex];
-      const isCompleted = userState.completedLessons.includes(lesson.id);
-
       document.getElementById('modal-subject-icon').textContent = subj.icon;
       document.getElementById('modal-subject-category').textContent = subj.category;
       document.getElementById('modal-subject-title').textContent = subj.title;
 
-      // Render lesson selector pills
+      // Render pills (Lessons 1-4 + Final Test)
       const pillsContainer = document.getElementById('modal-lesson-pills');
-      pillsContainer.innerHTML = subj.lessons.map((l, idx) => {
+      let pillsHtml = subj.lessons.map((l, idx) => {
         const done = userState.completedLessons.includes(l.id);
-        const active = idx === activeLessonIndex;
+        const active = idx === activeItemIndex;
         return `
           <button onclick="openSubjectModal('${subj.id}', ${idx})" class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
             active
@@ -1312,10 +1192,47 @@
             <span>${done ? '✅' : `0${idx + 1}`}</span>
             <span>${l.title}</span>
           </button>
-        `;
+        ;`;
       }).join('');
 
-      // Toggle mode buttons styling
+      const testDone = userState.completedTests.includes(subj.id);
+      const testActive = activeItemIndex === 4;
+      pillsHtml += `
+        <button onclick="openSubjectModal('${subj.id}', 4)" class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+          testActive
+            ? 'bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/30 font-black'
+            : 'bg-amber-500/10 text-amber-300 hover:bg-amber-500/20 border border-amber-500/30'
+        }">
+          <span>${testDone ? '🏆' : '📝'}</span>
+          <span>Final Test (+200 XP)</span>
+        </button>
+      `;
+      pillsContainer.innerHTML = pillsHtml;
+
+      const lessonView = document.getElementById('lesson-content-view');
+      const testView = document.getElementById('final-test-view');
+      const modeSwitcher = document.getElementById('mode-switcher-container');
+
+      if (activeItemIndex === 4) {
+        // Render Final Test View
+        lessonView.classList.add('hidden');
+        modeSwitcher.classList.add('hidden');
+        testView.classList.remove('hidden');
+        renderFinalTestView(subj);
+      } else {
+        // Render Lesson & Quiz View
+        testView.classList.add('hidden');
+        lessonView.classList.remove('hidden');
+        modeSwitcher.classList.remove('hidden');
+        renderLessonItemView(subj, activeItemIndex);
+      }
+    }
+
+    function renderLessonItemView(subj, idx) {
+      const lesson = subj.lessons[idx];
+      const isCompleted = userState.completedLessons.includes(lesson.id);
+
+      // Mode toggle styling
       const eli5Btn = document.getElementById('mode-btn-eli5');
       const collegeBtn = document.getElementById('mode-btn-college');
       if (explanationMode === 'eli5') {
@@ -1326,7 +1243,6 @@
         eli5Btn.className = 'px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white';
       }
 
-      // Populate lesson body
       document.getElementById('lesson-title').textContent = lesson.title;
       const statusBadge = document.getElementById('lesson-status-badge');
       if (isCompleted) {
@@ -1347,36 +1263,44 @@
       `;
       document.getElementById('lesson-formula-box').textContent = lesson.keyTakeaway;
 
-      // Render Harder Deep-Dive Prompts
+      // Practice Problems
       const promptsList = document.getElementById('deep-prompts-list');
       const answerBox = document.getElementById('deep-prompt-answer-box');
       answerBox.classList.add('hidden');
 
       promptsList.innerHTML = lesson.deepPrompts.map((dp, i) => `
-        <button onclick="revealDeepPrompt(${i})" class="text-left p-3.5 rounded-xl bg-dark-bg/80 hover:bg-brand-purple/15 border border-white/10 hover:border-brand-purple/40 transition-all flex items-start gap-2.5 group">
+        <button onclick="revealDeepPrompt('${subj.id}', ${idx}, ${i})" class="text-left p-3.5 rounded-xl bg-dark-bg/80 hover:bg-brand-purple/15 border border-white/10 hover:border-brand-purple/40 transition-all flex items-start gap-2.5 group">
           <span class="text-brand-purple font-mono text-xs mt-0.5">Q${i + 1}</span>
           <span class="text-xs sm:text-sm font-semibold text-slate-200 group-hover:text-white">${dp.prompt}</span>
         </button>
       `).join('');
 
-      // Render Mastery Quiz
+      // Quiz Check
       document.getElementById('quiz-question-text').textContent = lesson.quiz.question;
-      document.getElementById('quiz-feedback').textContent = isCompleted ? 'You have already mastered this lesson! Feel free to review or try another module.' : '';
-      document.getElementById('quiz-feedback').className = 'text-xs font-semibold text-emerald-400';
+      const feedbackBox = document.getElementById('quiz-feedback-box');
+      const feedbackEl = document.getElementById('quiz-feedback');
+      const aiExplanationEl = document.getElementById('ai-explanation-box');
+
+      if (isCompleted) {
+        feedbackBox.classList.remove('hidden');
+        feedbackEl.textContent = '✅ You have already mastered this quiz!';
+        feedbackEl.className = 'text-xs font-bold text-emerald-400';
+        aiExplanationEl.textContent = `AI Tutor Note: ${lesson.quiz.explanation}`;
+      } else {
+        feedbackBox.classList.add('hidden');
+      }
 
       const optionsContainer = document.getElementById('quiz-options-container');
-      optionsContainer.innerHTML = lesson.quiz.options.map((opt, idx) => `
-        <button onclick="submitQuizAnswer(${idx})" class="text-left p-3.5 rounded-xl bg-white/5 hover:bg-brand-500/20 border border-white/10 hover:border-brand-500/40 text-xs sm:text-sm text-slate-200 transition-all font-medium">
-          <span class="font-mono text-brand-400 mr-2">${String.fromCharCode(65 + idx)}.</span> ${opt}
+      optionsContainer.innerHTML = lesson.quiz.options.map((opt, oIdx) => `
+        <button onclick="submitQuizAnswer(${oIdx})" class="text-left p-3.5 rounded-xl bg-white/5 hover:bg-brand-500/20 border border-white/10 hover:border-brand-500/40 text-xs sm:text-sm text-slate-200 transition-all font-medium">
+          <span class="font-mono text-brand-400 mr-2">${String.fromCharCode(65 + oIdx)}.</span> ${opt}
         </button>
       `).join('');
     }
 
-    function revealDeepPrompt(promptIndex) {
-      const subj = curriculums.find(s => s.id === activeSubjectId);
-      const lesson = subj.lessons[activeLessonIndex];
-      const dp = lesson.deepPrompts[promptIndex];
-
+    function revealDeepPrompt(subjId, lessonIdx, promptIdx) {
+      const subj = curriculums.find(s => s.id === subjId);
+      const dp = subj.lessons[lessonIdx].deepPrompts[promptIdx];
       const answerBox = document.getElementById('deep-prompt-answer-box');
       document.getElementById('deep-prompt-selected-title').textContent = `🔬 Solution Guide: ${dp.prompt}`;
       document.getElementById('deep-prompt-selected-text').textContent = dp.answer;
@@ -1386,8 +1310,12 @@
 
     function submitQuizAnswer(selectedIndex) {
       const subj = curriculums.find(s => s.id === activeSubjectId);
-      const lesson = subj.lessons[activeLessonIndex];
-      const feedback = document.getElementById('quiz-feedback');
+      const lesson = subj.lessons[activeItemIndex];
+      const feedbackBox = document.getElementById('quiz-feedback-box');
+      const feedbackEl = document.getElementById('quiz-feedback');
+      const aiExplanationEl = document.getElementById('ai-explanation-box');
+
+      feedbackBox.classList.remove('hidden');
 
       if (selectedIndex === lesson.quiz.correctIndex) {
         const alreadyDone = userState.completedLessons.includes(lesson.id);
@@ -1395,20 +1323,98 @@
           userState.completedLessons.push(lesson.id);
           userState.xp += 50;
           logLessonActivity(1);
-          feedback.textContent = '🎉 Correct! +50 XP earned and logged to your 30-day heatmap!';
+          feedbackEl.textContent = '🎉 Correct! +50 XP earned and logged to your heatmap!';
         } else {
-          feedback.textContent = '✅ Correct! Lesson mastery confirmed.';
+          feedbackEl.textContent = '✅ Correct! Lesson mastery confirmed.';
         }
-        feedback.className = 'text-xs font-bold text-emerald-400';
+        feedbackEl.className = 'text-xs font-bold text-emerald-400';
+        aiExplanationEl.textContent = `AI Tutor Explanation: Great job! ${lesson.quiz.explanation}`;
         playSuccessChime();
         if (window.confetti) {
-          confetti({ particleCount: 45, spread: 70, origin: { y: 0.7 } });
+          confetti({ particleCount: 40, spread: 70, origin: { y: 0.7 } });
         }
         updateDashboardUI();
-        renderLessonModal();
       } else {
-        feedback.textContent = '❌ Not quite! Switch between ELI5 and Standard Tutoring above for a hint and try again.';
-        feedback.className = 'text-xs font-bold text-red-400';
+        feedbackEl.textContent = '❌ Incorrect. Read below for AI Tutoring on why you got it wrong.';
+        feedbackEl.className = 'text-xs font-bold text-red-400';
+        aiExplanationEl.textContent = `🤖 AI Tutor Analysis: You selected option ${String.fromCharCode(65 + selectedIndex)}, but that is incorrect. Why? ${lesson.quiz.explanation} Review the lesson above and try again!`;
+      }
+    }
+
+    // =========================================================================
+    // FINAL TEST RENDERING & AI TUTOR REVIEW
+    // =========================================================================
+    function renderFinalTestView(subj) {
+      const container = document.getElementById('final-test-questions-container');
+      const resultsBox = document.getElementById('final-test-results-box');
+      resultsBox.classList.add('hidden');
+
+      const isTestDone = userState.completedTests.includes(subj.id);
+      document.getElementById('test-score-badge').textContent = isTestDone ? '🏆 Test Completed (+200 XP)' : 'Complete all questions (+200 XP)';
+
+      container.innerHTML = subj.finalTest.map((testQ, qIdx) => `
+        <div class="glass-panel p-5 rounded-2xl border border-white/10 space-y-3" id="test-q-card-${qIdx}">
+          <div class="text-xs font-mono text-amber-400">QUESTION ${qIdx + 1} OF ${subj.finalTest.length}</div>
+          <p class="text-sm font-semibold text-white">${testQ.q}</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+            ${testQ.options.map((opt, oIdx) => `
+              <label class="flex items-center gap-2.5 p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 cursor-pointer text-xs text-slate-200">
+                <input type="radio" name="test-q-${qIdx}" value="${oIdx}" class="accent-amber-500">
+                <span><strong class="font-mono text-amber-400 mr-1">${String.fromCharCode(65 + oIdx)}.</strong> ${opt}</span>
+              </label>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function submitFinalTest() {
+      const subj = curriculums.find(s => s.id === activeSubjectId);
+      let score = 0;
+      let reviewHtml = '';
+
+      subj.finalTest.forEach((testQ, qIdx) => {
+        const selectedRadio = document.querySelector(`input[name="test-q-${qIdx}"]:checked`);
+        const userChoice = selectedRadio ? parseInt(selectedRadio.value) : -1;
+        const isCorrect = userChoice === testQ.correctIndex;
+
+        if (isCorrect) score++;
+
+        const card = document.getElementById(`test-q-card-${qIdx}`);
+        if (isCorrect) {
+          card.style.borderColor = 'rgba(16, 185, 129, 0.5)';
+          card.style.background = 'rgba(16, 185, 129, 0.05)';
+        } else {
+          card.style.borderColor = 'rgba(239, 68, 68, 0.5)';
+          card.style.background = 'rgba(239, 68, 68, 0.05)';
+        }
+
+        reviewHtml += `
+          <div class="p-3.5 rounded-xl bg-dark-bg border ${isCorrect ? 'border-emerald-500/30' : 'border-red-500/30'} space-y-1.5 text-xs">
+            <div class="font-semibold text-white">Q${qIdx + 1}: ${testQ.q}</div>
+            <div>Your Answer: <span class="${isCorrect ? 'text-emerald-400 font-bold' : 'text-red-400 font-bold'}">${userChoice !== -1 ? testQ.options[userChoice] : 'None selected'}</span></div>
+            <div>Correct Answer: <span class="text-emerald-400 font-bold">${testQ.options[testQ.correctIndex]}</span></div>
+            ${!isCorrect ? `<div class="text-amber-300 bg-amber-500/10 p-2.5 rounded-lg border border-amber-500/20 mt-1"><strong>🤖 AI Tutor Analysis (Why you got it wrong):</strong> ${testQ.explanation}</div>` : ''}
+          </div>
+        `;
+      });
+
+      const resultsBox = document.getElementById('final-test-results-box');
+      resultsBox.classList.remove('hidden');
+      document.getElementById('final-test-result-title').textContent = `Test Score: ${score} / ${subj.finalTest.length} (${Math.round((score / subj.finalTest.length) * 100)}%)`;
+      document.getElementById('final-test-review-list').innerHTML = reviewHtml;
+
+      if (score >= Math.ceil(subj.finalTest.length * 0.75)) {
+        if (!userState.completedTests.includes(subj.id)) {
+          userState.completedTests.push(subj.id);
+          userState.xp += 200;
+          logLessonActivity(2);
+          playSuccessChime();
+          if (window.confetti) {
+            confetti({ particleCount: 75, spread: 90, origin: { y: 0.7 } });
+          }
+          updateDashboardUI();
+        }
       }
     }
 
@@ -1423,7 +1429,7 @@
           const completedInSubj = userState.completedLessons.filter(id => id.startsWith(`${subj.id}-`)).length;
           const totalInSubj = subj.lessons.length;
           const pct = Math.round((completedInSubj / totalInSubj) * 100);
-          const isFinished = completedInSubj >= totalInSubj;
+          const testDone = userState.completedTests.includes(subj.id);
 
           const card = document.createElement('div');
           card.className = `glass-panel glass-panel-hover spotlight-card rounded-3xl p-6 flex flex-col justify-between ${subj.theme}`;
@@ -1434,18 +1440,19 @@
                 <span class="text-[11px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/5 text-slate-400">${subj.category}</span>
               </div>
               <h3 class="text-lg font-bold text-white mb-1">${subj.title}</h3>
-              <p class="text-xs text-slate-400 font-mono mb-4">${completedInSubj} / ${totalInSubj} Lessons Mastered</p>
+              <p class="text-xs text-slate-400 font-mono mb-4">${completedInSubj} / ${totalInSubj} Lessons Mastered ${testDone ? '• Test Passed 🏆' : ''}</p>
               <div class="w-full bg-dark-bg/80 rounded-full h-2 overflow-hidden border border-white/10 mb-5">
                 <div class="bg-gradient-to-r from-brand-500 to-brand-cyan h-full transition-all duration-500" style="width: ${pct}%"></div>
               </div>
             </div>
-            <button onclick="openSubjectModal('${subj.id}', 0)" class="w-full py-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
-              isFinished
-                ? 'bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/25'
-                : 'bg-gradient-to-r from-brand-600 to-brand-purple hover:opacity-95 text-white shadow-lg shadow-brand-500/25'
-            }">
-              <span>${isFinished ? '✅ Review Lessons & Practice' : '📚 Open Lessons & AI Tutor'}</span>
-            </button>
+            <div class="space-y-2">
+              <button onclick="openSubjectModal('${subj.id}', 0)" class="w-full py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-brand-600 to-brand-purple text-white shadow-lg shadow-brand-500/20 hover:opacity-95 transition">
+                📚 Open Lessons & Quizzes
+              </button>
+              <button onclick="openSubjectModal('${subj.id}', 4)" class="w-full py-2.5 rounded-xl text-xs font-bold ${testDone ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30' : 'bg-amber-500/15 text-amber-300 border border-amber-500/30 hover:bg-amber-500/25'} transition">
+                ${testDone ? '✅ Review Final Test' : '📝 Take Final Test (+200 XP)'}
+              </button>
+            </div>
           `;
           grid.appendChild(card);
         });
@@ -1456,7 +1463,7 @@
     }
 
     // =========================================================================
-    // 4. LESSON-CORRELATED 30-DAY HEATMAP, BADGES & ANALYTICS
+    // 4. HEATMAP, BADGES & ANALYTICS
     // =========================================================================
     function renderHeatmap() {
       const grid = document.getElementById('heatmap-grid');
@@ -1480,13 +1487,13 @@
 
         const cell = document.createElement('div');
         cell.className = `w-full h-8 rounded-lg ${heatClass} transition-all hover:scale-110 cursor-pointer`;
-        cell.title = `${key}: ${lessonsCount} lesson${lessonsCount === 1 ? '' : 's'} completed`;
+        cell.title = `${key}: ${lessonsCount} activity items completed`;
         grid.appendChild(cell);
       }
 
       const todayLessons = userState.dailyActivity[getTodayDateStr()] || 0;
       document.getElementById('heatmap-active-days').textContent = `${activeDaysCount} Day${activeDaysCount === 1 ? '' : 's'} Active`;
-      document.getElementById('today-lessons-label').textContent = `Today: ${todayLessons} lesson${todayLessons === 1 ? '' : 's'} completed`;
+      document.getElementById('today-lessons-label').textContent = `Today: ${todayLessons} actions completed`;
     }
 
     function renderRetentionChart() {
@@ -1511,7 +1518,7 @@
         const bar = document.createElement('div');
         bar.className = `flex-1 ${isToday ? 'bg-gradient-to-t from-brand-600 to-brand-purple shadow-lg shadow-brand-500/30' : 'bg-brand-500/30 hover:bg-brand-500/50'} rounded-t-lg transition-all relative group`;
         bar.style.height = `${heightPct}%`;
-        bar.innerHTML = `<span class="opacity-0 group-hover:opacity-100 absolute -top-7 left-1/2 -translate-x-1/2 text-[10px] bg-dark-bg px-2 py-0.5 rounded border border-white/10 text-white font-mono whitespace-nowrap">${count} lessons</span>`;
+        bar.innerHTML = `<span class="opacity-0 group-hover:opacity-100 absolute -top-7 left-1/2 -translate-x-1/2 text-[10px] bg-dark-bg px-2 py-0.5 rounded border border-white/10 text-white font-mono whitespace-nowrap">${count} items</span>`;
         barsContainer.appendChild(bar);
 
         const label = document.createElement('span');
@@ -1519,19 +1526,22 @@
         labelsContainer.appendChild(label);
       }
 
-      const retentionPct = Math.min(100, Math.round((userState.completedLessons.length / TOTAL_CURRICULUM_LESSONS) * 100));
+      const totalItems = 24 + 6; // 24 lessons + 6 tests
+      const currentProgress = userState.completedLessons.length + userState.completedTests.length;
+      const retentionPct = Math.min(100, Math.round((currentProgress / totalItems) * 100));
       document.getElementById('retention-score-text').textContent = `${retentionPct}%`;
-      document.getElementById('trajectory-summary').textContent = `${last5Total} Lessons (5d)`;
+      document.getElementById('trajectory-summary').textContent = `${last5Total} Actions (5d)`;
     }
 
     function renderBadges() {
       const container = document.getElementById('badges-container');
       const totalDone = userState.completedLessons.length;
+      const testsDone = userState.completedTests.length;
       const badges = [
         { icon: '🌱', title: 'First Step', desc: 'Complete 1 lesson', unlocked: totalDone >= 1 },
-        { icon: '🔥', title: '3-Day Streak', desc: 'Study 3 days straight', unlocked: userState.streak >= 3 },
+        { icon: '📝', title: 'Test Conqueror', desc: 'Pass 1 Final Test', unlocked: testsDone >= 1 },
         { icon: '⚡', title: '500 XP Club', desc: 'Earn 500 total XP', unlocked: userState.xp >= 500 },
-        { icon: '🎓', title: 'Scholar', desc: 'Master 12 lessons', unlocked: totalDone >= 12 }
+        { icon: '🎓', title: 'Master Scholar', desc: 'Pass 3 Final Tests', unlocked: testsDone >= 3 }
       ];
 
       container.innerHTML = badges.map(b => `
@@ -1591,7 +1601,7 @@
     }
 
     // =========================================================================
-    // 6. WORKING SYNTHESIZED AMBIENT MUSIC & SOUND FX (WEB AUDIO API)
+    // 6. WORKING AMBIENT MUSIC & SOUND FX (WEB AUDIO API)
     // =========================================================================
     let audioCtx = null;
     let ambientGain = null;
@@ -1796,7 +1806,7 @@
       document.getElementById('user-avatar-initial').textContent = userState.name.charAt(0).toUpperCase();
       document.getElementById('stat-streak').textContent = `${userState.streak} Day${userState.streak === 1 ? '' : 's'}`;
       document.getElementById('stat-xp').textContent = `${userState.xp} XP`;
-      document.getElementById('stat-completed').textContent = `${completedCount} / ${TOTAL_CURRICULUM_LESSONS}`;
+      document.getElementById('stat-completed').textContent = `${completedCount} / 24`;
       document.getElementById('widget-streak-text').textContent = `${userState.streak} DAY${userState.streak === 1 ? '' : 'S'}`;
       document.getElementById('cards-mastered-count').textContent = userState.cardsMastered;
       document.getElementById('cards-reviewing-count').textContent = userState.cardsReviewing;
