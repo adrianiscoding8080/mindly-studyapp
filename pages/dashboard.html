@@ -78,12 +78,6 @@
     ::-webkit-scrollbar-thumb { background: #21243a; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #373c5d; }
 
-    .bg-mesh-glow {
-      background: radial-gradient(circle at 50% 20%, rgba(99, 102, 241, 0.25) 0%, transparent 50%),
-                  radial-gradient(circle at 80% 40%, rgba(168, 85, 247, 0.18) 0%, transparent 40%),
-                  radial-gradient(circle at 20% 70%, rgba(6, 182, 212, 0.15) 0%, transparent 45%);
-    }
-
     .glass-panel {
       background: rgba(18, 20, 38, 0.65);
       backdrop-filter: blur(16px);
@@ -98,18 +92,6 @@
       border-color: rgba(99, 102, 241, 0.35);
       box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.25);
       transform: translateY(-4px);
-    }
-
-    .text-gradient {
-      background: linear-gradient(135deg, #ffffff 20%, #a5b4fc 60%, #c084fc 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .text-gradient-cyan {
-      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
     }
 
     .glow-border { position: relative; }
@@ -147,15 +129,11 @@
     .theme-science { border-top: 3px solid #34d399; }
     .theme-history { border-top: 3px solid #fbbf24; }
 
-    .focus-mode .hide-in-focus { display: none !important; }
-
-    /* Heatmap Square States with Neon Glows */
     .heat-0 { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.05); }
     .heat-1 { background: rgba(52, 211, 153, 0.25); border: 1px solid rgba(52, 211, 153, 0.4); }
     .heat-2 { background: rgba(52, 211, 153, 0.55); border: 1px solid rgba(52, 211, 153, 0.7); }
     .heat-3 { background: #34d399; box-shadow: 0 0 12px rgba(52, 211, 153, 0.6); }
 
-    /* Flashcard 3D Flip */
     .perspective-1000 { perspective: 1000px; }
     .flashcard-inner {
       transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -183,7 +161,7 @@
   <div class="relative z-10 flex flex-col min-h-screen">
 
     <!-- Sticky Navigation Bar -->
-    <header class="sticky top-0 z-50 w-full transition-all duration-300" id="navbar">
+    <header class="sticky top-0 z-40 w-full transition-all duration-300" id="navbar">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="mt-4 rounded-2xl glass-panel px-5 py-3.5 flex items-center justify-between shadow-2xl transition-all duration-300">
           
@@ -219,9 +197,7 @@
     <!-- Main Container -->
     <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow">
 
-      <!-- ===================================================================
-           VIEW 1: COMMAND DASHBOARD OVERVIEW
-           =================================================================== -->
+      <!-- VIEW 1: COMMAND DASHBOARD OVERVIEW -->
       <section id="view-dashboard" class="space-y-8">
         
         <!-- User Profile & Level Progress Hero Banner -->
@@ -273,25 +249,11 @@
               <div class="glass-panel p-4 rounded-2xl text-center border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 transition">
                 <div class="text-2xl sm:text-3xl">🏆</div>
                 <div class="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider mt-2 font-mono">Completed</div>
-                <div class="text-lg sm:text-2xl font-bold text-emerald-400 font-mono mt-0.5" id="stat-completed">0 / 48</div>
+                <div class="text-lg sm:text-2xl font-bold text-emerald-400 font-mono mt-0.5" id="stat-completed">0 / 24</div>
               </div>
             </div>
 
           </div>
-        </div>
-
-        <!-- Spaced Repetition Due Banner -->
-        <div id="spaced-due-banner" class="hidden glass-panel rounded-2xl p-5 border-l-4 border-amber-400 bg-amber-500/10 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
-          <div class="flex items-center gap-4">
-            <div class="text-3xl p-3 bg-amber-500/20 rounded-2xl border border-amber-500/30">🧠</div>
-            <div>
-              <h3 class="font-bold text-amber-300 text-base">Spaced Repetition Reviews Due!</h3>
-              <p class="text-xs text-slate-300 mt-0.5" id="spaced-due-text">You have lessons scheduled for review today to optimize long-term retention.</p>
-            </div>
-          </div>
-          <button onclick="startSpacedReview()" class="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-black rounded-xl shadow-lg shadow-amber-500/25 hover:scale-105 transition text-xs flex items-center justify-center gap-2">
-            Review Now 🚀
-          </button>
         </div>
 
         <!-- 30-Day Activity Heatmap & Trophy Cabinet Grid -->
@@ -308,7 +270,7 @@
             </div>
             
             <div class="grid grid-cols-10 gap-2.5 my-3" id="heatmap-grid">
-              <!-- Heatmap blocks generated dynamically from user lesson history -->
+              <!-- Heatmap blocks generated dynamically -->
             </div>
 
             <div class="flex justify-between items-center text-xs text-slate-400 mt-3 font-mono">
@@ -330,10 +292,32 @@
             <p class="text-xs text-slate-400 mb-4">Earn rare badges by reaching milestones.</p>
             
             <div class="grid grid-cols-2 gap-3 max-h-[220px] overflow-y-auto pr-1" id="badges-container">
-              <!-- Badges rendered dynamically by JS -->
+              <!-- Badges rendered dynamically -->
             </div>
           </div>
 
+        </div>
+
+        <!-- ACTIVE CURRICULUMS GRID (SIMPLIFIED SUBJECTS) -->
+        <div class="space-y-4 pt-2">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 class="text-2xl font-bold text-white tracking-tight">Interactive Curriculums & AI Tutor</h2>
+              <p class="text-xs text-slate-400">Open any subject to study core lessons, toggle ELI5 vs. Advanced explanations, and explore deep-dive prompts.</p>
+            </div>
+            
+            <div class="flex items-center gap-3">
+              <div class="relative w-full sm:w-64">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-slate-500"></i>
+                <input type="text" id="subject-search" oninput="filterSubjects()" placeholder="Search subjects..." class="w-full pl-9 pr-4 py-2 rounded-xl bg-dark-bg/80 border border-white/10 text-xs text-slate-200 focus:outline-none focus:border-brand-500 transition-colors">
+              </div>
+              <span class="text-xs text-slate-400 font-mono px-3 py-2 bg-white/5 border border-white/10 rounded-xl shrink-0">6 Subjects</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="subjects-grid">
+            <!-- Subject Cards rendered by JS -->
+          </div>
         </div>
 
         <!-- LIVE INTERACTIVE WORKSPACE HUB -->
@@ -360,7 +344,6 @@
           <!-- TAB CONTENT 1: INTERACTIVE FLASHCARDS -->
           <div id="content-flashcards" class="demo-content pt-8">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              
               <div class="lg:col-span-5 space-y-4 text-left">
                 <div class="inline-flex items-center gap-2 text-xs font-semibold text-brand-cyan bg-brand-cyan/10 px-3 py-1 rounded-lg">
                   <i class="fa-solid fa-brain"></i> Adaptive Memory Engine
@@ -369,7 +352,6 @@
                 <p class="text-slate-400 text-sm leading-relaxed">
                   Flip cards to test recall. Rating a card records your study session on your heatmap and earns XP.
                 </p>
-                
                 <div class="pt-2 flex items-center gap-4 text-xs text-slate-400 font-mono">
                   <div class="flex items-center gap-1.5">
                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Mastered: <span id="cards-mastered-count">0</span>
@@ -380,56 +362,42 @@
                 </div>
               </div>
 
-              <!-- Right Flashcard Widget -->
               <div class="lg:col-span-7 flex flex-col items-center">
                 <div class="w-full max-w-md perspective-1000">
                   <div id="flashcard-element" onclick="flipFlashcard()" class="flashcard-inner relative w-full h-64 cursor-pointer rounded-2xl glass-panel border border-brand-500/30 shadow-2xl p-6 flex items-center justify-center text-center select-none group hover:border-brand-500/60">
-                    
-                    <!-- Front Side -->
                     <div class="flashcard-front absolute inset-0 p-6 flex flex-col justify-between items-center">
-                      <span class="text-xs font-mono text-slate-500 uppercase tracking-wider" id="card-topic">Topic: Cognitive Neuroscience</span>
+                      <span class="text-xs font-mono text-slate-500 uppercase tracking-wider" id="card-topic">Topic: Algebra 1</span>
                       <p class="text-lg font-semibold text-white px-4" id="card-question">
-                        What is the primary function of the Hippocampus in long-term memory formation?
+                        What does the slope-intercept form equation look like?
                       </p>
                       <span class="text-xs text-brand-400 font-medium flex items-center gap-1 group-hover:scale-105 transition-transform">
                         <i class="fa-solid fa-rotate-left"></i> Click to reveal answer
                       </span>
                     </div>
-
-                    <!-- Back Side -->
                     <div class="flashcard-back absolute inset-0 p-6 flex flex-col justify-between items-center bg-dark-surface/95 rounded-2xl">
                       <span class="text-xs font-mono text-brand-purple uppercase tracking-wider">Answer Key</span>
                       <p class="text-base text-slate-200 px-4" id="card-answer">
-                        It consolidates information from short-term memory to long-term memory and spatial navigation.
+                        y = mx + b, where m is the slope and b is the y-intercept.
                       </p>
                       <div class="text-xs text-emerald-400 font-medium">
                         <i class="fa-solid fa-check"></i> Select your recall level below
                       </div>
                     </div>
-
                   </div>
                 </div>
 
                 <div class="mt-6 flex items-center gap-3 w-full max-w-md">
-                  <button onclick="nextFlashcard('Hard')" class="flex-1 py-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-semibold hover:bg-red-500/20 transition-all">
-                    Again (&lt;10m)
-                  </button>
-                  <button onclick="nextFlashcard('Good')" class="flex-1 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold hover:bg-amber-500/20 transition-all">
-                    Good (1d)
-                  </button>
-                  <button onclick="nextFlashcard('Easy')" class="flex-1 py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold hover:bg-emerald-500/20 transition-all">
-                    Easy (4d)
-                  </button>
+                  <button onclick="nextFlashcard('Hard')" class="flex-1 py-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-semibold hover:bg-red-500/20 transition-all">Again (&lt;10m)</button>
+                  <button onclick="nextFlashcard('Good')" class="flex-1 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold hover:bg-amber-500/20 transition-all">Good (1d)</button>
+                  <button onclick="nextFlashcard('Easy')" class="flex-1 py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold hover:bg-emerald-500/20 transition-all">Easy (4d)</button>
                 </div>
               </div>
-
             </div>
           </div>
 
           <!-- TAB CONTENT 2: POMODORO TIMER & SOUNDSCAPES -->
           <div id="content-pomodoro" class="demo-content pt-8 hidden">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              
               <div class="lg:col-span-5 space-y-4 text-left">
                 <div class="inline-flex items-center gap-2 text-xs font-semibold text-brand-purple bg-brand-purple/10 px-3 py-1 rounded-lg">
                   <i class="fa-solid fa-bullseye"></i> Distraction-Free Zone
@@ -438,7 +406,6 @@
                 <p class="text-slate-400 text-sm leading-relaxed">
                   Combine timed study intervals with synthesized neural soundscapes designed to lock your brain into flow state.
                 </p>
-                
                 <div class="space-y-2 pt-2">
                   <label class="text-xs text-slate-400 font-medium block">Select Ambient Focus Music:</label>
                   <div class="flex flex-wrap gap-2" id="soundscape-buttons">
@@ -455,13 +422,11 @@
                 </div>
               </div>
 
-              <!-- Timer Widget -->
               <div class="lg:col-span-7 flex flex-col items-center">
                 <div class="w-64 h-64 rounded-full border-4 border-brand-500/30 flex flex-col items-center justify-center relative shadow-[0_0_50px_rgba(99,102,241,0.2)] bg-dark-bg/60">
                   <div class="text-5xl font-extrabold font-mono text-white tracking-wider" id="pomo-display">25:00</div>
                   <span class="text-xs text-brand-400 font-semibold mt-2 tracking-widest uppercase font-mono" id="pomo-status">Focus Session</span>
                 </div>
-
                 <div class="mt-6 flex items-center gap-3">
                   <button id="pomo-btn" onclick="togglePomodoro()" class="px-8 py-3 rounded-xl bg-gradient-to-r from-brand-600 to-brand-purple text-white text-xs font-bold shadow-lg shadow-brand-500/30 hover:scale-105 active:scale-95 transition-all">
                     <i class="fa-solid fa-play mr-1.5" id="pomo-icon"></i> Start Session
@@ -471,14 +436,12 @@
                   </button>
                 </div>
               </div>
-
             </div>
           </div>
 
           <!-- TAB CONTENT 3: RETENTION GRAPH -->
           <div id="content-analytics" class="demo-content pt-8 hidden">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              
               <div class="lg:col-span-5 space-y-4 text-left">
                 <div class="inline-flex items-center gap-2 text-xs font-semibold text-brand-emerald bg-brand-emerald/10 px-3 py-1 rounded-lg">
                   <i class="fa-solid fa-chart-pie"></i> Retention Intelligence
@@ -487,7 +450,6 @@
                 <p class="text-slate-400 text-sm leading-relaxed">
                   Your retention score grows dynamically as you complete lessons and review flashcards across consecutive days.
                 </p>
-                
                 <div class="p-4 rounded-xl glass-panel border border-emerald-500/20 bg-emerald-500/5 flex items-center justify-between">
                   <div>
                     <div class="text-xs text-slate-400 font-mono">CURRENT RETENTION SCORE</div>
@@ -502,37 +464,10 @@
                   <span class="text-xs font-mono text-slate-400">LAST 5 DAYS LESSON VOLUME</span>
                   <span class="text-xs text-emerald-400 font-bold font-mono" id="trajectory-summary">0 Lessons Logged</span>
                 </div>
-                <div class="h-44 w-full flex items-end gap-3 pt-6 px-2" id="retention-bars-container">
-                  <!-- Bars rendered dynamically from user progress -->
-                </div>
-                <div class="flex justify-between text-[10px] font-mono text-slate-500 mt-3 pt-2 border-t border-white/5" id="retention-labels-container">
-                  <!-- Date labels rendered dynamically -->
-                </div>
+                <div class="h-44 w-full flex items-end gap-3 pt-6 px-2" id="retention-bars-container"></div>
+                <div class="flex justify-between text-[10px] font-mono text-slate-500 mt-3 pt-2 border-t border-white/5" id="retention-labels-container"></div>
               </div>
-
             </div>
-          </div>
-        </div>
-
-        <!-- ACTIVE CURRICULUMS GRID -->
-        <div class="space-y-4 pt-4">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <h2 class="text-2xl font-bold text-white tracking-tight">Active Curriculums</h2>
-              <p class="text-xs text-slate-400">Complete lessons inside any subject to earn +50 XP and light up your heatmap.</p>
-            </div>
-            
-            <div class="flex items-center gap-3">
-              <div class="relative w-full sm:w-64">
-                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-slate-500"></i>
-                <input type="text" id="subject-search" oninput="filterSubjects()" placeholder="Search subjects..." class="w-full pl-9 pr-4 py-2 rounded-xl bg-dark-bg/80 border border-white/10 text-xs text-slate-200 focus:outline-none focus:border-brand-500 transition-colors">
-              </div>
-              <span class="text-xs text-slate-400 font-mono px-3 py-2 bg-white/5 border border-white/10 rounded-xl shrink-0">6 Subjects</span>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="subjects-grid">
-            <!-- Subject Cards rendered by JS -->
           </div>
         </div>
 
@@ -546,7 +481,99 @@
 
   </div>
 
-  <!-- Dashboard & Per-User State Script -->
+  <!-- =========================================================================
+       INTERACTIVE LESSON & AI TUTOR MODAL (SIMPLIFIED SUBJECTS)
+       ========================================================================= -->
+  <div id="lesson-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+    <div class="glass-panel bg-[#0d0f1d] border border-white/15 rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 relative space-y-6">
+      
+      <!-- Top Modal Header -->
+      <div class="flex items-start justify-between gap-4 border-b border-white/10 pb-5">
+        <div class="flex items-center gap-3">
+          <div id="modal-subject-icon" class="text-3xl p-3 rounded-2xl bg-white/5 border border-white/10">📐</div>
+          <div>
+            <span id="modal-subject-category" class="text-[11px] font-mono uppercase tracking-wider text-brand-400">MATHEMATICS</span>
+            <h2 id="modal-subject-title" class="text-xl sm:text-2xl font-extrabold text-white">Pre-Algebra</h2>
+          </div>
+        </div>
+        <button onclick="closeLessonModal()" class="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Lesson Selector Pills -->
+      <div>
+        <div class="text-xs font-mono text-slate-400 uppercase mb-2">Select Module Lesson:</div>
+        <div id="modal-lesson-pills" class="flex flex-wrap gap-2"></div>
+      </div>
+
+      <!-- Explanation Depth Mode Switcher -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-dark-bg/90 p-3 rounded-2xl border border-white/10">
+        <div class="flex items-center gap-2 text-xs text-slate-300 font-semibold">
+          <i class="fa-solid fa-graduation-cap text-brand-purple"></i>
+          <span>Tutor Explanation Depth:</span>
+        </div>
+        <div class="flex items-center gap-2 bg-white/5 p-1 rounded-xl">
+          <button id="mode-btn-eli5" onclick="setExplanationMode('eli5')" class="px-4 py-2 rounded-lg text-xs font-bold transition-all bg-brand-cyan text-slate-950 shadow-md">
+            🧸 Explain Like I'm 5
+          </button>
+          <button id="mode-btn-college" onclick="setExplanationMode('college')" class="px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white">
+            🎓 Standard Tutoring
+          </button>
+        </div>
+      </div>
+
+      <!-- Active Lesson Content Card -->
+      <div class="glass-panel rounded-2xl p-6 border border-white/10 space-y-4">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <h3 id="lesson-title" class="text-xl font-bold text-white">Lesson Title</h3>
+          <span id="lesson-status-badge" class="text-xs font-mono px-3 py-1 rounded-full bg-brand-500/15 text-brand-400 border border-brand-500/30">In Progress</span>
+        </div>
+
+        <div id="lesson-explanation-body" class="text-slate-200 text-sm sm:text-base leading-relaxed space-y-3">
+          <!-- Dynamic explanation -->
+        </div>
+
+        <div id="lesson-formula-box" class="p-4 rounded-xl bg-dark-bg border border-brand-500/20 font-mono text-xs sm:text-sm text-brand-300">
+          <!-- Key formula -->
+        </div>
+      </div>
+
+      <!-- DIVE DEEPER INTO HARDER PROMPTS LAB -->
+      <div class="glass-panel rounded-2xl p-6 border border-brand-purple/25 bg-brand-purple/5 space-y-4">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div class="flex items-center gap-2">
+            <span class="text-lg">🔬</span>
+            <h4 class="font-bold text-white text-base">Dive Deeper: Practice Problems & Extensions</h4>
+          </div>
+          <span class="text-[11px] font-mono text-brand-purple">Click any prompt to check solutions</span>
+        </div>
+
+        <div id="deep-prompts-list" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <!-- Harder prompt buttons rendered dynamically -->
+        </div>
+
+        <div id="deep-prompt-answer-box" class="hidden p-4 rounded-xl bg-dark-bg/95 border border-brand-purple/40 text-sm text-slate-200 leading-relaxed space-y-2">
+          <div class="text-xs font-mono text-brand-purple uppercase font-bold" id="deep-prompt-selected-title">Solution Guide</div>
+          <p id="deep-prompt-selected-text"></p>
+        </div>
+      </div>
+
+      <!-- Interactive Mastery Quiz Check -->
+      <div class="glass-panel rounded-2xl p-6 border border-emerald-500/20 space-y-4">
+        <div class="flex items-center gap-2">
+          <span class="text-lg">✅</span>
+          <h4 class="font-bold text-white text-base">Mastery Check (Complete to Earn +50 XP)</h4>
+        </div>
+        <p id="quiz-question-text" class="text-sm text-slate-300 font-medium"></p>
+        <div id="quiz-options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+        <div id="quiz-feedback" class="text-xs font-semibold min-h-[1.25rem]"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Dashboard & Curriculum Engine Script -->
   <script>
     // =========================================================================
     // 1. AUTH & PER-USER PROGRESS STORAGE
@@ -554,15 +581,14 @@
     const currentUsername = (localStorage.getItem('mindly_user_name') || 'Scholar').trim();
     const STORAGE_KEY = `mindly_user_data_${currentUsername.toLowerCase()}`;
 
-    // Brand-new users start completely clean at 0
     const defaultUserData = {
       name: currentUsername,
       xp: 0,
       streak: 0,
-      completedLessons: [], // Array of lesson IDs e.g. ["math-1", "sci-1"]
+      completedLessons: [],
       cardsMastered: 0,
       cardsReviewing: 0,
-      dailyActivity: {}     // Map of "YYYY-MM-DD": numberOfLessonsDone
+      dailyActivity: {}
     };
 
     function loadUserData() {
@@ -590,10 +616,7 @@
 
     function getTodayDateStr() {
       const d = new Date();
-      const year = d.getFullYear();
-      const month = String(d.getMonth() + 1).padStart(2, '0');
-      const day = String(d.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}`;
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     }
 
     function calculateStreak() {
@@ -607,7 +630,6 @@
         if (count > 0) {
           streak++;
         } else if (i === 0) {
-          // If nothing done yet today, check if yesterday had activity before breaking
           continue;
         } else {
           break;
@@ -641,43 +663,753 @@
     }
 
     // =========================================================================
-    // 2. CURRICULUM SUBJECTS & LESSONS (48 TOTAL LESSONS)
+    // 2. SIMPLIFIED CURRICULUM DATABASE (6 SUBJECTS × 4 LESSONS = 24 LESSONS)
     // =========================================================================
     const curriculums = [
-      { id: 'math', title: 'Calculus & Linear Algebra', category: 'Mathematics', theme: 'theme-math', icon: '📐', color: 'text-sky-400', totalLessons: 8 },
-      { id: 'neuro', title: 'Cognitive Neuroscience', category: 'Science', theme: 'theme-science', icon: '🧠', color: 'text-emerald-400', totalLessons: 8 },
-      { id: 'cs', title: 'Algorithms & Data Structures', category: 'Computer Science', theme: 'theme-math', icon: '💻', color: 'text-indigo-400', totalLessons: 8 },
-      { id: 'physics', title: 'Quantum & Classical Mechanics', category: 'Science', theme: 'theme-science', icon: '⚛️', color: 'text-cyan-400', totalLessons: 8 },
-      { id: 'history', title: 'Modern World History', category: 'Humanities', theme: 'theme-history', icon: '🏛️', color: 'text-amber-400', totalLessons: 8 },
-      { id: 'econ', title: 'Macroeconomics & Game Theory', category: 'Social Science', theme: 'theme-history', icon: '📈', color: 'text-purple-400', totalLessons: 8 }
+      {
+        id: 'prealg',
+        title: 'Pre-Algebra',
+        category: 'Mathematics',
+        theme: 'theme-math',
+        icon: '🔢',
+        lessons: [
+          {
+            id: 'prealg-1',
+            title: 'Order of Operations (PEMDAS)',
+            eli5: 'Think of PEMDAS like the traffic rules of math! If everyone drove however they wanted, crashes would happen. PEMDAS tells us whether to add, subtract, multiply, or divide first so everyone gets the exact same correct answer.',
+            college: 'The standard order of operations dictates the priority sequence: Parentheses/Brackets, Exponents, Multiplication & Division (left to right), and Addition & Subtraction (left to right) to evaluate arithmetic expressions unambiguously.',
+            keyTakeaway: 'Mnemonic: Please Excuse My Dear Aunt Sally (Parentheses, Exponents, Multiplication/Division, Addition/Subtraction)',
+            deepPrompts: [
+              {
+                prompt: 'Evaluate: 8 + 4 × (2 + 3)² ÷ 2',
+                answer: 'Step 1 (Parentheses): (2 + 3) = 5. Expression becomes: 8 + 4 × 5² ÷ 2. Step 2 (Exponents): 5² = 25. Expression becomes: 8 + 4 × 25 ÷ 2. Step 3 (Multiplication & Division left to right): 4 × 25 = 100, then 100 ÷ 2 = 50. Step 4 (Addition): 8 + 50 = 58.'
+              },
+              {
+                prompt: 'Why does division come before addition in the standard sequence?',
+                answer: 'Multiplication and division are higher-priority operations representing repeated scaling/scaling-down, which take precedence over linear combination (addition/subtraction).'
+              }
+            ],
+            quiz: {
+              question: 'In PEMDAS, what operation should be evaluated first in 5 + 3 × (4 - 2)?',
+              options: ['Addition (5 + 3)', 'Multiplication (3 × 4)', 'Parentheses (4 - 2)', 'Subtraction from 5'],
+              correctIndex: 2
+            }
+          },
+          {
+            id: 'prealg-2',
+            title: 'Fractions, Decimals & Percentages',
+            eli5: 'Fractions, decimals, and percentages are just three different ways of writing the exact same piece of pizza! If you eat half a pizza, that is 1/2, 0.5, or 50%.',
+            college: 'Fractions represent ratio parts a/b, decimals represent base-10 fractional expansions, and percentages represent parts per hundred. Converting between them relies on proportional scaling.',
+            keyTakeaway: 'Conversion: 3/4 = 0.75 = 75%',
+            deepPrompts: [
+              {
+                prompt: 'Convert 5/8 into a decimal and a percentage.',
+                answer: 'Decimal: 5 ÷ 8 = 0.625. Percentage: 0.625 × 100 = 62.5%.'
+              },
+              {
+                prompt: 'If a $80 jacket is on sale for 20% off, what is the final price?',
+                answer: '20% of $80 is 0.20 × 80 = $16 discount. Final price = $80 − $16 = $64.'
+              }
+            ],
+            quiz: {
+              question: 'What is 3/5 expressed as a percentage?',
+              options: ['30%', '40%', '60%', '75%'],
+              correctIndex: 2
+            }
+          },
+          {
+            id: 'prealg-3',
+            title: 'Negative Numbers & Absolute Value',
+            eli5: 'Negative numbers are like owing money or digging a hole below ground level. Absolute value is just how far away a number is from zero, ignoring whether you are above or below ground.',
+            college: 'Negative numbers lie to the left of zero on the real number line. The absolute value |x| defines the non-negative magnitude of x, representing its distance from zero regardless of sign.',
+            keyTakeaway: 'Rule: |-5| = 5 and |5| = 5',
+            deepPrompts: [
+              {
+                prompt: 'Calculate: −12 + (−5) − (−8)',
+                answer: 'First, −12 + (−5) = −17. Next, subtracting −8 is the same as adding 8: −17 + 8 = −9.'
+              },
+              {
+                prompt: 'Why is the absolute value of any real number never negative?',
+                answer: 'Because distance magnitude cannot be negative by definition; it measures scalar displacement from origin 0.'
+              }
+            ],
+            quiz: {
+              question: 'What is the value of |-15|?',
+              options: ['-15', '0', '15', '30'],
+              correctIndex: 2
+            }
+          },
+          {
+            id: 'prealg-4',
+            title: 'Introduction to Basic Ratios & Proportions',
+            eli5: 'If a recipe calls for 2 cups of flour for every 1 cup of sugar, making a bigger batch means doubling both so it still tastes delicious!',
+            college: 'A ratio compares two quantities by division (a:b). A proportion states that two ratios are equal (a/b = c/d), solvable via cross-multiplication.',
+            keyTakeaway: 'Cross-multiplication rule: If a/b = c/d, then ad = bc',
+            deepPrompts: [
+              {
+                prompt: 'Solve for x in the proportion: 3/4 = x / 20',
+                answer: 'Cross-multiply: 3 × 20 = 4 × x  ⇒  60 = 4x  ⇒  x = 15.'
+              },
+              {
+                prompt: 'If a car travels 150 miles in 3 hours, what is its unit rate per hour?',
+                answer: '150 miles ÷ 3 hours = 50 miles per hour (mph).'
+              }
+            ],
+            quiz: {
+              question: 'Solve for x if 2/5 = x / 25.',
+              options: ['5', '10', '15', '20'],
+              correctIndex: 1
+            }
+          }
+        ]
+      },
+      {
+        id: 'alg1',
+        title: 'Algebra 1',
+        category: 'Mathematics',
+        theme: 'theme-math',
+        icon: '📊',
+        lessons: [
+          {
+            id: 'alg1-1',
+            title: 'Solving One and Two-Step Equations',
+            eli5: 'An equation is like a balanced playground seesaw. Whatever you do to one side (like adding or subtracting a number), you must do to the exact other side to keep the seesaw balanced and find out what mystery letter x is hiding!',
+            college: 'Algebraic equations maintain equality through inverse operations. To isolate variable x, undo operations in reverse PEMDAS order.',
+            keyTakeaway: 'Golden Rule: What you do to one side of the equals sign, you must do to the other.',
+            deepPrompts: [
+              {
+                prompt: 'Solve for x: 3x + 7 = 22',
+                answer: 'Subtract 7 from both sides: 3x = 15. Divide both sides by 3: x = 5.'
+              },
+              {
+                prompt: 'Solve for x: 2(x - 4) = 14',
+                answer: 'Method A (Distribute): 2x - 8 = 14 ⇒ 2x = 22 ⇒ x = 11. Method B (Divide first): x - 4 = 7 ⇒ x = 11.'
+              }
+            ],
+            quiz: {
+              question: 'Solve for x: 4x - 5 = 11',
+              options: ['x = 2', 'x = 3', 'x = 4', 'x = 6'],
+              correctIndex: 2
+            }
+          },
+          {
+            id: 'alg1-2',
+            title: 'Slope-Intercept Form (y = mx + b)',
+            eli5: 'Think of y = mx + b like renting a bicycle. The b is the flat starting fee, and m is how much money you pay for every mile (x) you ride!',
+            college: 'The slope-intercept form represents linear functions where m is the slope (rise over run) and b is the y-intercept (where the line crosses the vertical axis).',
+            keyTakeaway: 'Equation: y = mx + b  (m = slope, b = y-intercept)',
+            deepPrompts: [
+              {
+                prompt: 'Find the slope of the line passing through points (2, 3) and (4, 7).',
+                answer: 'Slope m = (y₂ - y₁) / (x₂ - x₁) = (7 - 3) / (4 - 2) = 4 / 2 = 2.'
+              },
+              {
+                prompt: 'Write the equation of a line with slope m = -3 passing through (0, 5).',
+                answer: 'Since b = 5 (y-intercept at x = 0), the equation is y = -3x + 5.'
+              }
+            ],
+            quiz: {
+              question: 'In y = 4x - 7, what is the y-intercept (b)?',
+              options: ['4', '-7', '7', '1'],
+              correctIndex: 1
+            }
+          },
+          {
+            id: 'alg1-3',
+            title: 'Systems of Linear Equations',
+            eli5: 'Sometimes you have two secrets (like two mystery numbers). By using two different clues (equations) together—either by substitution or elimination—you can crack both secrets at once!',
+            college: 'A system of linear equations involves finding simultaneous values satisfying multiple equations. Solved via Substitution, Elimination, or Matrix representation.',
+            keyTakeaway: 'Methods: Substitution, Elimination, or Graphing intersection point (x, y)',
+            deepPrompts: [
+              {
+                prompt: 'Solve the system: x + y = 10 and x - y = 2',
+                answer: 'Add both equations using elimination: (x + y) + (x - y) = 10 + 2 ⇒ 2x = 12 ⇒ x = 6. Plug back in: 6 + y = 10 ⇒ y = 4. Solution: (6, 4).'
+              },
+              {
+                prompt: 'What does it mean if a linear system yields 0 = 5 when solved?',
+                answer: 'It means the lines are parallel and never intersect, so there is no solution (inconsistent system).'
+              }
+            ],
+            quiz: {
+              question: 'What is the solution (x, y) to x + y = 5 and x - y = 1?',
+              options: ['(3, 2)', '(4, 1)', '(5, 0)', '(2, 3)'],
+              correctIndex: 0
+            }
+          },
+          {
+            id: 'alg1-4',
+            title: 'Factoring Quadratic Expressions',
+            eli5: 'Multiplying polynomials is like wrapping a present. Factoring is the reverse puzzle: unwrapping the present back into two clean multiplying pieces (like (x + 2)(x + 3)).',
+            college: 'Factoring converts standard quadratic polynomials ax² + bx + c into product of binomials by finding two numbers that multiply to c and add up to b.',
+            keyTakeaway: 'Example: x² + 5x + 6 = (x + 2)(x + 3)',
+            deepPrompts: [
+              {
+                prompt: 'Factor completely: x² - 9',
+                answer: 'This is a Difference of Squares: a² - b² = (a - b)(a + b). Therefore, x² - 9 = (x - 3)(x + 3).'
+              },
+              {
+                prompt: 'Solve x² - 7x + 12 = 0 by factoring.',
+                answer: 'Find two numbers that multiply to 12 and add to -7 (-3 and -4). So (x - 3)(x - 4) = 0, yielding roots x = 3 and x = 4.'
+              }
+            ],
+            quiz: {
+              question: 'What are the factors of x² + 8x + 15?',
+              options: ['(x + 1)(x + 15)', '(x + 3)(x + 5)', '(x - 3)(x - 5)', '(x + 2)(x + 6)'],
+              correctIndex: 1
+            }
+          }
+        ]
+      },
+      {
+        id: 'geo',
+        title: 'Geometry',
+        category: 'Mathematics',
+        theme: 'theme-math',
+        icon: '📐',
+        lessons: [
+          {
+            id: 'geo-1',
+            title: 'Pythagorean Theorem',
+            eli5: 'If you build squares on the two shorter sides of a right triangle, their combined area equals the giant square built on the longest slanted side (the hypotenuse)!',
+            college: 'In any right-angled triangle, the sum of squared leg lengths equals the squared hypotenuse length: a² + b² = c².',
+            keyTakeaway: 'Formula: a² + b² = c²',
+            deepPrompts: [
+              {
+                prompt: 'Find the hypotenuse c if leg a = 6 and leg b = 8.',
+                answer: '6² + 8² = 36 + 64 = 100. Since c² = 100, c = 10.'
+              },
+              {
+                prompt: 'Is a triangle with side lengths 7, 24, and 25 a right triangle?',
+                answer: 'Check 7² + 24² = 49 + 576 = 625. Since 25² = 625, yes, it satisfies the Pythagorean theorem.'
+              }
+            ],
+            quiz: {
+              question: 'In a right triangle with legs 3 and 4, what is the length of the hypotenuse?',
+              options: ['5', '7', '12', '25'],
+              correctIndex: 0
+            }
+          },
+          {
+            id: 'geo-2',
+            title: 'Angles, Triangles & Polygons',
+            eli5: 'Every triangle in the universe is like a strict club: no matter what shape or size it is, the three inside corner angles always add up to exactly 180 degrees!',
+            college: 'The interior angle sum of an n-sided polygon is given by (n − 2) × 180°. For triangles, n = 3, yielding 180°.',
+            keyTakeaway: 'Triangle Angle Sum Theorem: ∠A + ∠B + ∠C = 180°',
+            deepPrompts: [
+              {
+                prompt: 'What is the sum of interior angles in a regular octagon (8 sides)?',
+                answer: '(8 - 2) × 180° = 6 × 180° = 1080°.'
+              },
+              {
+                prompt: 'If two angles of a triangle measure 50° and 60°, what is the third angle?',
+                answer: '180° - (50° + 60°) = 180° - 110° = 70°.'
+              }
+            ],
+            quiz: {
+              question: 'What is the sum of interior angles in any standard triangle?',
+              options: ['90°', '180°', '270°', '360°'],
+              correctIndex: 1
+            }
+          },
+          {
+            id: 'geo-3',
+            title: 'Area, Perimeter & Circumference',
+            eli5: 'Perimeter is walking all the way around the outside fence of a yard. Area is how much grass carpet you need to cover the flat ground inside.',
+            college: 'Perimeter measures linear boundary length, area measures 2D surface coverage, and circumference measures circle boundary distance (C = 2πr).',
+            keyTakeaway: 'Circle Area = πr², Circumference = 2πr',
+            deepPrompts: [
+              {
+                prompt: 'Find the area of a circle with radius r = 7 cm (use π ≈ 22/7).',
+                answer: 'Area = πr² = (22/7) × 7² = (22/7) × 49 = 154 cm².'
+              },
+              {
+                prompt: 'What is the perimeter of a rectangle with length 12m and width 5m?',
+                answer: 'Perimeter = 2(length + width) = 2(12 + 5) = 2(17) = 34 meters.'
+              }
+            ],
+            quiz: {
+              question: 'What is the formula for the area of a circle?',
+              options: ['2πr', 'πr²', '4πr²', 'bh / 2'],
+              correctIndex: 1
+            }
+          },
+          {
+            id: 'geo-4',
+            title: 'Volume & Surface Area of 3D Solids',
+            eli5: 'Volume is how much water a swimming pool can hold inside. Surface area is how much wrapping paper you need to cover the outside of a box.',
+            college: 'Volume measures 3D spatial capacity, while surface area computes the sum of all 2D boundary face areas.',
+            keyTakeaway: 'Rectangular Prism Volume = length × width × height (lwh)',
+            deepPrompts: [
+              {
+                prompt: 'Find the volume of a cylinder with radius r = 3 cm and height h = 10 cm (use π ≈ 3.14).',
+                answer: 'Volume = πr²h = 3.14 × 3² × 10 = 3.14 × 9 × 10 = 282.6 cm³.'
+              },
+              {
+                prompt: 'What is the volume of a cube with side length s = 4 cm?',
+                answer: 'Volume = s³ = 4³ = 4 × 4 × 4 = 64 cm³.'
+              }
+            ],
+            quiz: {
+              question: 'What is the volume of a rectangular box with length 5, width 2, and height 3?',
+              options: ['10', '25', '30', '60'],
+              correctIndex: 2
+            }
+          }
+        ]
+      },
+      {
+        id: 'chem',
+        title: 'Chemistry',
+        category: 'Science',
+        theme: 'theme-science',
+        icon: '🧪',
+        lessons: [
+          {
+            id: 'chem-1',
+            title: 'Atomic Structure & Subatomic Particles',
+            eli5: 'Every atom is like a tiny solar system! In the center (nucleus), you have heavy protons (positive) and neutrons (neutral), while speedy little electrons (negative) zip around the outside like planets.',
+            college: 'Atoms consist of a dense nucleus containing protons and neutrons, surrounded by electrons in quantum orbitals. Atomic number Z equals protons, while mass number A includes neutrons.',
+            keyTakeaway: 'Particles: Proton (+), Neutron (0), Electron (-)',
+            deepPrompts: [
+              {
+                prompt: 'How many protons, neutrons, and electrons are in a neutral Carbon-12 atom (Z = 6)?',
+                answer: 'Protons = 6 (atomic number), Electrons = 6 (neutral charge balance), Neutrons = 12 - 6 = 6.'
+              },
+              {
+                prompt: 'What is an isotope?',
+                answer: 'Isotopes are atoms of the same element with identical proton counts (Z) but differing neutron counts, resulting in different atomic masses.'
+              }
+            ],
+            quiz: {
+              question: 'Which subatomic particle carries a negative electrical charge?',
+              options: ['Proton', 'Neutron', 'Electron', 'Nucleon'],
+              correctIndex: 2
+            }
+          },
+          {
+            id: 'chem-2',
+            title: 'The Periodic Table & Chemical Bonding',
+            eli5: 'Elements on the periodic table love to trade or share electrons like trading cards so they can complete their outer shell and feel happy and stable (the Octet Rule)!',
+            college: 'Elements organize by periodic atomic number and electron configurations. Ionic bonds form via electron transfer, whereas covalent bonds form via electron sharing to satisfy valence octets.',
+            keyTakeaway: 'Octet Rule: Atoms strive for 8 valence electrons for maximum stability.',
+            deepPrompts: [
+              {
+                prompt: 'Why does Sodium (Na) readily bond with Chlorine (Cl) to form table salt (NaCl)?',
+                answer: 'Sodium has 1 valence electron it easily gives away (becoming Na⁺), and chlorine has 7 valence electrons and gladly accepts one (becoming Cl⁻). The resulting electrostatic attraction creates a strong ionic bond.'
+              },
+              {
+                prompt: 'What distinguishes a polar covalent bond from a nonpolar covalent bond?',
+                answer: 'Polar covalent bonds occur when atoms have differing electronegativities, causing unequal electron sharing (e.g., H₂O). Nonpolar bonds share electrons equally between identical or similar atoms (e.g., O₂).'
+              }
+            ],
+            quiz: {
+              question: 'What type of bond is formed when electrons are completely transferred from metal to nonmetal?',
+              options: ['Ionic bond', 'Covalent bond', 'Metallic bond', 'Hydrogen bond'],
+              correctIndex: 0
+            }
+          },
+          {
+            id: 'chem-3',
+            title: 'Balancing Chemical Equations',
+            eli5: 'Nature is like an accountant that never loses a single atom! Whatever ingredients (reactants) you put into a chemical reaction, you must get the exact same number of each atom out in the final products.',
+            college: 'The Law of Conservation of Mass requires chemical equations to be balanced by placing stoichiometric coefficients in front of reactants and products so atom counts match on both sides.',
+            keyTakeaway: 'Rule: Total atoms in = Total atoms out.',
+            deepPrompts: [
+              {
+                prompt: 'Balance the combustion reaction of hydrogen: H₂ + O₂ → H₂O',
+                answer: 'Left side has 2 O atoms; right side has 1. Add coefficient 2 to H₂O (H₂ + O₂ → 2H₂O). Now right side has 4 H atoms, so add coefficient 2 to H₂: 2H₂ + O₂ → 2H₂O.'
+              },
+              {
+                prompt: 'Why can you change coefficients when balancing an equation but never subscripts?',
+                answer: 'Changing subscripts alters the chemical identity of the substance itself (e.g., changing H₂O to H₂O₂ turns water into hydrogen peroxide). Coefficients change only the quantity of molecules.'
+              }
+            ],
+            quiz: {
+              question: 'What law dictates that chemical equations must be balanced?',
+              options: ['Law of Conservation of Mass', 'Newton’s First Law', 'Boyle’s Law', 'Ohm’s Law'],
+              correctIndex: 0
+            }
+          },
+          {
+            id: 'chem-4',
+            title: 'Acids, Bases & The pH Scale',
+            eli5: 'Acids are sour like lemons and vinegar, while bases (alkalis) are slippery like soap. The pH scale measures how strong they are from 0 (super acidic) to 14 (super basic), with 7 right in the middle as pure neutral water!',
+            college: 'Acids are proton (H⁺) donors increasing hydronium concentration, while bases are proton acceptors (or OH⁻ donors). The pH scale is logarithmic: pH = −log[H⁺].',
+            keyTakeaway: 'pH Scale: 0 to 6 (Acidic), 7 (Neutral), 8 to 14 (Basic/Alkaline)',
+            deepPrompts: [
+              {
+                prompt: 'If a solution has a pH of 3, how many times more acidic is it than a solution with pH of 5?',
+                answer: 'Because the pH scale is logarithmic base-10, each whole pH unit represents a 10-fold change. A difference of 2 units (5 - 3 = 2) means 10² = 100 times more acidic.'
+              },
+              {
+                prompt: 'What happens in a neutralization reaction between HCl (acid) and NaOH (base)?',
+                answer: 'HCl + NaOH → NaCl + H₂O. The acid and base neutralize each other to produce salt (NaCl) and water (H₂O).'
+              }
+            ],
+            quiz: {
+              question: 'What pH value represents a completely neutral solution like pure water?',
+              options: ['0', '3', '7', '14'],
+              correctIndex: 2
+            }
+          }
+        ]
+      },
+      {
+        id: 'physics',
+        title: 'Physics',
+        category: 'Science',
+        theme: 'theme-science',
+        icon: '⚛️',
+        lessons: [
+          {
+            id: 'physics-1',
+            title: 'Newton’s Laws of Motion',
+            lef5: 'Newton’s 1st law says objects are lazy—they want to keep doing whatever they are already doing unless pushed. His 2nd law says pushing a heavy boulder is hard (F = ma), and his 3rd law says every action has an equal and opposite reaction (like jumping off a skateboard).',
+            college: 'Newton’s Laws establish classical mechanics: (1) Inertia, (2) Force equals mass times acceleration (F = ma), and (3) Action-reaction pairs.',
+            keyTakeaway: 'Core Formula: F = ma',
+            deepPrompts: [
+              {
+                prompt: 'Calculate the force required to accelerate a 10 kg cart at 3 m/s².',
+                answer: 'F = ma = 10 kg × 3 m/s² = 30 Newtons (N).'
+              },
+              {
+                prompt: 'Why do you lurch forward when a bus suddenly brakes?',
+                answer: 'Inertia (Newton’s 1st Law): your body was moving at the bus’s speed and tends to maintain that velocity until an external braking force acts upon you.'
+              }
+            ],
+            quiz: {
+              question: 'Which equation represents Newton’s Second Law of Motion?',
+              options: ['E = mc²', 'F = ma', 'a = v / t', 'W = mg'],
+              correctIndex: 1
+            }
+          },
+          {
+            id: 'physics-2',
+            title: 'Speed, Velocity & Acceleration',
+            eli5: 'Speed is how fast you are driving. Velocity is speed with a specific direction (like 60 mph North). Acceleration is when you step on the gas pedal or brakes to change your speed!',
+            college: 'Speed is scalar distance over time, velocity is vector displacement over time, and acceleration is the time derivative of velocity: a = dv/dt.',
+            keyTakeaway: 'Acceleration Formula: a = (Final Velocity − Initial Velocity) / Time',
+            deepPrompts: [
+              {
+                prompt: 'A car accelerates from rest to 20 m/s in 4 seconds. What is its acceleration?',
+                answer: 'a = (20 m/s - 0 m/s) / 4 s = 5 m/s².'
+              },
+              {
+                prompt: 'Can an object have constant speed while experiencing acceleration?',
+                answer: 'Yes! In uniform circular motion, an object moves at a constant speed, but its velocity vector continuously changes direction toward the center, creating centripetal acceleration.'
+              }
+            ],
+            quiz: {
+              question: 'What is the key difference between speed and velocity?',
+              options: [
+                'Velocity includes direction, while speed does not',
+                'Speed is measured in meters, velocity in seconds',
+                'There is no difference',
+                'Speed only applies to falling objects'
+              ],
+              correctIndex: 0
+            }
+          },
+          {
+            id: 'physics-3',
+            title: 'Work, Energy & Power',
+            eli5: 'Work is pushing something over a distance. Energy is your stored battery capacity to do work, and power is how fast you burn through that battery!',
+            college: 'Work (W = Fd cosθ) measures energy transfer via force over distance. Kinetic energy (½mv²) and potential energy (mgh) sum to total mechanical energy. Power is the rate of work done (P = W/t).',
+            keyTakeaway: 'Power Unit: Watts (Joules per second)',
+            deepPrompts: [
+              {
+                prompt: 'Calculate the potential energy of a 2 kg book lifted 5 meters high (g ≈ 9.8 m/s²).',
+                answer: 'PE = mgh = 2 kg × 9.8 m/s² × 5 m = 98 Joules (J).'
+              },
+              {
+                prompt: 'If a machine does 500 Joules of work in 10 seconds, what is its power output?',
+                answer: 'Power P = W / t = 500 J / 10 s = 50 Watts (W).'
+              }
+            ],
+            quiz: {
+              question: 'What formula defines gravitational potential energy (PE)?',
+              options: ['½mv²', 'mgh', 'F / a', 'IR'],
+              correctIndex: 1
+            }
+          },
+          {
+            id: 'physics-4',
+            title: 'Electricity & Ohm’s Law',
+            eli5: 'Electricity flowing through a wire is like water flowing through a pipe. Voltage is water pressure pushing the water, resistance is narrow pipes slowing it down, and current is the actual flow rate of water!',
+            college: 'Ohm’s Law relates electrical voltage (V), current (I), and resistance (R) in a linear circuit.',
+            keyTakeaway: 'Ohm’s Law Formula: V = I × R  (Voltage = Current × Resistance)',
+            deepPrompts: [
+              {
+                prompt: 'Calculate the current (I) in a circuit with 12 Volts and 4 Ohms of resistance.',
+                answer: 'Rearrange Ohm’s law to I = V / R = 12V / 4Ω = 3 Amperes (A).'
+              },
+              {
+                prompt: 'What happens to current if resistance increases while voltage stays constant?',
+                answer: 'Current decreases, because resistance acts as a bottleneck opposing electron flow.'
+              }
+            ],
+            quiz: {
+              question: 'According to Ohm’s Law, what is voltage (V) equal to?',
+              options: ['Current × Resistance (I × R)', 'Current / Resistance', 'Resistance / Current', 'Current + Resistance'],
+              correctIndex: 0
+            }
+          }
+        ]
+      },
+      {
+        id: 'history',
+        title: 'World History',
+        category: 'Humanities',
+        theme: 'theme-history',
+        icon: '🏛️',
+        lessons: [
+          {
+            id: 'history-1',
+            title: 'Ancient Civilizations & Mesopotamia',
+            eli5: 'Thousands of years ago, humans stopped wandering and settled down between two great rivers (the Tigris and Euphrates) because the flooded soil was fantastic for growing crops. That is where writing and cities were born!',
+            college: 'Mesopotamia (“land between rivers”) birthed early urban civilization around 4000 BCE, featuring cuneiform writing, irrigation agriculture, centralized legal codes (Hammurabi), and city-state governance.',
+            keyTakeaway: 'Invention: Cuneiform writing system & Wheel',
+            deepPrompts: [
+              {
+                prompt: 'Why did early civilizations develop near major river valleys?',
+                answer: 'Rivers provided reliable fresh water for drinking, fertile silt deposits from annual floods for agriculture, and efficient water transportation for trade.'
+              },
+              {
+                prompt: 'What was the significance of Hammurabi’s Code?',
+                answer: 'It was one of the earliest deciphered written legal codes, establishing standardized laws and the principle of retributive justice (“an eye for an eye”), though punishments varied by social class.'
+              }
+            ],
+            quiz: {
+              question: 'Between which two rivers did ancient Mesopotamia flourish?',
+              options: [
+                'Nile and Amazon',
+                'Tigris and Euphrates',
+                'Mississippi and Missouri',
+                'Yangtze and Yellow River'
+              ],
+              correctIndex: 1
+            }
+          },
+          {
+            id: 'history-2',
+            title: 'Ancient Greece & The Birth of Democracy',
+            eli5: 'In ancient Athens, citizens didn’t have kings making all the rules. Instead, they gathered in a public square to debate and vote directly on laws together—inventing the very first democracy!',
+            college: 'Ancient Greece consisted of independent city-states (polis). Athens pioneered direct democracy around the 5th century BCE, alongside monumental contributions in philosophy, drama, and geometry.',
+            keyTakeaway: 'Legacy: Direct democracy, philosophy (Socrates, Plato, Aristotle), and Olympic games',
+            deepPrompts: [
+              {
+                prompt: 'Contrast Athenian direct democracy with modern representative democracy.',
+                answer: 'In Athenian direct democracy, eligible citizens voted directly on legislation and executive decrees in the Assembly. In modern representative democracies, citizens elect representatives to make laws on their behalf.'
+              },
+              {
+                prompt: 'What caused the Peloponnesian War between Athens and Sparta?',
+                answer: 'Sparta grew fearful of the expanding imperial power and naval dominance of the Athenian Delian League, leading to a decades-long war that reshaped the Greek world.'
+              }
+            ],
+            quiz: {
+              question: 'Which ancient Greek city-state is credited with inventing direct democracy?',
+              options: ['Sparta', 'Athens', 'Troy', 'Corinth'],
+              correctIndex: 1
+            }
+          },
+          {
+            id: 'history-3',
+            title: 'The Roman Empire & Its Legacy',
+            eli5: 'Rome started as a small town in Italy and grew into a massive empire that conquered the Mediterranean. They built incredible stone roads, giant arenas like the Colosseum, and laws that influenced the modern world.',
+            college: 'Rising from a republic to a vast Mediterranean empire, Rome engineered advanced infrastructure (aqueducts, concrete roads), established civil law systems, and transitioned under Augustus into the Pax Romana.',
+            keyTakeaway: 'Legacy: Engineering, legal codes, Romance languages, and architecture',
+            deepPrompts: [
+              {
+                prompt: 'What was the Pax Romana?',
+                answer: 'A ~200-year period of relative peace and stability across the Roman Empire initiated by Augustus Caesar, enabling flourishing trade and cultural exchange.'
+              },
+              {
+                prompt: 'What primary factors contributed to the fall of the Western Roman Empire in 476 CE?',
+                answer: 'Economic inflation, overextended borders, political corruption, military reliance on mercenary soldiers, and recurring Germanic tribal invasions.'
+              }
+            ],
+            quiz: {
+              question: 'What engineering marvel allowed ancient Rome to transport fresh water across long distances?',
+              options: ['Aqueducts', 'Steam trains', 'Suspension bridges', 'Electric cables'],
+              correctIndex: 0
+            }
+          },
+          {
+            id: 'history-4',
+            title: 'The Renaissance & Scientific Revolution',
+            eli5: 'After the Middle Ages, Europe went through a massive cultural awakening called the Renaissance (meaning “rebirth”). People started painting with incredible perspective, studying science, and questioning how the universe worked.',
+            college: 'Beginning in 14th-century Italy, the Renaissance revived classical art and humanist philosophy, which directly fueled the Scientific Revolution (Copernicus, Galileo, Newton) moving from scholasticism to empirical observation.',
+            keyTakeaway: 'Shift: Transition from dogmatic tradition to empirical scientific inquiry',
+            deepPrompts: [
+              {
+                prompt: 'How did the shift from a geocentric to a heliocentric universe challenge institutions?',
+                answer: 'Copernicus and Galileo’s heliocentric model (Earth orbiting the Sun) challenged established geocentric theological interpretations, leading to intense scientific and doctrinal debates.'
+              },
+              {
+                prompt: 'What role did Italian city-states like Florence play in funding the Renaissance?',
+                answer: 'Wealthy merchant and banking dynasties like the Medici family accumulated vast fortunes through trade and banking, using their wealth to generously patronize artists, sculptors, and scholars.'
+              }
+            ],
+            quiz: {
+              question: 'What does the word "Renaissance" literally translate to?',
+              options: ['Industrial machine', 'Rebirth', 'Dark Age', 'Golden Empire'],
+              correctIndex: 1
+            }
+          }
+        ]
+      }
     ];
 
-    function completeNextLesson(subjectId) {
-      const subj = curriculums.find(s => s.id === subjectId);
+    const TOTAL_CURRICULUM_LESSONS = curriculums.reduce((sum, s) => sum + s.lessons.length, 0);
+
+    // =========================================================================
+    // 3. INTERACTIVE LESSON & AI TUTOR MODAL LOGIC
+    // =========================================================================
+    let activeSubjectId = null;
+    let activeLessonIndex = 0;
+    let explanationMode = 'eli5'; // 'eli5' or 'college'
+
+    function openSubjectModal(subjectId, lessonIdx = 0) {
+      activeSubjectId = subjectId;
+      activeLessonIndex = lessonIdx;
+      document.getElementById('lesson-modal').classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+      renderLessonModal();
+    }
+
+    function closeLessonModal() {
+      document.getElementById('lesson-modal').classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    function setExplanationMode(mode) {
+      explanationMode = mode;
+      renderLessonModal();
+    }
+
+    function renderLessonModal() {
+      const subj = curriculums.find(s => s.id === activeSubjectId);
       if (!subj) return;
 
-      // Find next uncompleted lesson in this subject
-      let nextLessonNum = null;
-      for (let i = 1; i <= subj.totalLessons; i++) {
-        const lessonKey = `${subjectId}-${i}`;
-        if (!userState.completedLessons.includes(lessonKey)) {
-          nextLessonNum = i;
-          userState.completedLessons.push(lessonKey);
-          break;
-        }
+      const lesson = subj.lessons[activeLessonIndex];
+      const isCompleted = userState.completedLessons.includes(lesson.id);
+
+      document.getElementById('modal-subject-icon').textContent = subj.icon;
+      document.getElementById('modal-subject-category').textContent = subj.category;
+      document.getElementById('modal-subject-title').textContent = subj.title;
+
+      // Render lesson selector pills
+      const pillsContainer = document.getElementById('modal-lesson-pills');
+      pillsContainer.innerHTML = subj.lessons.map((l, idx) => {
+        const done = userState.completedLessons.includes(l.id);
+        const active = idx === activeLessonIndex;
+        return `
+          <button onclick="openSubjectModal('${subj.id}', ${idx})" class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+            active
+              ? 'bg-brand-600 text-white shadow-lg shadow-brand-500/30'
+              : 'bg-white/5 text-slate-300 hover:bg-white/10 border border-white/10'
+          }">
+            <span>${done ? '✅' : `0${idx + 1}`}</span>
+            <span>${l.title}</span>
+          </button>
+        `;
+      }).join('');
+
+      // Toggle mode buttons styling
+      const eli5Btn = document.getElementById('mode-btn-eli5');
+      const collegeBtn = document.getElementById('mode-btn-college');
+      if (explanationMode === 'eli5') {
+        eli5Btn.className = 'px-4 py-2 rounded-lg text-xs font-bold transition-all bg-brand-cyan text-slate-950 shadow-md';
+        collegeBtn.className = 'px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white';
+      } else {
+        collegeBtn.className = 'px-4 py-2 rounded-lg text-xs font-bold transition-all bg-brand-purple text-white shadow-md';
+        eli5Btn.className = 'px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white';
       }
 
-      if (nextLessonNum === null) return;
+      // Populate lesson body
+      document.getElementById('lesson-title').textContent = lesson.title;
+      const statusBadge = document.getElementById('lesson-status-badge');
+      if (isCompleted) {
+        statusBadge.textContent = '✅ Mastered (+50 XP)';
+        statusBadge.className = 'text-xs font-mono px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30';
+      } else {
+        statusBadge.textContent = '📖 Active Lesson';
+        statusBadge.className = 'text-xs font-mono px-3 py-1 rounded-full bg-brand-500/15 text-brand-400 border border-brand-500/30';
+      }
 
-      userState.xp += 50;
-      logLessonActivity(1);
+      const modeTag = explanationMode === 'eli5'
+        ? '<span class="inline-block text-[11px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded bg-brand-cyan/15 text-brand-cyan mb-2">🧸 Explain Like I\'m 5 Mode</span>'
+        : '<span class="inline-block text-[11px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded bg-brand-purple/20 text-brand-purple mb-2">🎓 Standard Tutoring Mode</span>';
+
+      document.getElementById('lesson-explanation-body').innerHTML = `
+        ${modeTag}
+        <p>${explanationMode === 'eli5' ? lesson.eli5 : lesson.college}</p>
+      `;
+      document.getElementById('lesson-formula-box').textContent = lesson.keyTakeaway;
+
+      // Render Harder Deep-Dive Prompts
+      const promptsList = document.getElementById('deep-prompts-list');
+      const answerBox = document.getElementById('deep-prompt-answer-box');
+      answerBox.classList.add('hidden');
+
+      promptsList.innerHTML = lesson.deepPrompts.map((dp, i) => `
+        <button onclick="revealDeepPrompt(${i})" class="text-left p-3.5 rounded-xl bg-dark-bg/80 hover:bg-brand-purple/15 border border-white/10 hover:border-brand-purple/40 transition-all flex items-start gap-2.5 group">
+          <span class="text-brand-purple font-mono text-xs mt-0.5">Q${i + 1}</span>
+          <span class="text-xs sm:text-sm font-semibold text-slate-200 group-hover:text-white">${dp.prompt}</span>
+        </button>
+      `).join('');
+
+      // Render Mastery Quiz
+      document.getElementById('quiz-question-text').textContent = lesson.quiz.question;
+      document.getElementById('quiz-feedback').textContent = isCompleted ? 'You have already mastered this lesson! Feel free to review or try another module.' : '';
+      document.getElementById('quiz-feedback').className = 'text-xs font-semibold text-emerald-400';
+
+      const optionsContainer = document.getElementById('quiz-options-container');
+      optionsContainer.innerHTML = lesson.quiz.options.map((opt, idx) => `
+        <button onclick="submitQuizAnswer(${idx})" class="text-left p-3.5 rounded-xl bg-white/5 hover:bg-brand-500/20 border border-white/10 hover:border-brand-500/40 text-xs sm:text-sm text-slate-200 transition-all font-medium">
+          <span class="font-mono text-brand-400 mr-2">${String.fromCharCode(65 + idx)}.</span> ${opt}
+        </button>
+      `).join('');
+    }
+
+    function revealDeepPrompt(promptIndex) {
+      const subj = curriculums.find(s => s.id === activeSubjectId);
+      const lesson = subj.lessons[activeLessonIndex];
+      const dp = lesson.deepPrompts[promptIndex];
+
+      const answerBox = document.getElementById('deep-prompt-answer-box');
+      document.getElementById('deep-prompt-selected-title').textContent = `🔬 Solution Guide: ${dp.prompt}`;
+      document.getElementById('deep-prompt-selected-text').textContent = dp.answer;
+      answerBox.classList.remove('hidden');
       playSuccessChime();
+    }
 
-      if (window.confetti) {
-        confetti({ particleCount: 40, spread: 70, origin: { y: 0.7 } });
+    function submitQuizAnswer(selectedIndex) {
+      const subj = curriculums.find(s => s.id === activeSubjectId);
+      const lesson = subj.lessons[activeLessonIndex];
+      const feedback = document.getElementById('quiz-feedback');
+
+      if (selectedIndex === lesson.quiz.correctIndex) {
+        const alreadyDone = userState.completedLessons.includes(lesson.id);
+        if (!alreadyDone) {
+          userState.completedLessons.push(lesson.id);
+          userState.xp += 50;
+          logLessonActivity(1);
+          feedback.textContent = '🎉 Correct! +50 XP earned and logged to your 30-day heatmap!';
+        } else {
+          feedback.textContent = '✅ Correct! Lesson mastery confirmed.';
+        }
+        feedback.className = 'text-xs font-bold text-emerald-400';
+        playSuccessChime();
+        if (window.confetti) {
+          confetti({ particleCount: 45, spread: 70, origin: { y: 0.7 } });
+        }
+        updateDashboardUI();
+        renderLessonModal();
+      } else {
+        feedback.textContent = '❌ Not quite! Switch between ELI5 and Standard Tutoring above for a hint and try again.';
+        feedback.className = 'text-xs font-bold text-red-400';
       }
-
-      updateDashboardUI();
     }
 
     function renderSubjects() {
@@ -689,8 +1421,9 @@
         .filter(s => s.title.toLowerCase().includes(query) || s.category.toLowerCase().includes(query))
         .forEach(subj => {
           const completedInSubj = userState.completedLessons.filter(id => id.startsWith(`${subj.id}-`)).length;
-          const pct = Math.round((completedInSubj / subj.totalLessons) * 100);
-          const isFinished = completedInSubj >= subj.totalLessons;
+          const totalInSubj = subj.lessons.length;
+          const pct = Math.round((completedInSubj / totalInSubj) * 100);
+          const isFinished = completedInSubj >= totalInSubj;
 
           const card = document.createElement('div');
           card.className = `glass-panel glass-panel-hover spotlight-card rounded-3xl p-6 flex flex-col justify-between ${subj.theme}`;
@@ -701,17 +1434,17 @@
                 <span class="text-[11px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/5 text-slate-400">${subj.category}</span>
               </div>
               <h3 class="text-lg font-bold text-white mb-1">${subj.title}</h3>
-              <p class="text-xs text-slate-400 font-mono mb-4">${completedInSubj} / ${subj.totalLessons} Lessons Completed</p>
+              <p class="text-xs text-slate-400 font-mono mb-4">${completedInSubj} / ${totalInSubj} Lessons Mastered</p>
               <div class="w-full bg-dark-bg/80 rounded-full h-2 overflow-hidden border border-white/10 mb-5">
                 <div class="bg-gradient-to-r from-brand-500 to-brand-cyan h-full transition-all duration-500" style="width: ${pct}%"></div>
               </div>
             </div>
-            <button onclick="completeNextLesson('${subj.id}')" ${isFinished ? 'disabled' : ''} class="w-full py-2.5 rounded-xl text-xs font-bold transition-all ${
+            <button onclick="openSubjectModal('${subj.id}', 0)" class="w-full py-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
               isFinished
-                ? 'bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 cursor-default'
-                : 'bg-brand-600/80 hover:bg-brand-500 text-white shadow-lg shadow-brand-500/20'
+                ? 'bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/25'
+                : 'bg-gradient-to-r from-brand-600 to-brand-purple hover:opacity-95 text-white shadow-lg shadow-brand-500/25'
             }">
-              ${isFinished ? '✅ Curriculum Mastered' : `Complete Lesson ${completedInSubj + 1} (+50 XP)`}
+              <span>${isFinished ? '✅ Review Lessons & Practice' : '📚 Open Lessons & AI Tutor'}</span>
             </button>
           `;
           grid.appendChild(card);
@@ -723,7 +1456,7 @@
     }
 
     // =========================================================================
-    // 3. LESSON-CORRELATED 30-DAY HEATMAP & ANALYTICS
+    // 4. LESSON-CORRELATED 30-DAY HEATMAP, BADGES & ANALYTICS
     // =========================================================================
     function renderHeatmap() {
       const grid = document.getElementById('heatmap-grid');
@@ -732,7 +1465,6 @@
       const today = new Date();
       let activeDaysCount = 0;
 
-      // Render past 29 days up to today (30 cells total)
       for (let offset = 29; offset >= 0; offset--) {
         const d = new Date(today);
         d.setDate(today.getDate() - offset);
@@ -773,7 +1505,6 @@
         const count = userState.dailyActivity[key] || 0;
         last5Total += count;
 
-        // Scale bar height (minimum 8% so 0 days still show a subtle baseline)
         const heightPct = count === 0 ? 8 : Math.min(100, 20 + count * 16);
         const isToday = offset === 0;
 
@@ -788,7 +1519,7 @@
         labelsContainer.appendChild(label);
       }
 
-      const retentionPct = Math.min(100, Math.round((userState.completedLessons.length / 48) * 100));
+      const retentionPct = Math.min(100, Math.round((userState.completedLessons.length / TOTAL_CURRICULUM_LESSONS) * 100));
       document.getElementById('retention-score-text').textContent = `${retentionPct}%`;
       document.getElementById('trajectory-summary').textContent = `${last5Total} Lessons (5d)`;
     }
@@ -800,7 +1531,7 @@
         { icon: '🌱', title: 'First Step', desc: 'Complete 1 lesson', unlocked: totalDone >= 1 },
         { icon: '🔥', title: '3-Day Streak', desc: 'Study 3 days straight', unlocked: userState.streak >= 3 },
         { icon: '⚡', title: '500 XP Club', desc: 'Earn 500 total XP', unlocked: userState.xp >= 500 },
-        { icon: '🎓', title: 'Scholar', desc: 'Complete 10 lessons', unlocked: totalDone >= 10 }
+        { icon: '🎓', title: 'Scholar', desc: 'Master 12 lessons', unlocked: totalDone >= 12 }
       ];
 
       container.innerHTML = badges.map(b => `
@@ -815,13 +1546,13 @@
     }
 
     // =========================================================================
-    // 4. FLASHCARDS DECK
+    // 5. FLASHCARDS DECK
     // =========================================================================
     const flashcardsDeck = [
-      { topic: 'Cognitive Neuroscience', q: 'What is the primary function of the Hippocampus in long-term memory formation?', a: 'It consolidates information from short-term memory to long-term memory and supports spatial navigation.' },
-      { topic: 'Algorithms', q: 'What is the time complexity of Binary Search on a sorted array?', a: 'O(log n), because the search space is halved on each iteration.' },
-      { topic: 'Calculus', q: 'What does the derivative of a function represent geometrically?', a: 'The instantaneous rate of change or the slope of the tangent line at a point.' },
-      { topic: 'Quantum Mechanics', q: 'What does the Heisenberg Uncertainty Principle state?', a: 'You cannot simultaneously know both the exact position and exact momentum of a particle.' }
+      { topic: 'Algebra 1', q: 'What does the slope-intercept form equation look like?', a: 'y = mx + b, where m is the slope and b is the y-intercept.' },
+      { topic: 'Geometry', q: 'What is the Pythagorean Theorem formula for right triangles?', a: 'a² + b² = c².' },
+      { topic: 'Chemistry', q: 'What is the pH of a neutral solution like pure water?', a: '7.' },
+      { topic: 'Physics', q: 'What does Newton’s Second Law state?', a: 'Force equals mass times acceleration (F = ma).' }
     ];
     let currentCardIndex = 0;
 
@@ -860,7 +1591,7 @@
     }
 
     // =========================================================================
-    // 5. WORKING SYNTHESIZED AMBIENT MUSIC & SOUND FX (WEB AUDIO API)
+    // 6. WORKING SYNTHESIZED AMBIENT MUSIC & SOUND FX (WEB AUDIO API)
     // =========================================================================
     let audioCtx = null;
     let ambientGain = null;
@@ -884,8 +1615,8 @@
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
-        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.14); // A5
+        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.14);
         gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
         osc.connect(gain);
@@ -922,7 +1653,6 @@
       activeAmbientNodes.push(ambientGain);
 
       if (track === 'rain' || track === 'cafe') {
-        // Generate soothing filtered noise (soft rain / warm room tone)
         const bufferSize = 2 * audioCtx.sampleRate;
         const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
         const output = noiseBuffer.getChannelData(0);
@@ -947,7 +1677,6 @@
         noiseSource.start();
         activeAmbientNodes.push(noiseSource, filter);
       } else if (track === 'alpha') {
-        // Calming 432Hz + 440Hz (8Hz Alpha binaural beat) ambient pad
         const osc1 = audioCtx.createOscillator();
         const osc2 = audioCtx.createOscillator();
         osc1.type = 'sine';
@@ -993,7 +1722,7 @@
     }
 
     // =========================================================================
-    // 6. TABS & POMODORO TIMER
+    // 7. TABS & POMODORO TIMER
     // =========================================================================
     function switchDemoTab(tab) {
       document.querySelectorAll('.demo-tab').forEach(t => {
@@ -1053,7 +1782,7 @@
     }
 
     // =========================================================================
-    // 7. MASTER UI REFRESH & SPOTLIGHT EFFECTS
+    // 8. MASTER UI REFRESH & SPOTLIGHT EFFECTS
     // =========================================================================
     function updateDashboardUI() {
       calculateStreak();
@@ -1067,7 +1796,7 @@
       document.getElementById('user-avatar-initial').textContent = userState.name.charAt(0).toUpperCase();
       document.getElementById('stat-streak').textContent = `${userState.streak} Day${userState.streak === 1 ? '' : 's'}`;
       document.getElementById('stat-xp').textContent = `${userState.xp} XP`;
-      document.getElementById('stat-completed').textContent = `${completedCount} / 48`;
+      document.getElementById('stat-completed').textContent = `${completedCount} / ${TOTAL_CURRICULUM_LESSONS}`;
       document.getElementById('widget-streak-text').textContent = `${userState.streak} DAY${userState.streak === 1 ? '' : 'S'}`;
       document.getElementById('cards-mastered-count').textContent = userState.cardsMastered;
       document.getElementById('cards-reviewing-count').textContent = userState.cardsReviewing;
@@ -1084,7 +1813,6 @@
       renderSubjects();
     }
 
-    // Mouse Spotlight Follower
     document.addEventListener('mousemove', (e) => {
       document.querySelectorAll('.spotlight-card').forEach(card => {
         const rect = card.getBoundingClientRect();
@@ -1093,7 +1821,6 @@
       });
     });
 
-    // Particle Canvas Animation
     (function initParticles() {
       const canvas = document.getElementById('particle-canvas');
       if (!canvas) return;
@@ -1129,7 +1856,6 @@
       });
     })();
 
-    // Initial render
     updateDashboardUI();
   </script>
 </body>
