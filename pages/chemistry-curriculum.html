@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chemistry Curriculum | Mindly</title>
+  <link rel="stylesheet" href="../index.css">
+  <style>
+    .top-nav {
+      width: 100%;
+      background: rgba(25, 25, 35, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 1rem 2rem;
+    }
+
+    .nav-container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #06b6d4, #a855f7);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      list-style: none;
+    }
+
+    .nav-link {
+      color: #d4d4d8;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: #06b6d4;
+    }
+
+    .curriculum-wrapper {
+      min-height: calc(100vh - 70px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .curriculum-container {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .curriculum-header {
+      background: rgba(25, 25, 35, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 2rem 2.5rem;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .curriculum-header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #06b6d4, #a855f7);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .curriculum-header p {
+      color: #a1a1aa;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-bar-container {
+      background: rgba(15, 15, 20, 0.8);
+      border-radius: 10px;
+      height: 10px;
+      width: 100%;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .progress-fill {
+      background: linear-gradient(135deg, #06b6d4, #a855f7);
+      height: 100%;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    .progress-text {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: #d4d4d8;
+      margin-top: 0.5rem;
+    }
+
+    .units-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .unit-card {
+      background: rgba(25, 25, 35, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .unit-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .unit-title span {
+      background: rgba(6, 182, 212, 0.2);
+      color: #06b6d4;
+      font-size: 0.8rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 20px;
+      border: 1px solid rgba(6, 182, 212, 0.4);
+    }
+
+    .lesson-tree {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .lesson-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 1.25rem;
+      background: rgba(15, 15, 20, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lesson-item:hover {
+      background: rgba(6, 182, 212, 0.15);
+      border-color: rgba(6, 182, 212, 0.4);
+      transform: translateX(4px);
+    }
+
+    .lesson-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .lesson-icon {
+      font-size: 1.1rem;
+    }
+
+    .lesson-name {
+      color: #f4f4f5;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .lesson-status {
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.3rem 0.75rem;
+      border-radius: 8px;
+    }
+
+    .status-completed {
+      background: rgba(52, 211, 153, 0.2);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.4);
+    }
+
+    .status-available {
+      background: rgba(6, 182, 212, 0.2);
+      color: #06b6d4;
+      border: 1px solid rgba(6, 182, 212, 0.4);
+    }
+
+    .status-locked {
+      background: rgba(255, 255, 255, 0.05);
+      color: #71717a;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-glow"></div>
+
+  <nav class="top-nav">
+    <div class="nav-container">
+      <a href="dashboard.html" class="nav-logo">Mindly</a>
+      <ul class="nav-menu">
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="chemistry-curriculum.html" class="nav-link active">Chemistry Roadmap</a></li>
+        <li><a href="physics-curriculum.html" class="nav-link">Physics</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="curriculum-wrapper">
+    <div class="curriculum-container">
+
+      <div class="curriculum-header">
+        <h1>Chemistry Curriculum</h1>
+        <p>Explore atomic structure, the periodic table, chemical bonding, stoichiometry, and reaction equations.</p>
+        
+        <div class="progress-bar-container">
+          <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+        </div>
+        <div class="progress-text">
+          <span id="progress-label">0 of 8 Lessons Completed</span>
+          <span id="progress-percent">0% Complete</span>
+        </div>
+      </div>
+
+      <div class="units-list" id="units-list"></div>
+
+    </div>
+  </div>
+
+  <script>
+    const curriculumBlueprint = [
+      {
+        unitNumber: 1,
+        title: "Atomic Structure & Chemical Bonding",
+        lessons: [
+          { id: 501, title: "States of Matter and Phase Changes" },
+          { id: 502, title: "Atomic Structure, Subatomic Particles & Isotopes" },
+          { id: 503, title: "The Periodic Table and Periodic Trends" },
+          { id: 504, title: "Ionic vs. Covalent Bonding" },
+          { id: 505, title: "Naming Chemical Compounds and Writing Formulas" },
+          { id: 506, title: "Balancing Chemical Equations" },
+          { id: 507, title: "The Mole Concept and Molar Mass" },
+          { id: 508, title: "🏆 Chemistry Unit 1 Mastery Test" }
+        ]
+      }
+    ];
+
+    function renderCurriculum() {
+      const completedLessons = JSON.parse(localStorage.getItem('mindly_chemistry_completed') || '[]');
+      
+      let totalLessonsCount = 0;
+      let completedCount = 0;
+      let previousLessonCompleted = true;
+
+      const unitsListContainer = document.getElementById('units-list');
+      unitsListContainer.innerHTML = '';
+
+      curriculumBlueprint.forEach(unit => {
+        const unitCard = document.createElement('div');
+        unitCard.className = 'unit-card';
+
+        let lessonsHTML = '';
+        unit.lessons.forEach(lesson => {
+          totalLessonsCount++;
+          let status = 'locked';
+          let badgeClass = 'status-locked';
+          let badgeText = 'Locked 🔒';
+          let icon = '🔒';
+
+          if (completedLessons.includes(lesson.id)) {
+            status = 'completed';
+            badgeClass = 'status-completed';
+            badgeText = 'Completed ✓';
+            icon = '✅';
+            completedCount++;
+            previousLessonCompleted = true;
+          } else if (previousLessonCompleted) {
+            status = 'available';
+            badgeClass = 'status-available';
+            badgeText = 'Start Lesson 🚀';
+            icon = '📖';
+            previousLessonCompleted = false;
+          }
+
+          lessonsHTML += `
+            <div class="lesson-item" onclick="handleLessonClick(${lesson.id}, '${status}')">
+              <div class="lesson-info">
+                <span class="lesson-icon">${icon}</span>
+                <span class="lesson-name">${lesson.title}</span>
+              </div>
+              <span class="lesson-status ${badgeClass}">${badgeText}</span>
+            </div>
+          `;
+        });
+
+        unitCard.innerHTML = `
+          <div class="unit-title">
+            <span>Unit ${unit.unitNumber}</span>${unit.title}
+          </div>
+          <div class="lesson-tree">
+            ${lessonsHTML}
+          </div>
+        `;
+
+        unitsListContainer.appendChild(unitCard);
+      });
+
+      const percent = totalLessonsCount > 0 ? Math.round((completedCount / totalLessonsCount) * 100) : 0;
+      document.getElementById('progress-fill').style.width = `${percent}%`;
+      document.getElementById('progress-label').textContent = `${completedCount} of${totalLessonsCount} Lessons Completed`;
+      document.getElementById('progress-percent').textContent = `${percent}\% Complete`; }  function handleLessonClick(lessonId, status) { if (status === 'locked') { alert('Complete the previous lesson first to unlock this topic!'); return; } window.location.href = `chemistry-quiz.html?lesson=${lessonId}`;
+    }
+
+    renderCurriculum();
+  </script>
+</body>
+</html>

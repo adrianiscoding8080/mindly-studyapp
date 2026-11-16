@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Physics Study & Practice | Mindly</title>
+  <link rel="stylesheet" href="../index.css">
+  <style>
+    .top-nav {
+      width: 100%;
+      background: rgba(25, 25, 35, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 1rem 2rem;
+    }
+
+    .nav-container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #34d399, #38bdf8);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      list-style: none;
+    }
+
+    .nav-link {
+      color: #d4d4d8;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: #34d399;
+    }
+
+    .quiz-wrapper {
+      min-height: calc(100vh - 70px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem 1.5rem;
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s ease;
+    }
+
+    .quiz-wrapper.focus-mode .hide-in-focus {
+      display: none !important;
+    }
+
+    .quiz-container {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .card {
+      background: rgba(25, 25, 35, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .quiz-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .focus-toggle-btn {
+      background: rgba(52, 211, 153, 0.2);
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      color: #34d399;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .focus-toggle-btn:hover {
+      background: rgba(52, 211, 153, 0.4);
+      color: #ffffff;
+    }
+
+    h1, h2 {
+      font-weight: 800;
+      background: linear-gradient(135deg, #34d399, #38bdf8);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.4rem; margin-top: 1rem; }
+
+    .lesson-body {
+      color: #d4d4d8;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .example-box {
+      background: rgba(15, 15, 20, 0.8);
+      border-left: 4px solid #34d399;
+      padding: 1.25rem;
+      border-radius: 0 10px 10px 0;
+      margin: 0.5rem 0;
+      font-family: monospace;
+      color: #f4f4f5;
+    }
+
+    .question-block {
+      background: rgba(15, 15, 20, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .question-block p {
+      font-size: 1.05rem;
+      color: #f4f4f5;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .options-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: rgba(25, 25, 35, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: #e4e4e7;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.95rem;
+    }
+
+    .option-label:hover {
+      background: rgba(52, 211, 153, 0.15);
+      border-color: rgba(52, 211, 153, 0.4);
+    }
+
+    .option-label input[type="radio"] {
+      accent-color: #34d399;
+      cursor: pointer;
+    }
+
+    .btn-action {
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 12px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+      width: 100%;
+      margin-top: 1.5rem;
+      background: linear-gradient(135deg, #34d399, #38bdf8);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(52, 211, 153, 0.4);
+    }
+
+    .btn-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(52, 211, 153, 0.6);
+    }
+
+    #results-view {
+      display: none;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .summary-item {
+      padding: 1rem;
+      background: rgba(15, 15, 20, 0.8);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .summary-item.correct { border-color: rgba(52, 211, 153, 0.5); }
+    .summary-item.incorrect { border-color: rgba(248, 113, 113, 0.5); }
+
+    .back-link {
+      color: #a1a1aa;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+    .back-link:hover { color: #ffffff; }
+  </style>
+</head>
+<body>
+
+  <div class="bg-glow"></div>
+
+  <nav class="top-nav">
+    <div class="nav-container">
+      <a href="dashboard.html" class="nav-logo">Mindly</a>
+      <ul class="nav-menu">
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="physics-curriculum.html" class="nav-link active">Physics Roadmap</a></li>
+        <li><a href="dashboard.html" class="nav-link">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="quiz-wrapper" id="quiz-wrapper">
+    <div class="quiz-container">
+      
+      <div class="quiz-top-bar hide-in-focus">
+        <a href="physics-curriculum.html" class="back-link">← Back to Physics Curriculum</a>
+        <button class="focus-toggle-btn" onclick="toggleFocusMode()">✨ Toggle Deep Focus Mode</button>
+      </div>
+
+      <div class="card">
+        <div id="lesson-content-section">
+          <h1 id="lesson-title">Loading Lesson...</h1>
+          <div class="lesson-body" id="lesson-body-content"></div>
+        </div>
+
+        <div id="quiz-form-section">
+          <h2>Practice Quiz (15 Questions)</h2>
+          <p style="color: #a1a1aa; margin-bottom: 2rem; font-size: 0.95rem;">Read the lesson above, then answer all 15 questions below and submit to evaluate your understanding.</p>
+          
+          <form id="quiz-form" onsubmit="submitQuiz(event)">
+            <div id="questions-container"></div>
+            <button type="submit" class="btn-action">Submit Quiz & View Results 🚀</button>
+          </form>
+        </div>
+
+        <div id="results-view">
+          <h2>Quiz Results & Performance</h2>
+          <p id="score-summary" style="color: #34d399; font-weight: 600; font-size: 1.1rem;"></p>
+          
+          <div style="background: rgba(52, 211, 153, 0.08); border: 1px solid rgba(52, 211, 153, 0.2); border-radius: 15px; padding: 1.5rem; margin: 1rem 0;">
+            <h4 style="color: #34d399; font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">🧠 Smart Spaced Repetition Scheduling</h4>
+            <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 1rem;">Rate your mastery confidence to set your next review interval:</p>
+            <div style="display: flex; gap: 1rem;">
+              <button type="button" onclick="handleSpacedRepetition('hard')" style="flex:1; padding:0.75rem; border-radius:8px; font-weight:600; cursor:pointer; background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4);">Need Review Soon (1 Day)</button>
+              <button type="button" onclick="handleSpacedRepetition('good')" style="flex:1; padding:0.75rem; border-radius:8px; font-weight:600; cursor:pointer; background: rgba(52, 211, 153, 0.2); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.4);">Mastered! (4 Days)</button>
+            </div>
+          </div>
+
+          <div id="summary-list" style="display: flex; flex-direction: column; gap: 1rem; max-height: 450px; overflow-y: auto;"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const lessonId = parseInt(urlParams.get('lesson')) || 401;
+
+    const physicsData = {
+      401: {
+        title: "Lesson 401: Speed, Velocity, and Acceleration",
+        content: `
+          <p>• **Speed:** Distance traveled per unit time ($s = d/t$).<br>
+          • **Velocity:** Speed in a given direction (vector quantity).<br>
+          • **Acceleration:** Rate of change of velocity over time ($a = (v_f - v_i) / t$).</p>
+          <div class="example-box">Example: A car accelerates from 0 to 20 m/s in 4 seconds. Acceleration = 20 / 4 = 5 m/s²</div>
+        `,
+        questions: [
+          { q: "What is the formula for average speed?", ans: "Distance / Time", wrong: ["Time / Distance", "Acceleration * Time", "Force * Mass"] },
+          { q: "Speed with a specified direction is called:", ans: "Velocity", wrong: ["Acceleration", "Momentum", "Displacement"] },
+          { q: "What is the SI unit for acceleration?", ans: "m/s²", wrong: ["m/s", "kg * m/s", "Newtons"] },
+          { q: "If a car travels 120 miles in 2 hours, what is its average speed?", ans: "60 mph", wrong: ["120 mph", "240 mph", "30 mph"] },
+          { q: "Acceleration occurs when an object does which of the following?", ans: "Changes speed or direction", wrong: ["Moves at constant speed", "Stays completely at rest", "Maintains constant velocity"] },
+          { q: "If velocity changes from 10 m/s to 30 m/s in 4 seconds, what is acceleration?", ans: "5 m/s²", wrong: ["10 m/s²", "20 m/s²", "2.5 m/s²"] },
+          { q: "What does the slope of a position-time graph represent?", ans: "Velocity", wrong: ["Acceleration", "Distance", "Force"] },
+          { q: "What does the slope of a velocity-time graph represent?", ans: "Acceleration", wrong: ["Velocity", "Displacement", "Energy"] },
+          { q: "If an object is slowing down, its acceleration is in which direction relative to motion?", ans: "Opposite direction", wrong: ["Same direction", "Zero", "Perpendicular"] },
+          { q: "Free fall acceleration due to gravity on Earth is approximately:", ans: "9.8 m/s²", wrong: ["5.0 m/s²", "20 m/s²", "1.0 m/s²"] },
+          { q: "How far does a train travel in 3 hours at 80 mph?", ans: "240 miles", wrong: ["160 miles", "320 miles", "83 miles"] },
+          { q: "Scalar quantity among the following is:", ans: "Speed", wrong: ["Velocity", "Acceleration", "Displacement"] },
+          { q: "Vector quantity among the following is:", ans: "Velocity", wrong: ["Speed", "Distance", "Mass"] },
+          { q: "If initial velocity is 0 and acceleration is 3 m/s² for 5 seconds, final velocity is:", ans: "15 m/s", wrong: ["8 m/s", "1.6 m/s", "45 m/s"] },
+          { q: "A runner completes a 400m lap in 50 seconds. Average speed is:", ans: "8 m/s", wrong: ["4 m/s", "20,000 m/s", "50 m/s"] }
+        ]
+      },
+      402: {
+        title: "Lesson 402: Motion Graphs (Position-Time & Velocity-Time)",
+        content: `
+          <p>Motion graphs visualize kinematics:<br>
+          • **Position vs. Time:** Slope = Velocity. Horizontal line = At rest.<br>
+          • **Velocity vs. Time:** Slope = Acceleration. Area under curve = Displacement.</p>
+          <div class="example-box">Example: A flat horizontal line on a velocity-time graph indicates constant velocity (zero acceleration).</div>
+        `,
+        questions: [
+          { q: "On a position-time graph, a straight diagonal line rising to the right indicates:", ans: "Constant positive velocity", wrong: ["Constant acceleration", "Object at rest", "Moving backwards"] },
+          { q: "On a position-time graph, a horizontal flat line means the object is:", ans: "At rest", wrong: ["Moving at constant speed", "Accelerating rapidly", "Moving backwards"] },
+          { q: "What does the slope of a velocity-time graph give?", ans: "Acceleration", wrong: ["Position", "Distance", "Speed"] },
+          { q: "What does the area under a velocity-time graph represent?", ans: "Displacement / Distance", wrong: ["Acceleration", "Force", "Power"] },
+          { q: "On a velocity-time graph, a horizontal line above the time axis represents:", ans: "Constant velocity", wrong: ["Object at rest", "Constant acceleration", "Zero speed"] },
+          { q: "A curved line on a position-time graph indicates:", ans: "Acceleration", wrong: ["Constant speed", "At rest", "Zero velocity"] },
+          { q: "If the slope of a position-time graph is negative, the object is:", ans: "Moving in the negative direction", wrong: ["Slowing down", "Speeding up", "Stopped"] },
+          { q: "On a v-t graph, a line sloping downward to the right indicates:", ans: "Negative acceleration (deceleration)", wrong: ["Constant speed", "Positive acceleration", "Zero motion"] },
+          { q: "If a position-time graph is a horizontal line at y = 5, where is the object?", ans: "Stationary at position 5", wrong: ["Moving at 5 m/s", "Accelerating at 5 m/s²", "At the origin"] },
+          { q: "Area under a horizontal velocity-time graph (v = 10 m/s for t = 4 s) is:", ans: "40 meters", wrong: ["14 meters", "2.5 meters", "400 meters"] },
+          { q: "Can a position-time graph have a vertical line?", ans: "No (implies being in two places at once)", wrong: ["Yes", "Only at high speeds", "Only in free fall"] },
+          { q: "Steeper slope on a position-time graph means:", ans: "Higher speed", wrong: ["Lower speed", "Greater mass", "Zero acceleration"] },
+          { q: "On a v-t graph, a diagonal line starting at origin and rising represents:", ans: "Constant positive acceleration", wrong: ["Constant velocity", "Constant position", "Deceleration"] },
+          { q: "If velocity is 0 and acceleration is constant, position-time graph is:", ans: "A curve starting flat", wrong: ["A straight vertical line", "A downward slope", "A horizontal line"] },
+          { q: "What variable is always plotted on the x-axis of kinematics graphs?", ans: "Time", wrong: ["Position", "Velocity", "Acceleration"] }
+        ]
+      },
+      403: {
+        title: "Lesson 403: Newton's First and Second Laws of Motion",
+        content: `
+          <p>• **Newton's 1st Law (Inertia):** An object at rest stays at rest, and an object in motion stays in motion unless acted upon by a net force.<br>
+          • **Newton's 2nd Law:** Force equals mass times acceleration (**F = ma**).</p>
+          <div class="example-box">Example: If m = 4 kg and a = 3 m/s², Net Force F = 4 * 3 = 12 Newtons</div>
+        `,
+        questions: [
+          { q: "What is Newton's First Law also known as?", ans: "The Law of Inertia", wrong: ["The Law of Force and Mass", "Action-Reaction Law", "Universal Gravitation"] },
+          { q: "What formula expresses Newton's Second Law?", ans: "F = ma", wrong: ["E = mc²", "v = d/t", "p = mv"] },
+          { q: "What is the SI unit of force?", ans: "Newton (N)", wrong: ["Joule", "Watt", "Kilogram"] },
+          { q: "If mass is 10 kg and acceleration is 2 m/s², what is the net force?", ans: "20 N", wrong: ["5 N", "12 N", "200 N"] },
+          { q: "Inertia depends directly on an object's:", ans: "Mass", wrong: ["Velocity", "Speed", "Volume"] },
+          { q: "If net force on an object is zero, its acceleration is:", ans: "Zero", wrong: ["Maximum", "Equal to mass", "Equal to velocity"] },
+          { q: "If force is 50 N and mass is 5 kg, what is acceleration?", ans: "10 m/s²", wrong: ["250 m/s²", "45 m/s²", "55 m/s²"] },
+          { q: "Why do passengers lurch forward when a car stops abruptly?", ans: "Inertia keeps them moving forward", wrong: ["Gravity pulls them forward", "Wind pushes them", "Brakes pull them"] },
+          { q: "If mass doubles while force remains constant, acceleration will:", ans: "Be cut in half", wrong: ["Double", "Quadruple", "Stay the same"] },
+          { q: "What force opposes motion between two surfaces in contact?", ans: "Friction", wrong: ["Gravity", "Tension", "Normal force"] },
+          { q: "If F = 60 N and a = 4 m/s², what is the mass?", ans: "15 kg", wrong: ["240 kg", "56 kg", "64 kg"] },
+          { q: "Terminal velocity is reached when air resistance equals:", ans: "Weight (Gravity force)", wrong: ["Inertia", "Applied force", "Friction"] },
+          { q: "Balanced forces result in:", ans: "Constant velocity (or zero acceleration)", wrong: ["Changing speed", "Rapid acceleration", "Curved motion"] },
+          { q: "Unbalanced forces result in:", ans: "Acceleration", wrong: ["Constant equilibrium", "Zero velocity always", "No motion"] },
+          { q: "Which has more inertia: a bicycle or a semi-truck?", ans: "Semi-truck", wrong: ["Bicycle", "They have equal inertia", "Depends on speed"] }
+        ]
+      },
+      404: {
+        title: "Lesson 404: Newton's Third Law and Momentum",
+        content: `
+          <p>• **Newton's 3rd Law:** For every action, there is an equal and opposite reaction.<br>
+          • **Momentum:** Mass in motion ($p = mv$).<br>
+          • **Conservation of Momentum:** Total momentum in a closed system remains constant.</p>
+          <div class="example-box">Example: Momentum of a 3 kg ball moving at 4 m/s is p = 3 * 4 = 12 kg·m/s</div>
+        `,
+        questions: [
+          { q: "What does Newton's Third Law state?", ans: "For every action, there is an equal and opposite reaction", wrong: ["F = ma", "Objects at rest stay at rest", "Energy cannot be created or destroyed"] },
+          { q: "What is the formula for momentum (p)?", ans: "p = mv", wrong: ["p = ma", "p = mgh", "p = fd"] },
+          { q: "What is the SI unit for momentum?", ans: "kg·m/s", wrong: ["N/s", "Joule", "Watts"] },
+          { q: "If a 4 kg ball moves at 5 m/s, what is its momentum?", ans: "20 kg·m/s", wrong: ["1.25 kg·m/s", "9 kg·m/s", "20 N"] },
+          { q: "When a gun fires a bullet, the gun kicks backward. Which law explains this?", ans: "Newton's Third Law", wrong: ["Newton's First Law", "Law of Universal Gravitation", "Hooke's Law"] },
+          { q: "In an isolated collision, total momentum is:", ans: "Conserved (stays constant)", wrong: ["Always destroyed", "Doubled", "Converted entirely to heat"] },
+          { q: "If mass is 10 kg and momentum is 50 kg·m/s, what is velocity?", ans: "5 m/s", wrong: ["500 m/s", "40 m/s", "0.2 m/s"] },
+          { q: "Why is it harder to stop a moving truck than a bicycle at the same speed?", ans: "The truck has much greater momentum due to mass", wrong: ["The truck has less friction", "The bicycle has no inertia", "Trucks defy gravity"] },
+          { q: "An elastic collision is one where objects:", ans: "Bounce off each other without loss of kinetic energy", wrong: ["Stick together", "Melt upon impact", "Stop instantly"] },
+          { q: "An inelastic collision is one where objects:", ans: "Stick together or deform", wrong: ["Bounce perfectly", "Gain speed", "Lose all mass"] },
+          { q: "If two skaters push off each other on ice, their total initial momentum was:", ans: "Zero", wrong: ["Maximum", "Equal to their combined weights", "Negative"] },
+          { q: "Impulse is equal to force multiplied by:", ans: "Time", wrong: ["Distance", "Mass", "Acceleration"] },
+          { q: "Action and reaction forces act on:", ans: "Different objects", wrong: ["The same object", "Only stationary objects", "No objects"] },
+          { q: "If momentum changes from 10 to 40 kg·m/s in 3 seconds, what force was applied?", ans: "10 N", wrong: ["30 N", "50 N", "3.33 N"] },
+          { q: "Rocket propulsion works primarily because of:", ans: "Newton's Third Law (exhaust gas pushes rocket forward)", wrong: ["Atmospheric pressure pushing on wings", "Magnetic levitation", "Gravitational slingshot"] }
+        ]
+      },
+      405: {
+        title: "Lesson 405: Work, Kinetic, and Potential Energy",
+        content: `
+          <p>• **Work:** Force applied over a distance ($W = Fd$). Unit: Joules (J).<br>
+          • **Kinetic Energy (KE):** Energy of motion ($KE = \\frac{1}{2}mv^2$).<br>
+          • **Potential Energy (PE):** Stored gravitational energy ($PE = mgh$).</p>
+          <div class="example-box">Example: Gravitational PE of a 2 kg object at height 10 m (g=9.8) $\\rightarrow$ PE = 2 * 9.8 * 10 = 196 J</div>
+        `,
+        questions: [
+          { q: "What is the formula for mechanical work?", ans: "W = Fd", wrong: ["W = ma", "W = mv", "W = mgh"] },
+          { q: "What is the SI unit for work and energy?", ans: "Joule (J)", wrong: ["Newton (N)", "Watt (W)", "Kilogram (kg)"] },
+          { q: "What is the formula for kinetic energy?", ans: "KE = ½mv²", wrong: ["KE = mgh", "KE = fd", "KE = mv"] },
+          { q: "What is the formula for gravitational potential energy?", ans: "PE = mgh", wrong: ["PE = ½mv²", "PE = fd", "PE = ma"] },
+          { q: "If force is 10 N and distance is 5 meters, how much work is done?", ans: "50 Joules", wrong: ["2 Joules", "15 Joules", "500 Joules"] },
+          { q: "If mass is 4 kg and velocity is 3 m/s, what is kinetic energy?", ans: "18 Joules", wrong: ["36 Joules", "12 Joules", "72 Joules"] },
+          { q: "If mass is 2 kg, height is 10 m, and g = 9.8 m/s², what is potential energy?", ans: "196 Joules", wrong: ["20 Joules", "98 Joules", "392 Joules"] },
+          { q: "If speed of a moving car doubles, its kinetic energy:", ans: "Quadruples (increases by factor of 4)", wrong: ["Doubles", "Triples", "Stays the same"] },
+          { q: "Work is only done when force and displacement are:", ans: "In the same direction (parallel)", wrong: ["Perpendicular", "Opposite", "Zero"] },
+          { q: "An object lifted to a higher shelf gains what type of energy?", ans: "Potential energy", wrong: ["Kinetic energy", "Thermal energy", "Nuclear energy"] },
+          { q: "Power is defined as the rate at which what is done?", ans: "Work (or energy transfer over time)", wrong: ["Distance", "Acceleration", "Momentum"] },
+          { q: "What is the SI unit of power?", ans: "Watt (W)", wrong: ["Joule (J)", "Newton (N)", "Volt (V)"] },
+          { q: "If 100 Joules of work is done in 5 seconds, what is the power output?", ans: "20 Watts", wrong: ["500 Watts", "5 Watts", "105 Watts"] },
+          { q: "At the highest point of a ball's upward throw, its kinetic energy is:", ans: "Zero (minimum)", wrong: ["Maximum", "Equal to potential energy", "Infinite"] },
+          { q: "At the lowest point of a swinging pendulum, its kinetic energy is:", ans: "Maximum", wrong: ["Zero", "Equal to zero", "Constant"] }
+        ]
+      },
+      406: {
+        title: "Lesson 406: Conservation of Mechanical Energy",
+        content: `
+          <p>The **Law of Conservation of Energy** states that energy cannot be created or destroyed, only transformed. Total Mechanical Energy ($E = KE + PE$) remains constant in a closed system without friction.</p>
+          <div class="example-box">Example: If total mechanical energy is 500 J, and PE is 200 J at a given point, KE must be 300 J.</div>
+        `,
+        questions: [
+          { q: "What does the Law of Conservation of Energy state?", ans: "Energy cannot be created or destroyed, only transformed", wrong: ["Energy is always lost as friction", "Energy increases over time", "PE always equals KE"] },
+          { q: "Total mechanical energy is the sum of:", ans: "Kinetic Energy and Potential Energy", wrong: ["Work and Power", "Mass and Acceleration", "Force and Distance"] },
+          { q: "As a roller coaster car rolls down from a hill, what energy conversion occurs?", ans: "Potential energy converts into kinetic energy", wrong: ["Kinetic energy converts into potential energy", "Energy is destroyed", "Friction creates new energy"] },
+          { q: "If total mechanical energy is 1000 J and PE is 400 J, what is KE?", ans: "600 J", wrong: ["1400 J", "400 J", "1000 J"] },
+          { q: "In the presence of friction, mechanical energy is converted into:", ans: "Thermal energy (heat) and sound", wrong: ["Pure creation", "More kinetic energy", "Electrical voltage"] },
+          { q: "When a ball is dropped from rest, right before hitting the ground its energy is mostly:", ans: "Kinetic energy", wrong: ["Potential energy", "Thermal energy", "Zero"] },
+          { q: "When a ball is held at the top of a hill before release, its energy is mostly:", ans: "Potential energy", wrong: ["Kinetic energy", "Chemical energy", "Zero"] },
+          { q: "If an object falls freely in a vacuum, total mechanical energy:", ans: "Remains constant", wrong: ["Decreases", "Increases", "Becomes zero"] },
+          { q: "A pendulum swings back and forth. Where is its speed greatest?", ans: "At the lowest point of the swing", wrong: ["At the highest turning points", "Halfway up", "Speed is constant"] },
+          { q: "If PE decreases by 150 J in a frictionless system, KE must:", ans: "Increase by 150 J", wrong: ["Decrease by 150 J", "Stay the same", "Become zero"] },
+          { q: "Can a perpetual motion machine exist according to energy conservation?", ans: "No", wrong: ["Yes", "Only in space", "Only with magnets"] },
+          { q: "What force causes mechanical energy to dissipate in real-world systems?", ans: "Friction / Air resistance", wrong: ["Gravity", "Inertia", "Momentum"] },
+          { q: "If a 2 kg stone is dropped and has 200 J of PE initially, what is its KE just before impact?", ans: "200 J", wrong: ["100 J", "0 J", "400 J"] },
+          { q: "In an isolated system, energy transformations are:", ans: "100% efficient in total energy amount", wrong: ["Only 50% efficient", "Creating mass", "Destroying momentum"] },
+          { q: "Energy is measured in the same units as:", ans: "Work", wrong: ["Power", "Force", "Acceleration"] }
+        ]
+      },
+      407: {
+        title: "Lesson 407: Waves, Frequency, and Wave Speed",
+        content: `
+          <p>• **Wave Speed:** $v = f \\cdot \\lambda$ (velocity equals frequency times wavelength).<br>
+          • **Frequency ($f$):** Number of waves passing per second, measured in Hertz (Hz).<br>
+          • **Wavelength ($\\lambda$):** Distance between consecutive crests.</p>
+          <div class="example-box">Example: If frequency is 50 Hz and wavelength is 2 meters, wave speed v = 50 * 2 = 100 m/s</div>
+        `,
+        questions: [
+          { q: "What is the wave speed formula?", ans: "v = f * λ (frequency times wavelength)", wrong: ["v = f / λ", "v = λ / f", "v = f + λ"] },
+          { q: "What is the SI unit for wave frequency?", ans: "Hertz (Hz)", wrong: ["Meters (m)", "Seconds (s)", "Joules (J)"] },
+          { q: "What does wavelength represent?", ans: "Distance between identical points on consecutive waves (crest to crest)", wrong: ["Height of a wave", "Speed of sound", "Total time"] },
+          { q: "If frequency is 10 Hz and wavelength is 3 m, what is wave speed?", ans: "30 m/s", wrong: ["3.33 m/s", "13 m/s", "0.3 m/s"] },
+          { q: "Waves transfer what through a medium without transferring matter?", ans: "Energy", wrong: ["Physical mass", "Atoms", "Electrons"] },
+          { q: "Transverse waves have particle displacement that is:", ans: "Perpendicular to wave direction", wrong: ["Parallel to wave direction", "In circles", "Stationary"] },
+          { q: "Longitudinal waves (like sound) have particle displacement that is:", ans: "Parallel to wave direction", wrong: ["Perpendicular", "Circular", "Zero"] },
+          { q: "If wave speed is 340 m/s and frequency is 170 Hz, find wavelength.", ans: "2 meters", wrong: ["57,800 meters", "0.5 meters", "170 meters"] },
+          { q: "The highest point of a transverse wave is called the:", ans: "Crest", wrong: ["Trough", "Node", "Amplitude"] },
+          { q: "The lowest point of a transverse wave is called the:", ans: "Trough", wrong: ["Crest", "Compression", "Antinode"] },
+          { q: "Amplitude of a wave is a measure of its:", ans: "Height / Intensity / Energy", wrong: ["Speed", "Frequency", "Wavelength"] },
+          { q: "If wavelength is doubled while frequency stays constant, wave speed:", ans: "Doubles", wrong: ["Halves", "Stays the same", "Quadruples"] },
+          { q: "Sound waves are what type of wave?", ans: "Longitudinal mechanical waves", wrong: ["Transverse electromagnetic waves", "Scalar waves", "Stationary light waves"] },
+          { q: "Light waves are what type of wave?", ans: "Transverse electromagnetic waves", wrong: ["Longitudinal sound waves", "Mechanical pressure waves", "Seismic waves"] },
+          { q: "Do electromagnetic waves require a medium (like air or water) to travel?", ans: "No (they travel through vacuum)", wrong: ["Yes", "Only in liquids", "Only in solids"] }
+        ]
+      },
+      408: {
+        title: "Lesson 408: 🏆 Physics Unit 1 Mastery Test",
+        content: `
+          <p>Congratulations on reaching the capstone Physics assessment! This test covers comprehensive material from all Unit 1 lessons on kinematics, motion graphs, Newton's laws, momentum, work, energy, conservation laws, and wave mechanics.</p>
+        `,
+        questions: [
+          { q: "If mass is 5 kg and acceleration is 4 m/s², what is net force?", ans: "20 N", wrong: ["1.25 N", "9 N", "100 N"] },
+          { q: "What is the formula for kinetic energy?", ans: "KE = ½mv²", wrong: ["KE = mgh", "KE = fd", "KE = ma"] },
+          { q: "On a position-time graph, what does slope represent?", ans: "Velocity", wrong: ["Acceleration", "Force", "Work"] },
+          { q: "If frequency is 20 Hz and wavelength is 4 m, find wave speed.", ans: "80 m/s", wrong: ["5 m/s", "24 m/s", "0.2 m/s"] },
+          { q: "What law states for every action there is an equal and opposite reaction?", ans: "Newton's Third Law", wrong: ["Newton's First Law", "Conservation of Energy", "Hooke's Law"] },
+          { q: "If force is 30 N and distance is 10 m, work done is:", ans: "300 Joules", wrong: ["3 Joules", "40 Joules", "3000 Joules"] },
+          { q: "What is momentum formula?", ans: "p = mv", wrong: ["p = ma", "p = fd", "p = mgh"] },
+          { q: "If total mechanical energy is 800 J and KE is 300 J, PE is:", ans: "500 J", wrong: ["1100 J", "300 J", "800 J"] },
+          { q: "Acceleration due to gravity on Earth is approx:", ans: "9.8 m/s²", wrong: ["5.0 m/s²", "20 m/s²", "1.0 m/s²"] },
+          { q: "What does the slope of a velocity-time graph represent?", ans: "Acceleration", wrong: ["Velocity", "Distance", "Displacement"] },
+          { q: "What is the SI unit for frequency?", ans: "Hertz (Hz)", wrong: ["Joules", "Newtons", "Meters"] },
+          { q: "If a 3 kg ball moves at 4 m/s, momentum is:", ans: "12 kg·m/s", wrong: ["7 kg·m/s", "1.33 kg·m/s", "48 kg·m/s"] },
+          { q: "Inertia is directly proportional to an object's:", ans: "Mass", wrong: ["Speed", "Velocity", "Volume"] },
+          { q: "Gravitational potential energy formula is:", ans: "PE = mgh", wrong: ["PE = ½mv²", "PE = fd", "PE = ma"] },
+          { q: "Waves transfer what across a medium?", ans: "Energy", wrong: ["Matter", "Atoms", "Mass"] }
+        ]
+      }
+    };
+
+    const currentLesson = physicsData[lessonId] || physicsData[401];
+
+    document.getElementById('lesson-title').textContent = currentLesson.title;
+    document.getElementById('lesson-body-content').innerHTML = currentLesson.content;
+
+    function shuffleArray(array) {
+      return [...array].sort(() => Math.random() - 0.5);
+    }
+
+    let activeQuizData = [];
+
+    function renderQuizForm() {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+
+      activeQuizData = currentLesson.questions.map((item, index) => ({
+        id: index,
+        question: item.q,
+        correctAnswer: item.ans,
+        options: shuffleArray([item.ans, ...item.wrong])
+      }));
+
+      activeQuizData.forEach((item, index) => {
+        let optionsHTML = '';
+        item.options.forEach((opt) => {
+          optionsHTML += `
+            <label class="option-label">
+              <input type="radio" name="q_${index}" value="${opt}" required>
+              <span>${opt}</span>
+            </label>
+          `;
+        });
+
+        const block = document.createElement('div');
+        block.className = 'question-block';
+        block.innerHTML = `
+          <p>Question ${index + 1}: ${item.question}</p>
+          <div class="options-group">${optionsHTML}</div>
+        `;
+        container.appendChild(block);
+      });
+    }
+
+    function submitQuiz(event) {
+      event.preventDefault();
+
+      let score = 0;
+      const summaryList = document.getElementById('summary-list');
+      summaryList.innerHTML = '';
+
+      activeQuizData.forEach((item, index) => {
+        const radios = document.getElementsByName(`q_${index}`);
+        let userAns = null;
+        for (const radio of radios) {
+          if (radio.checked) {
+            userAns = radio.value;
+            break;
+          }
+        }
+
+        const isCorrect = userAns === item.correctAnswer;
+        if (isCorrect) score++;
+
+        const summaryItem = document.createElement('div');
+        summaryItem.className = `summary-item ${isCorrect ? 'correct' : 'incorrect'}`;
+        summaryItem.innerHTML = `
+          <p style="font-weight:600; margin-bottom: 0.3rem; font-size:0.95rem;">Q${index + 1}: ${item.question}</p>
+          <p style="font-size: 0.85rem; color: ${isCorrect ? '#34d399' : '#f87171'}">Your Answer: ${userAns || 'No Answer'}</p>
+          <p style="font-size: 0.85rem; color: #34d399;">Correct Answer: ${item.correctAnswer}</p>
+        `;
+        summaryList.appendChild(summaryItem);
+      });
+
+      document.getElementById('lesson-content-section').style.display = 'none';
+      document.getElementById('quiz-form-section').style.display = 'none';
+      document.getElementById('results-view').style.display = 'flex';
+
+      document.getElementById('score-summary').textContent = `You scored ${score} out of ${activeQuizData.length} correct!`;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function handleSpacedRepetition(rating) {
+      let reviewSchedules = JSON.parse(localStorage.getItem('mindly_physics_spaced') || '{}');
+      const now = new Date();
+      const daysToAdd = rating === 'good' ? 4 : 1;
+      const nextReviewDate = new Date(now.setDate(now.getDate() + daysToAdd));
+
+      reviewSchedules[lessonId] = {
+        lastReviewed: new Date().toISOString(),
+        nextReview: nextReviewDate.toISOString(),
+        interval: daysToAdd
+      };
+      localStorage.setItem('mindly_physics_spaced', JSON.stringify(reviewSchedules));
+
+      let completedLessons = JSON.parse(localStorage.getItem('mindly_physics_completed') || '[]');
+      if (!completedLessons.includes(lessonId)) {
+        completedLessons.push(lessonId);
+        localStorage.setItem('mindly_physics_completed', JSON.stringify(completedLessons));
+      }
+
+      alert(`Great job! Spaced repetition scheduled your review in ${daysToAdd} day(s). Returning to curriculum...`);
+      window.location.href = 'physics-curriculum.html';
+    }
+
+    function toggleFocusMode() {
+      document.getElementById('quiz-wrapper').classList.toggle('focus-mode');
+    }
+
+    renderQuizForm();
+  </script>
+</body>
+</html>

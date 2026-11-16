@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>World History Study & Practice | Mindly</title>
+  <link rel="stylesheet" href="../index.css">
+  <style>
+    .top-nav {
+      width: 100%;
+      background: rgba(25, 25, 35, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 1rem 2rem;
+    }
+
+    .nav-container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      list-style: none;
+    }
+
+    .nav-link {
+      color: #d4d4d8;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: #fbbf24;
+    }
+
+    .quiz-wrapper {
+      min-height: calc(100vh - 70px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem 1.5rem;
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s ease;
+    }
+
+    .quiz-wrapper.focus-mode .hide-in-focus {
+      display: none !important;
+    }
+
+    .quiz-container {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .card {
+      background: rgba(25, 25, 35, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .quiz-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .focus-toggle-btn {
+      background: rgba(251, 191, 36, 0.2);
+      border: 1px solid rgba(251, 191, 36, 0.4);
+      color: #fbbf24;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .focus-toggle-btn:hover {
+      background: rgba(251, 191, 36, 0.4);
+      color: #ffffff;
+    }
+
+    h1, h2 {
+      font-weight: 800;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.4rem; margin-top: 1rem; }
+
+    .lesson-body {
+      color: #d4d4d8;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .example-box {
+      background: rgba(15, 15, 20, 0.8);
+      border-left: 4px solid #fbbf24;
+      padding: 1.25rem;
+      border-radius: 0 10px 10px 0;
+      margin: 0.5rem 0;
+      font-family: monospace;
+      color: #f4f4f5;
+    }
+
+    .question-block {
+      background: rgba(15, 15, 20, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .question-block p {
+      font-size: 1.05rem;
+      color: #f4f4f5;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .options-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: rgba(25, 25, 35, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: #e4e4e7;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.95rem;
+    }
+
+    .option-label:hover {
+      background: rgba(251, 191, 36, 0.15);
+      border-color: rgba(251, 191, 36, 0.4);
+    }
+
+    .option-label input[type="radio"] {
+      accent-color: #fbbf24;
+      cursor: pointer;
+    }
+
+    .btn-action {
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 12px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+      width: 100%;
+      margin-top: 1.5rem;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
+    }
+
+    .btn-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(251, 191, 36, 0.6);
+    }
+
+    #results-view {
+      display: none;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .summary-item {
+      padding: 1rem;
+      background: rgba(15, 15, 20, 0.8);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .summary-item.correct { border-color: rgba(52, 211, 153, 0.5); }
+    .summary-item.incorrect { border-color: rgba(248, 113, 113, 0.5); }
+
+    .back-link {
+      color: #a1a1aa;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+    .back-link:hover { color: #ffffff; }
+  </style>
+</head>
+<body>
+
+  <div class="bg-glow"></div>
+
+  <nav class="top-nav">
+    <div class="nav-container">
+      <a href="dashboard.html" class="nav-logo">Mindly</a>
+      <ul class="nav-menu">
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="worldhistory-curriculum.html" class="nav-link active">World History</a></li>
+        <li><a href="dashboard.html" class="nav-link">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="quiz-wrapper" id="quiz-wrapper">
+    <div class="quiz-container">
+      
+      <div class="quiz-top-bar hide-in-focus">
+        <a href="worldhistory-curriculum.html" class="back-link">← Back to World History Curriculum</a>
+        <button class="focus-toggle-btn" onclick="toggleFocusMode()">✨ Toggle Deep Focus Mode</button>
+      </div>
+
+      <div class="card">
+        <div id="lesson-content-section">
+          <h1 id="lesson-title">Loading Lesson...</h1>
+          <div class="lesson-body" id="lesson-body-content"></div>
+        </div>
+
+        <div id="quiz-form-section">
+          <h2>Practice Quiz (15 Questions)</h2>
+          <p style="color: #a1a1aa; margin-bottom: 2rem; font-size: 0.95rem;">Read the lesson above, then answer all 15 questions below and submit to evaluate your understanding.</p>
+          
+          <form id="quiz-form" onsubmit="submitQuiz(event)">
+            <div id="questions-container"></div>
+            <button type="submit" class="btn-action">Submit Quiz & View Results 🚀</button>
+          </form>
+        </div>
+
+        <div id="results-view">
+          <h2>Quiz Results & Performance</h2>
+          <p id="score-summary" style="color: #34d399; font-weight: 600; font-size: 1.1rem;"></p>
+          
+          <div style="background: rgba(251, 191, 36, 0.08); border: 1px solid rgba(251, 191, 36, 0.2); border-radius: 15px; padding: 1.5rem; margin: 1rem 0;">
+            <h4 style="color: #fbbf24; font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">🧠 Smart Spaced Repetition Scheduling</h4>
+            <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 1rem;">Rate your mastery confidence to set your next review interval:</p>
+            <div style="display: flex; gap: 1rem;">
+              <button type="button" onclick="handleSpacedRepetition('hard')" style="flex:1; padding:0.75rem; border-radius:8px; font-weight:600; cursor:pointer; background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4);">Need Review Soon (1 Day)</button>
+              <button type="button" onclick="handleSpacedRepetition('good')" style="flex:1; padding:0.75rem; border-radius:8px; font-weight:600; cursor:pointer; background: rgba(52, 211, 153, 0.2); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.4);">Mastered! (4 Days)</button>
+            </div>
+          </div>
+
+          <div id="summary-list" style="display: flex; flex-direction: column; gap: 1rem; max-height: 450px; overflow-y: auto;"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const lessonId = parseInt(urlParams.get('lesson')) || 601;
+
+    const historyData = {
+      601: {
+        title: "Lesson 601: The Agricultural Revolution & Early River Valleys",
+        content: `
+          <p>• **Neolithic Revolution:** Transition from nomadic hunting/gathering to settled farming.<br>
+          • **River Valleys:** Mesopotamia (Tigris/Euphrates), Egypt (Nile), Indus Valley, Yellow River.<br>
+          • Key innovations include cuneiform writing, irrigation, and early law codes like the Code of Hammurabi.</p>
+          <div class="example-box">Key Concept: Fertile soil and irrigation allowed surplus food, leading to urbanization and division of labor.</div>
+        `,
+        questions: [
+          { q: "What was the major change during the Neolithic Revolution?", ans: "Shift from hunting/gathering to farming", wrong: ["Discovery of iron metallurgy", "Invention of the steam engine", "Rise of democratic voting"] },
+          { q: "Mesopotamia was located between which two rivers?", ans: "Tigris and Euphrates", wrong: ["Nile and Congo", "Indus and Ganges", "Yellow and Yangtze"] },
+          { q: "What is considered one of the earliest written legal codes?", ans: "Code of Hammurabi", wrong: ["Twelve Tables", "Magna Carta", "Napoleonic Code"] },
+          { q: "What was the wedge-shaped writing system developed in Mesopotamia?", ans: "Cuneiform", wrong: ["Hieroglyphics", "Sanskrit", "Phoenician alphabet"] },
+          { q: "Which river valley civilization relied on the predictable annual flooding of the Nile?", ans: "Ancient Egypt", wrong: ["Mesopotamia", "Indus Valley", "Ancient China"] },
+          { q: "What writing system was used in ancient Egypt?", ans: "Hieroglyphics", wrong: ["Cuneiform", "Linear B", "Latin"] },
+          { q: "Harappa and Mohenjo-Daro were major cities in which early civilization?", ans: "Indus Valley", wrong: ["Mesopotamia", "Egypt", "Yellow River"] },
+          { q: "What factor was most essential for the emergence of early civilizations?", ans: "Agricultural surplus near river valleys", wrong: ["Nomadic lifestyle", "Mountainous terrain", "Ocean navigation"] },
+          { q: "The 'Mandate of Heaven' concept originated in which early civilization?", ans: "Ancient China", wrong: ["Egypt", "Mesopotamia", "Greece"] },
+          { q: "A government controlled by religious leaders or divine rule is called a:", ans: "Theocracy", wrong: ["Democracy", "Oligarchy", "Republic"] },
+          { q: "Which metal marked the transition after the Stone Age for tools and weapons?", ans: "Bronze", wrong: ["Aluminum", "Titanium", "Steel"] },
+          { q: "Ziggurats were stepped pyramid temples built in:", ans: "Mesopotamia", wrong: ["Egypt", "Mesoamerica", "Greece"] },
+          { q: "The Phoenicians are best remembered for developing:", ans: "An early phonetic alphabet", wrong: ["Cuneiform", "Paper money", "Gunpowder"] },
+          { q: "Sargon of Akkad is famous for creating history's first known:", ans: "Empire", wrong: ["Democracy", "Monotheistic religion", "Paper document"] },
+          { q: "The Epic of Gilgamesh originated in which region?", ans: "Mesopotamia", wrong: ["Egypt", "Greece", "India"] }
+        ]
+      },
+      602: {
+        title: "Lesson 602: Ancient Greece: Democracy, Philosophy, & Culture",
+        content: `
+          <p>• **Polis:** Greek city-states like Athens (direct democracy, culture) and Sparta (military state).<br>
+          • **Philosophy:** Socrates, Plato, and Aristotle set the foundations of Western thought.<br>
+          • **Hellenistic Era:** Alexander the Great expanded Greek culture across Asia and Egypt.</p>
+          <div class="example-box">Key Concept: Athens developed direct democracy where eligible citizens voted directly on laws.</div>
+        `,
+        questions: [
+          { q: "Which Greek city-state is recognized for developing direct democracy?", ans: "Athens", wrong: ["Sparta", "Corinth", "Thebes"] },
+          { q: "Which Greek city-state focused heavily on military discipline and warfare?", ans: "Sparta", wrong: ["Athens", "Delphi", "Olympia"] },
+          { q: "Philosopher sentenced to death in Athens for 'corrupting the youth':", ans: "Socrates", wrong: ["Plato", "Aristotle", "Pythagoras"] },
+          { q: "Who wrote 'The Republic' describing an ideal society led by philosopher-kings?", ans: "Plato", wrong: ["Socrates", "Aristotle", "Homer"] },
+          { q: "Which ruler conquered the Persian Empire and spread Hellenistic culture?", ans: "Alexander the Great", wrong: ["Pericles", "Julius Caesar", "Leonidas"] },
+          { q: "What does 'Hellenistic' refer to?", ans: "Blend of Greek, Persian, Egyptian, and Indian cultures", wrong: ["Pure Roman culture", "Mesopotamian religion", "Spartan military tactics"] },
+          { q: "The temple on the Athenian Acropolis dedicated to Athena is the:", ans: "Parthenon", wrong: ["Pantheon", "Colosseum", "Ziggurat"] },
+          { q: "Epic poems 'The Iliad' and 'The Odyssey' are attributed to:", ans: "Homer", wrong: ["Sophocles", "Virgil", "Herodotus"] },
+          { q: "The Persian Wars involved Greek city-states uniting against:", ans: "The Achaemenid Persian Empire", wrong: ["The Roman Republic", "The Egyptian Kingdom", "The Mongol Empire"] },
+          { q: "The war between Athens and Sparta was known as the:", ans: "Peloponnesian War", wrong: ["Punic Wars", "Persian Wars", "Trojan War"] },
+          { q: "Who is often called the 'Father of History' for recording the Persian Wars?", ans: "Herodotus", wrong: ["Thucydides", "Aristotle", "Plato"] },
+          { q: "Physician who created a medical oath still referenced today:", ans: "Hippocrates", wrong: ["Galen", "Euclid", "Archimedes"] },
+          { q: "Mathematician famous for principles of geometry and the Pythagorean theorem:", ans: "Pythagoras", wrong: ["Euclid", "Socrates", "Homer"] },
+          { q: "What was the central public space in ancient Greek city-states used for assemblies and markets?", ans: "Agora", wrong: ["Acropolis", "Forum", "Senate"] },
+          { q: "The original Olympic Games were held in honor of which Greek god?", ans: "Zeus", wrong: ["Apollo", "Poseidon", "Ares"] }
+        ]
+      },
+      603: {
+        title: "Lesson 603: The Roman Republic and Empire",
+        content: `
+          <p>• **Roman Republic:** Governance featuring a Senate, consuls, and Twelve Tables law code.<br>
+          • **Expansion & Transition:** Punic Wars vs. Carthage; Julius Caesar's rise leads to Pax Romana under Augustus.<br>
+          • Key legacies include Roman law, aqueducts, arches, roads, and the spread of Christianity.</p>
+          <div class="example-box">Key Concept: Pax Romana (27 BCE – 180 CE) was a 200-year period of relative peace and stability across Rome.</div>
+        `,
+        questions: [
+          { q: "What was the primary governing body of the Roman Republic?", ans: "The Senate", wrong: ["The Assembly of Tribunes", "The Directorate", "The House of Commons"] },
+          { q: "Who was the first emperor of Rome, marking the start of Pax Romana?", ans: "Augustus (Octavian)", wrong: ["Julius Caesar", "Nero", "Constantine"] },
+          { q: "The series of wars between Rome and Carthage were the:", ans: "Punic Wars", wrong: ["Peloponnesian Wars", "Gallic Wars", "Persian Wars"] },
+          { q: "Cthaginian general who crossed the Alps with war elephants:", ans: "Hannibal", wrong: ["Scipio", "Alexander", "Pompey"] },
+          { q: "What written set of laws established basic rights for Roman citizens?", ans: "Twelve Tables", wrong: ["Code of Hammurabi", "Ten Commandments", "Magna Carta"] },
+          { q: "Wealthy landowning elites in ancient Rome were called:", ans: "Patricians", wrong: ["Plebeians", "Helots", "Serfs"] },
+          { q: "Common Roman citizens (farmers, artisans, merchants) were called:", ans: "Plebeians", wrong: ["Patricians", "Equestrians", "Consuls"] },
+          { q: "Roman leader assassinated on the Ides of March (44 BCE):", ans: "Julius Caesar", wrong: ["Augustus", "Mark Antony", "Cicero"] },
+          { q: "What 200-year period of peace began with Augustus?", ans: "Pax Romana", wrong: ["Hellenistic Era", "Golden Age of Pericles", "Renassiance"] },
+          { q: "Which Roman emperor moved the capital to Constantinople and legalized Christianity?", ans: "Constantine", wrong: ["Diocletian", "Trajan", "Marcus Aurelius"] },
+          { q: "Edict that granted religious toleration to Christians in 313 CE:", ans: "Edict of Milan", wrong: ["Council of Nicaea", "Twelve Tables", "Justinian Code"] },
+          { q: "Engineering structure built by Romans to transport water to cities:", ans: "Aqueduct", wrong: ["Ziggurat", "Parthenon", "Obelisk"] },
+          { q: "Large amphitheater in Rome used for gladiatorial contests:", ans: "Colosseum", wrong: ["Pantheon", "Circus Maximus", "Forum"] },
+          { q: "The Western Roman Empire officially fell in which year?", ans: "476 CE", wrong: ["313 CE", "1453 CE", "44 BCE"] },
+          { q: "The Eastern half of the Roman Empire survived as the:", ans: "Byzantine Empire", wrong: ["Ottoman Empire", "Holy Roman Empire", "Persian Empire"] }
+        ]
+      },
+      604: {
+        title: "Lesson 604: The Silk Road & Global Trade Networks",
+        content: `
+          <p>• **Silk Road:** Overland trade network linking China, Central Asia, the Middle East, and Europe.<br>
+          • **Trans-Saharan Trade:** Gold-salt trade connecting West Africa to the Mediterranean.<br>
+          • **Indian Ocean Network:** Maritime trade driven by monsoon winds carrying spices, silks, and pottery.</p>
+          <div class="example-box">Key Concept: Trade routes exchanged not only goods, but technologies (paper, compass) and ideas (Buddhism, Islam).</div>
+        `,
+        questions: [
+          { q: "Which major overland trade network connected Han China with Europe?", ans: "The Silk Road", wrong: ["Trans-Saharan Route", "Royal Road", "Amber Road"] },
+          { q: "Besides silk, what major luxury good moved westward from China?", ans: "Porcelain and tea", wrong: ["Spices only", "Gold coins", "Wool coats"] },
+          { q: "Which commodities dominated Trans-Saharan trade in West Africa?", ans: "Gold and salt", wrong: ["Silk and spices", "Timber and iron", "Silver and copper"] },
+          { q: "What natural weather phenomenon made Indian Ocean trade predictable?", ans: "Monsoon winds", wrong: ["Hurricanes", "Tornadoes", "Trade blizzards"] },
+          { q: "Which technological invention from China revolutionized record-keeping along trade routes?", ans: "Paper making", wrong: ["Steam engine", "Printing press", "Telegraph"] },
+          { q: "Venetian merchant who traveled the Silk Road to the Mongol court of Kublai Khan:", ans: "Marco Polo", wrong: ["Ibn Battuta", "Zheng He", "Vasco da Gama"] },
+          { q: "Famous Moroccan traveler who documented 73,000 miles across Africa, Asia, and Europe:", ans: "Ibn Battuta", wrong: ["Marco Polo", "Zheng He", "Ferdinand Magellan"] },
+          { q: "Religious philosophy that spread from India to East Asia along trade routes:", ans: "Buddhism", wrong: ["Christianity", "Islam", "Judaism"] },
+          { q: "The Mongol Empire facilitated safe trade across Eurasia during the:", ans: "Pax Mongolica", wrong: ["Pax Romana", "Silk Era", "Golden Horde"] },
+          { q: "Which Chinese admiral led vast naval expeditions across the Indian Ocean in the 1400s?", ans: "Zheng He", wrong: ["Kublai Khan", "Sun Tzu", "Confucius"] },
+          { q: "Animal crucial for crossing the Sahara Desert in trade caravans:", ans: "Camel", wrong: ["Horse", "Ox", "Donkey"] },
+          { q: "Maritime navigational tool improved by Muslim and Chinese sailors:", ans: "Astrolabe & Magnetic Compass", wrong: ["Sextant", "Radar", "Barometer"] },
+          { q: "Devastating pandemic that spread along Silk Road trade routes in the 1340s:", ans: "The Black Death (Bubonic Plague)", wrong: ["Smallpox", "Cholera", "Spanish Flu"] },
+          { q: "City that served as a major commercial center in West Africa's Mali Empire:", ans: "Timbuktu", wrong: ["Cairo", "Constantinople", "Baghdad"] },
+          { q: "Which empire controlled key Silk Road nodes under Genghis Khan?", ans: "Mongol Empire", wrong: ["Roman Empire", "Ottoman Empire", "British Empire"] }
+        ]
+      },
+      605: {
+        title: "Lesson 605: The Middle Ages & Feudal Europe",
+        content: `
+          <p>• **Feudalism:** Social system based on land grants (fiefs) in exchange for loyalty and military service.<br>
+          • **Manorialism:** Economic foundation where peasants/serfs worked land for protection.<br>
+          • **Catholic Church:** Primary unifying political and cultural institution in Western Europe.</p>
+          <div class="example-box">Hierarchy: King → Nobles/Lords → Knights (Vassals) → Serfs/Peasants.</div>
+        `,
+        questions: [
+          { q: "What was the political system of medieval Europe based on land for loyalty?", ans: "Feudalism", wrong: ["Capitalism", "Socialism", "Absolute Monarchy"] },
+          { q: "Peasants legally bound to the lord's land in the feudal system were:", ans: "Serfs", wrong: ["Knights", "Guildsmen", "Vassals"] },
+          { q: "Land granted by a lord to a vassal in exchange for service was a:", ans: "Fief", wrong: ["Manor", "Guild", "Tithe"] },
+          { q: "Mounted armored warriors who served noble lords were called:", ans: "Knights", wrong: ["Serfs", "Barons", "Consuls"] },
+          { q: "Economic arrangement revolving around self-sufficient noble estates was:", ans: "Manorialism", wrong: ["Mercantilism", "Feudalism", "Free market"] },
+          { q: "Unified institution holding central spiritual and political power in Medieval Europe:", ans: "The Roman Catholic Church", wrong: ["The Eastern Orthodox Church", "The Islamic Caliphate", "The Byzantine Empire"] },
+          { q: "King of the Franks crowned Emperor of the Romans in 800 CE:", ans: "Charlemagne", wrong: ["Clovis", "William the Conqueror", "Louis XIV"] },
+          { q: "Document signed in 1215 by King John limiting English monarchial power:", ans: "Magna Carta", wrong: ["Mayflower Compact", "English Bill of Rights", "Edict of Nantes"] },
+          { q: "The Crusades were military campaigns primarily aimed at controlling:", ans: "The Holy Land (Jerusalem)", wrong: ["Constantinople", "Rome", "London"] },
+          { q: "Conflict between France and England from 1337 to 1453:", ans: "Hundred Years' War", wrong: ["Thirty Years' War", "Seven Years' War", "Punic Wars"] },
+          { q: "French peasant girl who led royal troops at Orleans during the Hundred Years' War:", ans: "Joan of Arc", wrong: ["Eleanor of Aquitaine", "Marie Antoinette", "Catherine de' Medici"] },
+          { q: "Architectural style of the high Middle Ages featuring pointed arches and flying buttresses:", ans: "Gothic", wrong: ["Romanesque", "Baroque", "Neoclassical"] },
+          { q: "Associations of medieval craftsmen and merchants that regulated trades were:", ans: "Guilds", wrong: ["Monasteries", "Fiefs", "Senates"] },
+          { q: "In 1066, William the Conqueror invaded England after the Battle of:", ans: "Hastings", wrong: ["Agincourt", "Tours", "Orleans"] },
+          { q: "What code governed the moral and social conduct expected of medieval knights?", ans: "Chivalry", wrong: ["Bushido", "Hammurabi's Code", "Twelve Tables"] }
+        ]
+      },
+      606: {
+        title: "Lesson 606: The Islamic Golden Age & African Empires",
+        content: `
+          <p>• **Islamic Golden Age:** Flourishing of science, mathematics, medicine, and philosophy centered in Baghdad.<br>
+          • **West African Empires:** Ghana, Mali, and Songhai grew wealthy through gold-salt trade routes.<br>
+          • **Mansa Musa:** Ruler of Mali whose famous pilgrimage to Mecca highlighted regional wealth.</p>
+          <div class="example-box">Key Concept: Scholars translated Greek texts, developed algebra (Al-Khwarizmi), and advanced medicine (Ibn Sina).</div>
+        `,
+        questions: [
+          { q: "Capital of the Abbasid Caliphate and center of learning during the Islamic Golden Age:", ans: "Baghdad", wrong: ["Cairo", "Mecca", "Damascus"] },
+          { q: "Major academic library and translation institution in Abbasid Baghdad:", ans: "House of Wisdom", wrong: ["Library of Alexandria", "Acropolis", "Pantheon"] },
+          { q: "Mathematician known as the father of algebra:", ans: "Al-Khwarizmi", wrong: ["Ibn Sina", "Al-Razi", "Euclid"] },
+          { q: "Persian physician whose 'Canon of Medicine' became a standard European textbook:", ans: "Ibn Sina (Avicenna)", wrong: ["Ibn Battuta", "Al-Khwarizmi", "Averroes"] },
+          { q: "Mali emperor famous for his lavish 1324 pilgrimage to Mecca:", ans: "Mansa Musa", wrong: ["Sundiata Keita", "Sunni Ali", "Askia Muhammad"] },
+          { q: "Empire that succeeded Mali as the largest West African trading empire:", ans: "Songhai Empire", wrong: ["Ghana Empire", "Benin Kingdom", "Axum Empire"] },
+          { q: "First of the great West African gold-salt trading kingdoms:", ans: "Ghana Empire", wrong: ["Mali Empire", "Songhai Empire", "Zulu Empire"] },
+          { q: "Swahili coast trading city-states developed along the coast of:", ans: "East Africa", wrong: ["West Africa", "North Africa", "South Africa"] },
+          { q: "The Swahili language blended local Bantu languages with:", ans: "Arabic", wrong: ["Latin", "French", "Persian"] },
+          { q: "Founder of the Mali Empire whose story is preserved in epic oral tradition:", ans: "Sundiata Keita", wrong: ["Mansa Musa", "Sunni Ali", "Shaka Zulu"] },
+          { q: "East African Christian kingdom known for obelisks and Mediterranean trade:", ans: "Axum (Aksum)", wrong: ["Mali", "Songhai", "Ghana"] },
+          { q: "Islamic holy book containing revelations to Prophet Muhammad:", ans: "Quran", wrong: ["Torah", "Vedas", "Analects"] },
+          { q: "Five duties expected of every Muslim are known as the:", ans: "Five Pillars of Islam", wrong: ["Eightfold Path", "Ten Commandments", "Four Noble Truths"] },
+          { q: "Moorish Spain (Al-Andalus) had its cultural capital in:", ans: "Cordoba", wrong: ["Madrid", "Barcelona", "Seville"] },
+          { q: "In 1453, Ottoman forces conquered Constantinople led by:", ans: "Mehmed II", wrong: ["Suleiman the Magnificent", "Saladin", "Genghis Khan"] }
+        ]
+      },
+      607: {
+        title: "Lesson 607: The Renaissance & Scientific Revolution",
+        content: `
+          <p>• **Renaissance:** 'Rebirth' of interest in classical Greco-Roman art, literature, and humanism starting in Italy.<br>
+          • **Humanism:** Intellectual movement emphasizing human potential, reason, and individual achievement.<br>
+          • **Scientific Revolution:** Shift toward empirical observation, math, and the scientific method (Heliocentrism).</p>
+          <div class="example-box">Key Concept: Gutenberg's printing press (~1440) accelerated the spread of ideas and literacy across Europe.</div>
+        `,
+        questions: [
+          { q: "What does the word 'Renaissance' literally mean?", ans: "Rebirth", wrong: ["Revolution", "Enlightenment", "Discovery"] },
+          { q: "In which European country did the Renaissance begin?", ans: "Italy", wrong: ["France", "England", "Germany"] },
+          { q: "Intellectual movement focusing on human potential, reason, and classical study:", ans: "Humanism", wrong: ["Scholasticism", "Feudalism", "Absolutism"] },
+          { q: "Invention around 1440 that vastly accelerated the spread of books and literacy:", ans: "Gutenberg's moveable-type printing press", wrong: ["Paper mill", "Steam engine", "Telescope"] },
+          { q: "Polymath who painted the Mona Lisa and The Last Supper:", ans: "Leonardo da Vinci", wrong: ["Michelangelo", "Raphael", "Donatello"] },
+          { q: "Artist who sculpted David and painted the Sistine Chapel ceiling:", ans: "Michelangelo", wrong: ["Leonardo da Vinci", "Botticelli", "Titian"] },
+          { q: "Astronomer who proposed the heliocentric (sun-centered) model of the solar system:", ans: "Nicolaus Copernicus", wrong: ["Geocentric Ptolemy", "Aristotle", "Galileo"] },
+          { q: "Italian scientist who used a telescope to support heliocentrism and faced trial by the Inquisition:", ans: "Galileo Galilei", wrong: ["Isaac Newton", "Kepler", "Francis Bacon"] },
+          { q: "Scientist who formulated the laws of motion and universal gravitation:", ans: "Isaac Newton", wrong: ["Galileo Galilei", "René Descartes", "Robert Boyle"] },
+          { q: "Famous political treatise 'The Prince' advocating that 'it is safer to be feared than loved' was written by:", ans: "Niccolò Machiavelli", wrong: ["Erasmus", "Thomas More", "Petrarch"] },
+          { q: "English playwright whose works included Hamlet, Macbeth, and Romeo & Juliet:", ans: "William Shakespeare", wrong: ["Geoffrey Chaucer", "Dante Alighieri", "John Milton"] },
+          { q: "Influential Florentine family known as major patrons of Renaissance art:", ans: "Medici family", wrong: ["Borgia family", "Habsburg family", "Tudor family"] },
+          { q: "German monk whose 95 Theses in 1517 launched the Protestant Reformation:", ans: "Martin Luther", wrong: ["John Calvin", "Henry VIII", "Ignatius of Loyola"] },
+          { q: "Philosopher who emphasized deductive reasoning with 'I think, therefore I am':", ans: "René Descartes", wrong: ["Francis Bacon", "John Locke", "Voltaire"] },
+          { q: "Philosopher who advocated empirical observation and the scientific method:", ans: "Francis Bacon", wrong: ["Descartes", "Spinoza", "Thomas Hobbes"] }
+        ]
+      },
+      608: {
+        title: "Lesson 608: 🏆 World History Unit 1 Mastery Test",
+        content: `
+          <p>Congratulations on reaching the capstone World History assessment! This test covers material from all Unit 1 lessons including river valley civilizations, ancient Greece and Rome, trade networks, feudalism, the Islamic Golden Age, and the Renaissance.</p>
+        `,
+        questions: [
+          { q: "Which revolution shifted humanity from hunting/gathering to agriculture?", ans: "Neolithic Revolution", wrong: ["Industrial Revolution", "Scientific Revolution", "American Revolution"] },
+          { q: "Direct democracy was developed in which ancient Greek city-state?", ans: "Athens", wrong: ["Sparta", "Corinth", "Thebes"] },
+          { q: "First emperor of Rome starting the Pax Romana:", ans: "Augustus", wrong: ["Julius Caesar", "Constantine", "Nero"] },
+          { q: "Primary trade route connecting China with Europe:", ans: "The Silk Road", wrong: ["Royal Road", "Amber Road", "Trans-Saharan Route"] },
+          { q: "Political system of medieval Europe based on land for military service:", ans: "Feudalism", wrong: ["Mercantilism", "Democracy", "Socialism"] },
+          { q: "Abbasid center of learning during the Islamic Golden Age:", ans: "Baghdad (House of Wisdom)", wrong: ["Cairo", "Constantinople", "Rome"] },
+          { q: "Invention that powered the rapid spread of Renaissance ideas:", ans: "Printing press", wrong: ["Telescope", "Steam engine", "Astrolabe"] },
+          { q: "Astronomer who proposed the sun-centered (heliocentric) model:", ans: "Copernicus", wrong: ["Ptolemy", "Aristotle", "Galileo"] },
+          { q: "What legal code was created in ancient Mesopotamia?", ans: "Code of Hammurabi", wrong: ["Twelve Tables", "Magna Carta", "Justinian Code"] },
+          { q: "Mali ruler famous for his wealthy 1324 pilgrimage to Mecca:", ans: "Mansa Musa", wrong: ["Sundiata", "Sunni Ali", "Askia"] },
+          { q: "Document signed in 1215 limiting the English king's power:", ans: "Magna Carta", wrong: ["Declaration of Independence", "Twelve Tables", "Edict of Milan"] },
+          { q: "Polymath who painted the Mona Lisa:", ans: "Leonardo da Vinci", wrong: ["Michelangelo", "Raphael", "Donatello"] },
+          { q: "Ancient civilization that relied on annual Nile flooding:", ans: "Ancient Egypt", wrong: ["Mesopotamia", "Indus Valley", "Yellow River"] },
+          { q: "Series of wars between Rome and Carthage:", ans: "Punic Wars", wrong: ["Persian Wars", "Peloponnesian Wars", "Crusades"] },
+          { q: "Philosopher sentenced to death in Athens for corrupting youth:", ans: "Socrates", wrong: ["Plato", "Aristotle", "Homer"] }
+        ]
+      }
+    };
+
+    const currentLesson = historyData[lessonId] || historyData[601];
+
+    document.getElementById('lesson-title').textContent = currentLesson.title;
+    document.getElementById('lesson-body-content').innerHTML = currentLesson.content;
+
+    function shuffleArray(array) {
+      return [...array].sort(() => Math.random() - 0.5);
+    }
+
+    let activeQuizData = [];
+
+    function renderQuizForm() {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+
+      activeQuizData = currentLesson.questions.map((item, index) => ({
+        id: index,
+        question: item.q,
+        correctAnswer: item.ans,
+        options: shuffleArray([item.ans, ...item.wrong])
+      }));
+
+      activeQuizData.forEach((item, index) => {
+        let optionsHTML = '';
+        item.options.forEach((opt) => {
+          optionsHTML += `
+            <label class="option-label">
+              <input type="radio" name="q_${index}" value="${opt}" required>
+              <span>${opt}</span>
+            </label>
+          `;
+        });
+
+        const block = document.createElement('div');
+        block.className = 'question-block';
+        block.innerHTML = `
+          <p>Question ${index + 1}: ${item.question}</p>
+          <div class="options-group">${optionsHTML}</div>
+        `;
+        container.appendChild(block);
+      });
+    }
+
+    function submitQuiz(event) {
+      event.preventDefault();
+
+      let score = 0;
+      const summaryList = document.getElementById('summary-list');
+      summaryList.innerHTML = '';
+
+      activeQuizData.forEach((item, index) => {
+        const radios = document.getElementsByName(`q_${index}`);
+        let userAns = null;
+        for (const radio of radios) {
+          if (radio.checked) {
+            userAns = radio.value;
+            break;
+          }
+        }
+
+        const isCorrect = userAns === item.correctAnswer;
+        if (isCorrect) score++;
+
+        const summaryItem = document.createElement('div');
+        summaryItem.className = `summary-item ${isCorrect ? 'correct' : 'incorrect'}`;
+        summaryItem.innerHTML = `
+          <p style="font-weight:600; margin-bottom: 0.3rem; font-size:0.95rem;">Q${index + 1}: ${item.question}</p>
+          <p style="font-size: 0.85rem; color: ${isCorrect ? '#34d399' : '#f87171'}">Your Answer: ${userAns || 'No Answer'}</p>
+          <p style="font-size: 0.85rem; color: #34d399;">Correct Answer: ${item.correctAnswer}</p>
+        `;
+        summaryList.appendChild(summaryItem);
+      });
+
+      document.getElementById('lesson-content-section').style.display = 'none';
+      document.getElementById('quiz-form-section').style.display = 'none';
+      document.getElementById('results-view').style.display = 'flex';
+
+      document.getElementById('score-summary').textContent = `You scored ${score} out of ${activeQuizData.length} correct!`;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function handleSpacedRepetition(rating) {
+      let reviewSchedules = JSON.parse(localStorage.getItem('mindly_worldhistory_spaced') || '{}');
+      const now = new Date();
+      const daysToAdd = rating === 'good' ? 4 : 1;
+      const nextReviewDate = new Date(now.setDate(now.getDate() + daysToAdd));
+
+      reviewSchedules[lessonId] = {
+        lastReviewed: new Date().toISOString(),
+        nextReview: nextReviewDate.toISOString(),
+        interval: daysToAdd
+      };
+      localStorage.setItem('mindly_worldhistory_spaced', JSON.stringify(reviewSchedules));
+
+      let completedLessons = JSON.parse(localStorage.getItem('mindly_worldhistory_completed') || '[]');
+      if (!completedLessons.includes(lessonId)) {
+        completedLessons.push(lessonId);
+        localStorage.setItem('mindly_worldhistory_completed', JSON.stringify(completedLessons));
+      }
+
+      alert(`Great job! Spaced repetition scheduled your review in ${daysToAdd} day(s). Returning to curriculum...`);
+      window.location.href = 'worldhistory-curriculum.html';
+    }
+
+    function toggleFocusMode() {
+      document.getElementById('quiz-wrapper').classList.toggle('focus-mode');
+    }
+
+    renderQuizForm();
+  </script>
+</body>
+</html>

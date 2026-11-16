@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Quiz Generator | Mindly</title>
+
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              purple: '#a855f7',
+              cyan: '#06b6d4',
+              emerald: '#10b981',
+            },
+            dark: {
+              bg: '#080811',
+              surface: '#111221',
+              card: 'rgba(18, 20, 38, 0.7)',
+              border: 'rgba(255, 255, 255, 0.08)'
+            }
+          },
+          animation: {
+            'glow-pulse': 'glowPulse 8s infinite alternate',
+            'shimmer': 'shimmer 2.5s infinite linear',
+          },
+          keyframes: {
+            glowPulse: {
+              '0%': { opacity: '0.4', transform: 'scale(0.98)' },
+              '100%': { opacity: '0.85', transform: 'scale(1.05)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #080811; }
+    ::-webkit-scrollbar-thumb { background: #21243a; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #373c5d; }
+
+    /* Glassmorphism Panel */
+    .glass-panel {
+      background: rgba(18, 20, 38, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Text Gradient */
+    .text-gradient {
+      background: linear-gradient(135deg, #ffffff 20%, #a5b4fc 60%, #c084fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Animated Border Glow */
+    .glow-border {
+      position: relative;
+    }
+    .glow-border::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.6), rgba(168, 85, 247, 0.2), rgba(6, 182, 212, 0.5));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    /* Card Spotlight Hover Effect */
+    .spotlight-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .spotlight-card::after {
+      content: '';
+      position: absolute;
+      top: var(--mouse-y, -100px);
+      left: var(--mouse-x, -100px);
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.18) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      transition: opacity 0.3s;
+      opacity: 0;
+    }
+    .spotlight-card:hover::after {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body class="bg-dark-bg text-slate-200 antialiased font-sans selection:bg-brand-500 selection:text-white min-h-screen relative overflow-x-hidden flex flex-col justify-between">
+
+  <!-- Interactive Canvas Background -->
+  <canvas id="particle-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
+
+  <!-- Glowing Background Accents -->
+  <div class="fixed top-[-10%] left-[20%] w-[500px] h-[500px] bg-brand-500/20 rounded-full blur-[140px] pointer-events-none animate-glow-pulse z-0"></div>
+  <div class="fixed top-[40%] right-[-5%] w-[600px] h-[600px] bg-brand-purple/15 rounded-full blur-[160px] pointer-events-none animate-glow-pulse z-0" style="animation-delay: 3s;"></div>
+
+  <!-- Header Navigation -->
+  <header class="sticky top-0 z-50 w-full transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="mt-4 rounded-2xl glass-panel px-5 py-3.5 flex items-center justify-between shadow-2xl">
+        <a href="dashboard.html" class="flex items-center gap-2.5 group">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-brand-500 to-brand-purple p-0.5 shadow-lg shadow-brand-500/30 group-hover:scale-105 transition-transform duration-300">
+            <div class="w-full h-full bg-dark-bg rounded-[10px] flex items-center justify-center">
+              <i class="fa-solid fa-brain text-transparent bg-clip-text bg-gradient-to-tr from-brand-400 to-brand-purple text-lg"></i>
+            </div>
+          </div>
+          <span class="text-xl font-bold tracking-tight text-white font-sans">
+            Mindly<span class="text-brand-500 font-extrabold text-2xl">.</span>
+          </span>
+        </a>
+
+        <div class="flex items-center gap-4">
+          <a href="dashboard.html" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 transition-all">Dashboard</a>
+          <a href="ai-generator.html" class="px-4 py-2 rounded-xl text-xs font-semibold text-brand-400 bg-brand-500/10 border border-brand-500/20">AI Generator ✨</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Generator Main Section -->
+  <main class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 py-12 w-full">
+    
+    <!-- CARD 1: INPUT NOTES -->
+    <div class="glass-panel spotlight-card rounded-3xl p-8 sm:p-10 border border-white/10 shadow-2xl space-y-6" id="input-card">
+      <div>
+        <span class="text-xs font-mono text-brand-purple uppercase tracking-widest bg-brand-purple/10 border border-brand-purple/20 px-3 py-1 rounded-full">Automated Study Engine</span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-white mt-3">✨ AI Study Guide Generator</h1>
+        <p class="text-slate-400 text-sm sm:text-base mt-2">Paste your notes, textbook summary, or lecture transcript below. Our intelligent parser will automatically craft an interactive evaluation for you.</p>
+      </div>
+
+      <div class="space-y-2">
+        <label class="text-xs font-mono text-slate-400 uppercase tracking-wider block">Study Guide Notes</label>
+        <textarea id="study-input" placeholder="Paste your study notes here... (e.g., Photosynthesis converts light energy into chemical energy in plants...)" class="w-full h-48 bg-dark-bg/80 border border-white/10 rounded-2xl p-4 text-slate-200 text-sm focus:outline-none focus:border-brand-500 transition-colors placeholder:text-slate-600 resize-y"></textarea>
+      </div>
+
+      <button onclick="generateQuiz()" class="w-full glow-border bg-gradient-to-r from-brand-600 via-brand-500 to-brand-purple hover:opacity-95 text-white py-4 rounded-2xl font-bold text-base shadow-xl shadow-brand-500/30 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2">
+        <span>Generate Custom Quiz</span>
+        <i class="fa-solid fa-rocket text-sm"></i>
+      </button>
+    </div>
+
+    <!-- CARD 2: GENERATED QUIZ FORM -->
+    <div class="glass-panel spotlight-card rounded-3xl p-8 sm:p-10 border border-white/10 shadow-2xl space-y-6 hidden" id="quiz-section">
+      <div class="flex items-center justify-between border-b border-white/10 pb-4">
+        <div>
+          <button onclick="resetGenerator()" class="text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5 mb-2">
+            <i class="fa-solid fa-arrow-left"></i> Generate New Quiz
+          </button>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-white">Interactive Knowledge Test</h1>
+        </div>
+        <span class="text-xs font-mono text-brand-emerald bg-brand-emerald/10 border border-brand-emerald/20 px-3 py-1 rounded-full">Live Quiz</span>
+      </div>
+
+      <form id="ai-quiz-form" onsubmit="submitAIQuiz(event)" class="space-y-6">
+        <div id="ai-questions-container" class="space-y-6"></div>
+
+        <button type="submit" class="w-full glow-border bg-gradient-to-r from-brand-emerald to-brand-cyan hover:opacity-95 text-slate-950 font-black py-4 rounded-2xl text-base shadow-xl shadow-brand-emerald/20 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2">
+          <span>Submit Answers & Claim XP</span>
+          <i class="fa-solid fa-trophy text-sm"></i>
+        </button>
+      </form>
+    </div>
+
+    <!-- CARD 3: QUIZ RESULTS -->
+    <div class="glass-panel spotlight-card rounded-3xl p-8 sm:p-10 border border-white/10 shadow-2xl space-y-6 hidden" id="results-view">
+      <div class="text-center space-y-2">
+        <div class="text-5xl mb-2">🏆</div>
+        <h1 class="text-3xl font-extrabold text-white">Quiz Evaluation Completed</h1>
+        <p id="score-summary" class="text-brand-emerald font-bold text-lg"></p>
+      </div>
+
+      <div class="space-y-3">
+        <h3 class="text-sm font-bold text-slate-300 font-mono uppercase tracking-wider">Breakdown Review</h3>
+        <div id="summary-list" class="space-y-3 max-h-96 overflow-y-auto pr-1"></div>
+      </div>
+
+      <button onclick="resetGenerator()" class="w-full py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold rounded-2xl transition">
+        Create Another Quiz 🔄
+      </button>
+    </div>
+
+  </main>
+
+  <footer class="py-6 text-center text-xs text-slate-600 border-t border-white/5 relative z-10">
+    <p>&copy; 2026 Mindly Technologies. All rights reserved.</p>
+  </footer>
+
+  <!-- Script Architecture -->
+  <script>
+    let generatedQuestions = [];
+
+    function shuffleArray(arr) {
+      return [...arr].sort(() => Math.random() - 0.5);
+    }
+
+    function generateQuiz() {
+      const text = document.getElementById('study-input').value.trim();
+      if (!text || text.length < 20) {
+        alert('Please paste a bit more text from your study guide to generate meaningful questions!');
+        return;
+      }
+
+      const sentences = text.split(/[\.\?!]\s+/).filter(s => s.trim().length > 15);
+      if (sentences.length < 3) {
+        alert('Please provide a few more complete sentences in your study guide.');
+        return;
+      }
+
+      generatedQuestions = [];
+      sentences.forEach(sentence => {
+        const words = sentence.split(' ');
+        if (words.length > 5) {
+          const keywordIdx = Math.floor(Math.random() * (words.length - 3)) + 2;
+          const keyword = words[keywordIdx].replace(/[^a-zA-Z]/g, '');
+          if (keyword.length > 3) {
+            words[keywordIdx] = '______';
+            generatedQuestions.push({
+              question: `Identify the missing term: "${words.join(' ')}"`,
+              correct: keyword,
+              wrong: [keyword + 's', 'Alternative ' + keyword, 'Primary ' + keyword]
+            });
+          }
+        }
+      });
+
+      generatedQuestions = shuffleArray(generatedQuestions).slice(0, 10);
+
+      const container = document.getElementById('ai-questions-container');
+      container.innerHTML = '';
+
+      generatedQuestions.forEach((item, index) => {
+        const options = shuffleArray([item.correct, ...item.wrong]);
+        let optionsHTML = '';
+        options.forEach(opt => {
+          optionsHTML += `
+            <label class="flex items-center gap-3 p-3.5 rounded-xl bg-dark-bg/60 border border-white/5 cursor-pointer hover:border-brand-500/40 hover:bg-brand-500/5 transition">
+              <input type="radio" name="ai_q_${index}" value="${opt}" required class="accent-brand-500 w-4 h-4">
+              <span class="text-xs sm:text-sm text-slate-300 font-medium">${opt}</span>
+            </label>
+          `;
+        });
+
+        const block = document.createElement('div');
+        block.className = 'glass-panel p-5 rounded-2xl border border-white/5 space-y-3';
+        block.innerHTML = `
+          <div class="font-bold text-sm sm:text-base text-white flex items-center gap-2">
+            <span class="w-6 h-6 rounded-lg bg-brand-500/20 text-brand-300 text-xs flex items-center justify-center font-bold">${index + 1}</span>
+            ${item.question}
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">${optionsHTML}</div>
+        `;
+        container.appendChild(block);
+      });
+
+      document.getElementById('input-card').classList.add('hidden');
+      document.getElementById('quiz-section').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function submitAIQuiz(event) {
+      event.preventDefault();
+      let score = 0;
+      const summaryList = document.getElementById('summary-list');
+      summaryList.innerHTML = '';
+
+      generatedQuestions.forEach((item, index) => {
+        const radios = document.getElementsByName(`ai_q_${index}`);
+        let userAns = null;
+        for (const radio of radios) {
+          if (radio.checked) { userAns = radio.value; break; }
+        }
+
+        const isCorrect = userAns === item.correct;
+        if (isCorrect) score++;
+
+        const summaryItem = document.createElement('div');
+        summaryItem.className = `p-4 rounded-xl border text-xs sm:text-sm ${isCorrect ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300' : 'bg-red-500/10 border-red-500/30 text-red-300'}`;
+        summaryItem.innerHTML = `
+          <p class="font-bold text-white mb-1">Q${index + 1}: ${item.question}</p>
+          <p class="${isCorrect ? 'text-emerald-400' : 'text-red-400'}">Your Answer: ${userAns || 'None'}</p>
+          <p class="text-emerald-400 font-semibold">Correct Answer: ${item.correct}</p>
+        `;
+        summaryList.appendChild(summaryItem);
+      });
+
+      document.getElementById('quiz-section').classList.add('hidden');
+      document.getElementById('results-view').classList.remove('hidden');
+      document.getElementById('score-summary').textContent = `You scored ${score} out of ${generatedQuestions.length} correct!`;
+
+      const xpEarned = score * 50;
+      let currentXP = parseInt(localStorage.getItem('mindly_ai_xp') || '0') + xpEarned;
+      localStorage.setItem('mindly_ai_xp', currentXP);
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetGenerator() {
+      document.getElementById('study-input').value = '';
+      document.getElementById('results-view').classList.add('hidden');
+      document.getElementById('quiz-section').classList.add('hidden');
+      document.getElementById('input-card').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Mouse Spotlight Follower
+    document.addEventListener('mousemove', (e) => {
+      document.querySelectorAll('.spotlight-card').forEach(card => {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+        card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+      });
+    });
+
+    // Ambient Particle Canvas
+    (function initParticles() {
+      const canvas = document.getElementById('particle-canvas');
+      const ctx = canvas.getContext('2d');
+      let w = canvas.width = window.innerWidth;
+      let h = canvas.height = window.innerHeight;
+      const particles = Array.from({ length: 40 }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        radius: Math.random() * 2 + 0.5,
+        alpha: Math.random() * 0.4 + 0.2,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3
+      }));
+
+      function render() {
+        ctx.clearRect(0, 0, w, h);
+        particles.forEach(p => {
+          ctx.fillStyle = `rgba(168, 85, 247, ${p.alpha})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+          p.x += p.vx; p.y += p.vy;
+          if (p.x < 0) p.x = w; if (p.x > w) p.x = 0;
+          if (p.y < 0) p.y = h; if (p.y > h) p.y = 0;
+        });
+        requestAnimationFrame(render);
+      }
+      render();
+      window.addEventListener('resize', () => {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      });
+    })();
+  </script>
+</body>
+</html>

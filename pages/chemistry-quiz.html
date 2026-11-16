@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chemistry Study & Practice | Mindly</title>
+  <link rel="stylesheet" href="../index.css">
+  <style>
+    .top-nav {
+      width: 100%;
+      background: rgba(25, 25, 35, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 1rem 2rem;
+    }
+
+    .nav-container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #06b6d4, #a855f7);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      list-style: none;
+    }
+
+    .nav-link {
+      color: #d4d4d8;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: #06b6d4;
+    }
+
+    .quiz-wrapper {
+      min-height: calc(100vh - 70px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem 1.5rem;
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s ease;
+    }
+
+    .quiz-wrapper.focus-mode .hide-in-focus {
+      display: none !important;
+    }
+
+    .quiz-container {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .card {
+      background: rgba(25, 25, 35, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .quiz-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .focus-toggle-btn {
+      background: rgba(6, 182, 212, 0.2);
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      color: #06b6d4;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .focus-toggle-btn:hover {
+      background: rgba(6, 182, 212, 0.4);
+      color: #ffffff;
+    }
+
+    h1, h2 {
+      font-weight: 800;
+      background: linear-gradient(135deg, #06b6d4, #a855f7);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.4rem; margin-top: 1rem; }
+
+    .lesson-body {
+      color: #d4d4d8;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .example-box {
+      background: rgba(15, 15, 20, 0.8);
+      border-left: 4px solid #06b6d4;
+      padding: 1.25rem;
+      border-radius: 0 10px 10px 0;
+      margin: 0.5rem 0;
+      font-family: monospace;
+      color: #f4f4f5;
+    }
+
+    .question-block {
+      background: rgba(15, 15, 20, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .question-block p {
+      font-size: 1.05rem;
+      color: #f4f4f5;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .options-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: rgba(25, 25, 35, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: #e4e4e7;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.95rem;
+    }
+
+    .option-label:hover {
+      background: rgba(6, 182, 212, 0.15);
+      border-color: rgba(6, 182, 212, 0.4);
+    }
+
+    .option-label input[type="radio"] {
+      accent-color: #06b6d4;
+      cursor: pointer;
+    }
+
+    .btn-action {
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 12px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+      width: 100%;
+      margin-top: 1.5rem;
+      background: linear-gradient(135deg, #06b6d4, #a855f7);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+    }
+
+    .btn-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.6);
+    }
+
+    #results-view {
+      display: none;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .summary-item {
+      padding: 1rem;
+      background: rgba(15, 15, 20, 0.8);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .summary-item.correct { border-color: rgba(52, 211, 153, 0.5); }
+    .summary-item.incorrect { border-color: rgba(248, 113, 113, 0.5); }
+
+    .back-link {
+      color: #a1a1aa;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+    .back-link:hover { color: #ffffff; }
+  </style>
+</head>
+<body>
+
+  <div class="bg-glow"></div>
+
+  <nav class="top-nav">
+    <div class="nav-container">
+      <a href="dashboard.html" class="nav-logo">Mindly</a>
+      <ul class="nav-menu">
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="chemistry-curriculum.html" class="nav-link active">Chemistry Roadmap</a></li>
+        <li><a href="dashboard.html" class="nav-link">Home</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="quiz-wrapper" id="quiz-wrapper">
+    <div class="quiz-container">
+      
+      <div class="quiz-top-bar hide-in-focus">
+        <a href="chemistry-curriculum.html" class="back-link">← Back to Chemistry Curriculum</a>
+        <button class="focus-toggle-btn" onclick="toggleFocusMode()">✨ Toggle Deep Focus Mode</button>
+      </div>
+
+      <div class="card">
+        <div id="lesson-content-section">
+          <h1 id="lesson-title">Loading Lesson...</h1>
+          <div class="lesson-body" id="lesson-body-content"></div>
+        </div>
+
+        <div id="quiz-form-section">
+          <h2>Practice Quiz (15 Questions)</h2>
+          <p style="color: #a1a1aa; margin-bottom: 2rem; font-size: 0.95rem;">Read the lesson above, then answer all 15 questions below and submit to evaluate your understanding.</p>
+          
+          <form id="quiz-form" onsubmit="submitQuiz(event)">
+            <div id="questions-container"></div>
+            <button type="submit" class="btn-action">Submit Quiz & View Results 🚀</button>
+          </form>
+        </div>
+
+        <div id="results-view">
+          <h2>Quiz Results & Performance</h2>
+          <p id="score-summary" style="color: #34d399; font-weight: 600; font-size: 1.1rem;"></p>
+          
+          <div style="background: rgba(6, 182, 212, 0.08); border: 1px solid rgba(6, 182, 212, 0.2); border-radius: 15px; padding: 1.5rem; margin: 1rem 0;">
+            <h4 style="color: #06b6d4; font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">🧠 Smart Spaced Repetition Scheduling</h4>
+            <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 1rem;">Rate your mastery confidence to set your next review interval:</p>
+            <div style="display: flex; gap: 1rem;">
+              <button type="button" onclick="handleSpacedRepetition('hard')" style="flex:1; padding:0.75rem; border-radius:8px; font-weight:600; cursor:pointer; background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4);">Need Review Soon (1 Day)</button>
+              <button type="button" onclick="handleSpacedRepetition('good')" style="flex:1; padding:0.75rem; border-radius:8px; font-weight:600; cursor:pointer; background: rgba(52, 211, 153, 0.2); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.4);">Mastered! (4 Days)</button>
+            </div>
+          </div>
+
+          <div id="summary-list" style="display: flex; flex-direction: column; gap: 1rem; max-height: 450px; overflow-y: auto;"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const lessonId = parseInt(urlParams.get('lesson')) || 501;
+
+    const chemistryData = {
+      501: {
+        title: "Lesson 501: States of Matter and Phase Changes",
+        content: `
+          <p>• **Solid:** Definite shape and volume.<br>
+          • **Liquid:** Definite volume, takes shape of container.<br>
+          • **Gas:** No definite shape or volume.<br>
+          Phase changes occur when heat is added or removed (e.g., Sublimation: Solid $\\rightarrow$ Gas directly).</p>
+          <div class="example-box">Example: Ice melting into water is an endothermic phase change (absorbs energy).</div>
+        `,
+        questions: [
+          { q: "Which state of matter has a definite volume but no definite shape?", ans: "Liquid", wrong: ["Solid", "Gas", "Plasma"] },
+          { q: "The phase change directly from solid to gas is called:", ans: "Sublimation", wrong: ["Evaporation", "Deposition", "Condensation"] },
+          { q: "The phase change from gas directly to solid is called:", ans: "Deposition", wrong: ["Sublimation", "Freezing", "Melting"] },
+          { q: "Which state of matter has high kinetic energy and fills its entire container?", ans: "Gas", wrong: ["Solid", "Liquid", "Crystal"] },
+          { q: "Melting and vaporization are examples of processes that are:", ans: "Endothermic (absorb heat)", wrong: ["Exothermic (release heat)", "Isothermal", "Nuclear"] },
+          { q: "Freezing and condensation are examples of processes that are:", ans: "Exothermic (release heat)", wrong: ["Endothermic (absorb heat)", "Sublimative", "Anabolic"] },
+          { q: "What happens to temperature during a pure phase change?", ans: "Stays constant", wrong: ["Increases rapidly", "Decreases rapidly", "Fluctuates wildly"] },
+          { q: "The temperature at which a liquid turns into a gas is its:", ans: "Boiling point", wrong: ["Melting point", "Freezing point", "Critical point"] },
+          { q: "State of matter consisting of ionized gas with free electrons is:", ans: "Plasma", wrong: ["Liquid", "Solid", "Vapor"] },
+          { q: "Particles in a solid are arranged in a pattern described as:", ans: "Tightly packed and vibrating in fixed positions", wrong: ["Freely flowing past each other", "Bouncing wildly at high speeds", "Ionized"] },
+          { q: "Condensation is the transition from:", ans: "Gas to liquid", wrong: ["Liquid to gas", "Solid to liquid", "Gas to solid"] },
+          { q: "Which property measures a liquid's resistance to flow?", ans: "Viscosity", wrong: ["Density", "Solubility", "Molarity"] },
+          { q: "Dry ice (solid CO₂) turning into CO₂ gas at room temperature is:", ans: "Sublimation", wrong: ["Melting", "Evaporation", "Deposition"] },
+          { q: "As temperature increases, average kinetic energy of molecules:", ans: "Increases", wrong: ["Decreases", "Stays constant", "Becomes zero"] },
+          { q: "What is absolute zero in Celsius?", ans: "-273.15 °C", wrong: ["0 °C", "100 °C", "-100 °C"] }
+        ]
+      },
+      502: {
+        title: "Lesson 502: Atomic Structure, Subatomic Particles & Isotopes",
+        content: `
+          <p>• **Protons:** Positive charge ($+1$), mass $\\approx 1$ amu (in nucleus).<br>
+          • **Neutrons:** Neutral charge ($0$), mass $\\approx 1$ amu (in nucleus).<br>
+          • **Electrons:** Negative charge ($-1$), mass $\\approx 0$ amu (in electron cloud).<br>
+          • **Isotopes:** Atoms of the same element with different numbers of neutrons.</p>
+          <div class="example-box">Example: Carbon-12 has 6 protons and 6 neutrons; Carbon-14 has 6 protons and 8 neutrons.</div>
+        `,
+        questions: [
+          { q: "What subatomic particle determines the identity of an element (atomic number)?", ans: "Protons", wrong: ["Neutrons", "Electrons", "Photons"] },
+          { q: "Where are protons and neutrons located in an atom?", ans: "In the nucleus", wrong: ["In the electron cloud", "Orbiting outside", "In the valence shell"] },
+          { q: "What charge does a neutron have?", ans: "Neutral (0)", wrong: ["Positive (+1)", "Negative (-1)", "Variable"] },
+          { q: "What charge does an electron have?", ans: "Negative (-1)", wrong: ["Positive (+1)", "Neutral (0)", "+2"] },
+          { q: "Isotopes of the same element have different numbers of:", ans: "Neutrons", wrong: ["Protons", "Electrons", "Positrons"] },
+          { q: "How do you calculate the mass number of an atom?", ans: "Protons + Neutrons", wrong: ["Protons + Electrons", "Neutrons - Protons", "Atomic number * 2"] },
+          { q: "If Carbon has atomic number 6 and mass number 14, how many neutrons does it have?", ans: "8", wrong: ["6", "14", "20"] },
+          { q: "A neutral atom has equal numbers of:", ans: "Protons and electrons", wrong: ["Protons and neutrons", "Neutrons and electrons", "Quarks and leptons"] },
+          { q: "If an atom loses an electron, it becomes a positively charged ion called a:", ans: "Cation", wrong: ["Anion", "Isotope", "Neutron"] },
+          { q: "If an atom gains an electron, it becomes a negatively charged ion called an:", ans: "Anion", wrong: ["Cation", "Isotope", "Proton"] },
+          { q: "Which model describes electrons residing in cloud-like probability regions?", ans: "Quantum Mechanical Model", wrong: ["Bohr Model", "Plum Pudding Model", "Dalton Solid Sphere"] },
+          { q: "Who discovered the nucleus via the Gold Foil Experiment?", ans: "Ernest Rutherford", wrong: ["J.J. Thomson", "John Dalton", "Niels Bohr"] },
+          { q: "Valence electrons are located in the atom's:", ans: "Outermost electron shell", wrong: ["Nucleus", "Inner shell", "Proton core"] },
+          { q: "An atom with 11 protons, 12 neutrons, and 10 electrons has a charge of:", ans: "+1", wrong: ["-1", "0", "+2"] },
+          { q: "Electrons closest to the nucleus have the:", ans: "Lowest energy level", wrong: ["Highest energy level", "Zero mass", "Positive charge"] }
+        ]
+      },
+      503: {
+        title: "Lesson 503: The Periodic Table and Periodic Trends",
+        content: `
+          <p>• **Groups (Columns):** Elements share similar chemical properties due to equal valence electrons.<br>
+          • **Electronegativity & Ionization Energy:** Increase moving **Up and Right**.<br>
+          • **Atomic Radius:** Increases moving **Down and Left**.</p>
+          <div class="example-box">Example: Fluorine (F) is the most electronegative element on the periodic table.</div>
+        `,
+        questions: [
+          { q: "Elements in the same group (column) on the periodic table have the same number of:", ans: "Valence electrons", wrong: ["Total electron shells", "Protons", "Neutrons"] },
+          { q: "Group 1 elements (except Hydrogen) are known as:", ans: "Alkali metals", wrong: ["Alkaline earth metals", "Halogens", "Noble gases"] },
+          { q: "Group 18 elements are unreactive gases known as:", ans: "Noble gases", wrong: ["Halogens", "Alkali metals", "Transition metals"] },
+          { q: "As you move across a period from left to right, atomic radius generally:", ans: "Decreases", wrong: ["Increases", "Stays the same", "Doubles"] },
+          { q: "As you move down a group, atomic radius generally:", ans: "Increases", wrong: ["Decreases", "Stays constant", "Becomes zero"] },
+          { q: "Which element is the most electronegative on the periodic table?", ans: "Fluorine (F)", wrong: ["Francium (Fr)", "Oxygen (O)", "Helium (He)"] },
+          { q: "Group 17 elements (F, Cl, Br, I) are known as:", ans: "Halogens", wrong: ["Noble gases", "Alkali metals", "Metalloids"] },
+          { q: "Elements with properties of both metals and nonmetals are called:", ans: "Metalloids (Semimetals)", wrong: ["Transition metals", "Halogens", "Noble gases"] },
+          { q: "Horizontal rows on the periodic table are called:", ans: "Periods", wrong: ["Groups", "Families", "Blocks"] },
+          { q: "Ionization energy is the energy required to:", ans: "Remove an electron from an atom", wrong: ["Add a proton", "Split the nucleus", "Melt a metal"] },
+          { q: "Most elements on the periodic table are classified as:", ans: "Metals", wrong: ["Nonmetals", "Metalloids", "Gases"] },
+          { q: "Alkaline earth metals are found in which group?", ans: "Group 2", wrong: ["Group 1", "Group 17", "Group 18"] },
+          { q: "Transition metals occupy which block of the periodic table?", ans: "d-block (Groups 3-12)", wrong: ["s-block", "p-block", "f-block"] },
+          { q: "Which noble gas has only 2 valence electrons?", ans: "Helium (He)", wrong: ["Neon (Ne)", "Argon (Ar)", "Krypton (Kr)"] },
+          { q: "Electronegativity measures an atom's ability to:", ans: "Attract electrons in a chemical bond", wrong: ["Repel neutrons", "Conduct electricity", "Absorb heat"] }
+        ]
+      },
+      504: {
+        title: "Lesson 504: Ionic vs. Covalent Bonding",
+        content: `
+          <p>• **Ionic Bonding:** Transfer of electrons from a **metal** to a **nonmetal**.<br>
+          • **Covalent Bonding:** Sharing of electrons between two **nonmetals**.<br>
+          • **Octet Rule:** Atoms gain, lose, or share electrons to achieve 8 valence electrons.</p>
+          <div class="example-box">Example: NaCl is Ionic (metal + nonmetal); H₂O is Covalent (nonmetal + nonmetal).</div>
+        `,
+        questions: [
+          { q: "Ionic bonding involves the transfer of electrons between a:", ans: "Metal and a nonmetal", wrong: ["Nonmetal and a nonmetal", "Metal and a metal", "Noble gas and a nonmetal"] },
+          { q: "Covalent bonding involves the sharing of electrons between:", ans: "Two nonmetals", wrong: ["A metal and a nonmetal", "Two metals", "A metal and a noble gas"] },
+          { q: "What is the Octet Rule?", ans: "Atoms tend to react to achieve 8 valence electrons", wrong: ["Atoms always have 8 protons", "Bonds always contain 8 electrons", "Mass equals 8 amu"] },
+          { q: "Which compound contains ionic bonds?", ans: "NaCl", wrong: ["H₂O", "CO₂", "CH₄"] },
+          { q: "Which compound contains covalent bonds?", ans: "H₂O", wrong: ["KBr", "CaCl₂", "MgO"] },
+          { q: "A covalent bond where electrons are shared unequally is called:", ans: "Polar covalent bond", wrong: ["Nonpolar covalent bond", "Ionic bond", "Metallic bond"] },
+          { q: "A covalent bond where electrons are shared equally is called:", ans: "Nonpolar covalent bond", wrong: ["Polar covalent bond", "Ionic bond", "Hydrogen bond"] },
+          { q: "What type of bonding involves a 'sea of mobile electrons' surrounding positive metal ions?", ans: "Metallic bonding", wrong: ["Ionic bonding", "Covalent bonding", "Hydrogen bonding"] },
+          { q: "Ionic compounds typically have high:", ans: "Melting and boiling points", wrong: ["Volatility", "Flammability", "Gaseous states at room temp"] },
+          { q: "How many electrons are shared in a single covalent bond?", ans: "2", wrong: ["1", "4", "6"] },
+          { q: "How many electrons are shared in a double covalent bond?", ans: "4", wrong: ["2", "6", "8"] },
+          { q: "How many electrons are shared in a triple covalent bond (e.g., N₂)?", ans: "6", wrong: ["3", "4", "8"] },
+          { q: "In an ionic bond between Sodium (Na) and Chlorine (Cl), Sodium:", ans: "Loses 1 electron to become Na⁺", wrong: ["Gains 1 electron", "Shares 2 electrons", "Loses 2 protons"] },
+          { q: "Which diatomic molecule contains a triple covalent bond?", ans: "N₂", wrong: ["O₂", "H₂", "Cl₂"] },
+          { q: "Ionic compounds conduct electricity when:", ans: "Dissolved in water or melted", wrong: ["In solid form", "Frozen", "In a vacuum"] }
+        ]
+      },
+      505: {
+        title: "Lesson 505: Naming Chemical Compounds and Writing Formulas",
+        content: `
+          <p>• **Ionic Naming:** Name cation first, anion second with '-ide' ending (e.g., $NaCl = $ Sodium Chloride).<br>
+          • **Covalent Naming:** Use Greek prefixes (mono-, di-, tri-, tetra-) (e.g., $CO_2 = $ Carbon Dioxide).</p>
+          <div class="example-box">Example: N₂O₄ is Dinitrogen Tetroxide; MgF₂ is Magnesium Fluoride.</div>
+        `,
+        questions: [
+          { q: "What is the chemical name for NaCl?", ans: "Sodium chloride", wrong: ["Sodium chlorine", "Monosodium monochloride", "Sodium chlorate"] },
+          { q: "What is the chemical name for CO₂ using covalent prefix rules?", ans: "Carbon dioxide", wrong: ["Monocarbon dioxide", "Carbon oxide", "Dicarbon oxide"] },
+          { q: "What is the chemical formula for Magnesium Fluoride? (Mg²⁺ and F⁻)", ans: "MgF₂", wrong: ["MgF", "Mg₂F", "MgF₃"] },
+          { q: "What prefix represents '4' in covalent naming?", ans: "Tetra-", wrong: ["Tri-", "Penta-", "Di-"] },
+          { q: "What prefix represents '5' in covalent naming?", ans: "Penta-", wrong: ["Hexa-", "Tetra-", "Octa-"] },
+          { q: "What is the name of N₂O?", ans: "Dinitrogen monoxide", wrong: ["Nitrogen oxide", "Dinitrogen oxide", "Nitrogen dioxide"] },
+          { q: "Polyatomic ion SO₄²⁻ is named:", ans: "Sulfate", wrong: ["Sulfite", "Sulfide", "Sulfur oxide"] },
+          { q: "Polyatomic ion NO₃⁻ is named:", ans: "Nitrate", wrong: ["Nitrite", "Nitride", "Nitrogen oxide"] },
+          { q: "What is the formula for Aluminum Oxide? (Al³⁺ and O²⁻)", ans: "Al₂O₃", wrong: ["AlO", "Al₃O₂", "AlO₂"] },
+          { q: "Roman numerals in names like Iron(III) Chloride indicate the:", ans: "Charge of the transition metal cation (+3)", wrong: ["Number of iron atoms", "Number of chlorine atoms", "Period number"] },
+          { q: "What is the formula for Carbon Tetrachloride?", ans: "CCl₄", wrong: ["C₄Cl", "CCl", "C₂Cl₄"] },
+          { q: "Binary acids containing Hydrogen and a halogen start with the prefix:", ans: "Hydro-", wrong: ["Per-", "Hypo-", "Poly-"] },
+          { q: "What is the formula for Water?", ans: "H₂O", wrong: ["HO₂", "H₂O₂", "HO"] },
+          { q: "What is the formula for Ammonium ion?", ans: "NH₄⁺", wrong: ["NH₃", "NO₃⁻", "NH₂⁻"] },
+          { q: "What is the formula for Calcium Hydroxide? (Ca²⁺ and OH⁻)", ans: "Ca(OH)₂", wrong: ["CaOH₂", "CaOH", "Ca₂OH"] }
+        ]
+      },
+      506: {
+        title: "Lesson 506: Balancing Chemical Equations",
+        content: `
+          <p>The **Law of Conservation of Mass** dictates that the number of atoms of each element must be equal on both sides of a chemical reaction. Adjust **coefficients**, never subscripts!</p>
+          <div class="example-box">Example: Balance H₂ + O₂ $\\rightarrow$ H₂O $\\rightarrow$ 2H₂ + O₂ $\\rightarrow$ 2H₂O</div>
+        `,
+        questions: [
+          { q: "The Law of Conservation of Mass states that in a chemical reaction:", ans: "Mass is neither created nor destroyed", wrong: ["Mass increases", "Reactants lose mass", "Atoms turn into energy"] },
+          { q: "To balance an equation, you are allowed to change:", ans: "Coefficients only", wrong: ["Subscripts only", "Both coefficients and subscripts", "Element symbols"] },
+          { q: "In the equation 2H₂ + O₂ → 2H₂O, the reactants are:", ans: "H₂ and O₂", wrong: ["H₂O only", "H₂ only", "O₂ only"] },
+          { q: "Balance: _ H₂ + _ O₂ → 2 H₂O. What is coefficient for H₂?", ans: "2", wrong: ["1", "3", "4"] },
+          { q: "In 3 Ca(NO₃)₂, how many total Nitrogen atoms are present?", ans: "6", wrong: ["2", "3", "18"] },
+          { q: "In 3 Ca(NO₃)₂, how many total Oxygen atoms are present?", ans: "18", wrong: ["6", "9", "12"] },
+          { q: "Balance: N₂ + 3 H₂ → _ NH₃. What is the coefficient for NH₃?", ans: "2", wrong: ["1", "3", "6"] },
+          { q: "What type of reaction is A + B → AB?", ans: "Synthesis (Combination)", wrong: ["Decomposition", "Single Replacement", "Double Replacement"] },
+          { q: "What type of reaction is AB → A + B?", ans: "Decomposition", wrong: ["Synthesis", "Combustion", "Single Replacement"] },
+          { q: "What type of reaction is Hydrocarbon + O₂ → CO₂ + H₂O?", ans: "Combustion", wrong: ["Synthesis", "Decomposition", "Double Replacement"] },
+          { q: "Balance: _ Fe + 3 Cl₂ → 2 FeCl₃. Coefficient for Fe is:", ans: "2", wrong: ["1", "3", "4"] },
+          { q: "What type of reaction is Zn + 2 HCl → ZnCl₂ + H₂?", ans: "Single Replacement", wrong: ["Double Replacement", "Synthesis", "Combustion"] },
+          { q: "What type of reaction is AgNO₃ + NaCl → AgCl + NaNO₃?", ans: "Double Replacement", wrong: ["Single Replacement", "Decomposition", "Synthesis"] },
+          { q: "What are the starting materials in a chemical reaction called?", ans: "Reactants", wrong: ["Products", "Catalysts", "Solvents"] },
+          { q: "What are the substance(s) formed in a chemical reaction called?", ans: "Products", wrong: ["Reactants", "Precipitates", "Reagents"] }
+        ]
+      },
+      507: {
+        title: "Lesson 507: The Mole Concept and Molar Mass",
+        content: `
+          <p>• **Avogadro's Number:** $1 \\text{ mole} = 6.022 \\times 10^{23} \\text{ particles}$.<br>
+          • **Molar Mass:** Sum of atomic masses of all atoms in a formula (in g/mol).<br>
+          • **Moles to Mass:** $\\text{Mass (g)} = \\text{Moles} \\times \\text{Molar Mass}$.</p>
+          <div class="example-box">Example: Molar mass of H₂O = (2 * 1.01) + 16.00 = 18.02 g/mol. 2 moles = 36.04 g.</div>
+        `,
+        questions: [
+          { q: "What is Avogadro's number?", ans: "6.022 × 10²³", wrong: ["3.00 × 10⁸", "9.81 × 10²", "1.60 × 10⁻¹⁹"] },
+          { q: "How many atoms are in 1 mole of Pure Carbon?", ans: "6.022 × 10²³ atoms", wrong: ["12 atoms", "1 atom", "100 atoms"] },
+          { q: "What is the molar mass of Water (H₂O)? (H=1, O=16)", ans: "18 g/mol", wrong: ["17 g/mol", "33 g/mol", "16 g/mol"] },
+          { q: "What is the molar mass of Carbon Dioxide (CO₂)? (C=12, O=16)", ans: "44 g/mol", wrong: ["28 g/mol", "32 g/mol", "56 g/mol"] },
+          { q: "How many moles are in 36 grams of Water (H₂O = 18 g/mol)?", ans: "2 moles", wrong: ["0.5 moles", "1 mole", "18 moles"] },
+          { q: "What is the mass of 0.5 moles of O₂ gas? (O₂ = 32 g/mol)", ans: "16 grams", wrong: ["32 grams", "64 grams", "8 grams"] },
+          { q: "What unit is molar mass expressed in?", ans: "g/mol", wrong: ["amu", "moles/L", "grams"] },
+          { q: "One mole of any ideal gas at STP occupies what volume?", ans: "22.4 Liters", wrong: ["10.0 Liters", "1.0 Liter", "100 Liters"] },
+          { q: "How many moles of gas are in 44.8 Liters at STP?", ans: "2 moles", wrong: ["1 mole", "0.5 moles", "44.8 moles"] },
+          { q: "What does STP stand for in chemistry?", ans: "Standard Temperature and Pressure (0 °C, 1 atm)", wrong: ["Standard Time and Power", "Solid Temperature Phase", "System Thermal Pressure"] },
+          { q: "Molar mass of Sodium Chloride (NaCl)? (Na=23, Cl=35.5)", ans: "58.5 g/mol", wrong: ["58 g/mol", "46 g/mol", "71 g/mol"] },
+          { q: "If you have 1.204 × 10²⁴ molecules of H₂O, how many moles is that?", ans: "2 moles", wrong: ["1 mole", "4 moles", "0.5 moles"] },
+          { q: "Percent composition calculated by:", ans: "(Mass of element / Total molar mass) × 100%", wrong: ["(Total mass / Element mass)", "Element atomic number × 100", "Volume / Mass"] },
+          { q: "Empirical formula represents the:", ans: "Simplest whole-number ratio of atoms in a compound", wrong: ["Actual number of atoms", "Molecular shape", "Mass percentage"] },
+          { q: "Molecular formula of glucose is C₆H₁₂O₆. Its empirical formula is:", ans: "CH₂O", wrong: ["CHO", "C₂H₄O₂", "CH₃O"] }
+        ]
+      },
+      508: {
+        title: "Lesson 508: 🏆 Chemistry Unit 1 Mastery Test",
+        content: `
+          <p>Congratulations on reaching the capstone Chemistry assessment! This test covers comprehensive material from all Unit 1 lessons including states of matter, subatomic particles, isotopes, periodic trends, ionic/covalent bonding, nomenclature, chemical equation balancing, and stoichiometry.</p>
+        `,
+        questions: [
+          { q: "What particle determines the atomic number of an element?", ans: "Proton", wrong: ["Neutron", "Electron", "Quark"] },
+          { q: "Which bond type involves electron sharing between nonmetals?", ans: "Covalent", wrong: ["Ionic", "Metallic", "Hydrogen"] },
+          { q: "What is the molar mass of CO₂? (C=12, O=16)", ans: "44 g/mol", wrong: ["28 g/mol", "32 g/mol", "56 g/mol"] },
+          { q: "What phase change converts solid directly to gas?", ans: "Sublimation", wrong: ["Deposition", "Melting", "Evaporation"] },
+          { q: "Avogadro's number equals:", ans: "6.022 × 10²³", wrong: ["3.00 × 10⁸", "9.81 × 10²", "1.60 × 10⁻¹⁹"] },
+          { q: "Most electronegative element on the periodic table is:", ans: "Fluorine (F)", wrong: ["Oxygen (O)", "Francium (Fr)", "Chlorine (Cl)"] },
+          { q: "Balance: N₂ + 3 H₂ → _ NH₃. Coefficient for NH₃ is:", ans: "2", wrong: ["1", "3", "6"] },
+          { q: "What charge does an anion have?", ans: "Negative (-)", wrong: ["Positive (+)", "Neutral (0)", "+2"] },
+          { q: "Chemical formula for Magnesium Chloride (Mg²⁺ and Cl⁻)?", ans: "MgCl₂", wrong: ["MgCl", "Mg₂Cl", "MgCl₃"] },
+          { q: "At STP, 1 mole of gas occupies:", ans: "22.4 Liters", wrong: ["11.2 Liters", "44.8 Liters", "1.0 Liter"] },
+          { q: "Isotopes have different numbers of:", ans: "Neutrons", wrong: ["Protons", "Electrons", "Positrons"] },
+          { q: "Atomic radius increases moving:", ans: "Down and Left on the periodic table", wrong: ["Up and Right", "Up and Left", "Down and Right"] },
+          { q: "In 2 H₂O, how many total Hydrogen atoms are present?", ans: "4", wrong: ["2", "1", "8"] },
+          { q: "Prefix for 4 in covalent naming is:", ans: "Tetra-", wrong: ["Tri-", "Penta-", "Di-"] },
+          { q: "Reaction type AB → A + B is called:", ans: "Decomposition", wrong: ["Synthesis", "Combustion", "Single Replacement"] }
+        ]
+      }
+    };
+
+    const currentLesson = chemistryData[lessonId] || chemistryData[501];
+
+    document.getElementById('lesson-title').textContent = currentLesson.title;
+    document.getElementById('lesson-body-content').innerHTML = currentLesson.content;
+
+    function shuffleArray(array) {
+      return [...array].sort(() => Math.random() - 0.5);
+    }
+
+    let activeQuizData = [];
+
+    function renderQuizForm() {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+
+      activeQuizData = currentLesson.questions.map((item, index) => ({
+        id: index,
+        question: item.q,
+        correctAnswer: item.ans,
+        options: shuffleArray([item.ans, ...item.wrong])
+      }));
+
+      activeQuizData.forEach((item, index) => {
+        let optionsHTML = '';
+        item.options.forEach((opt) => {
+          optionsHTML += `
+            <label class="option-label">
+              <input type="radio" name="q_${index}" value="${opt}" required>
+              <span>${opt}</span>
+            </label>
+          `;
+        });
+
+        const block = document.createElement('div');
+        block.className = 'question-block';
+        block.innerHTML = `
+          <p>Question ${index + 1}: ${item.question}</p>
+          <div class="options-group">${optionsHTML}</div>
+        `;
+        container.appendChild(block);
+      });
+    }
+
+    function submitQuiz(event) {
+      event.preventDefault();
+
+      let score = 0;
+      const summaryList = document.getElementById('summary-list');
+      summaryList.innerHTML = '';
+
+      activeQuizData.forEach((item, index) => {
+        const radios = document.getElementsByName(`q_${index}`);
+        let userAns = null;
+        for (const radio of radios) {
+          if (radio.checked) {
+            userAns = radio.value;
+            break;
+          }
+        }
+
+        const isCorrect = userAns === item.correctAnswer;
+        if (isCorrect) score++;
+
+        const summaryItem = document.createElement('div');
+        summaryItem.className = `summary-item ${isCorrect ? 'correct' : 'incorrect'}`;
+        summaryItem.innerHTML = `
+          <p style="font-weight:600; margin-bottom: 0.3rem; font-size:0.95rem;">Q${index + 1}: ${item.question}</p>
+          <p style="font-size: 0.85rem; color: ${isCorrect ? '#34d399' : '#f87171'}">Your Answer: ${userAns || 'No Answer'}</p>
+          <p style="font-size: 0.85rem; color: #34d399;">Correct Answer: ${item.correctAnswer}</p>
+        `;
+        summaryList.appendChild(summaryItem);
+      });
+
+      document.getElementById('lesson-content-section').style.display = 'none';
+      document.getElementById('quiz-form-section').style.display = 'none';
+      document.getElementById('results-view').style.display = 'flex';
+
+      document.getElementById('score-summary').textContent = `You scored ${score} out of ${activeQuizData.length} correct!`;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function handleSpacedRepetition(rating) {
+      let reviewSchedules = JSON.parse(localStorage.getItem('mindly_chemistry_spaced') || '{}');
+      const now = new Date();
+      const daysToAdd = rating === 'good' ? 4 : 1;
+      const nextReviewDate = new Date(now.setDate(now.getDate() + daysToAdd));
+
+      reviewSchedules[lessonId] = {
+        lastReviewed: new Date().toISOString(),
+        nextReview: nextReviewDate.toISOString(),
+        interval: daysToAdd
+      };
+      localStorage.setItem('mindly_chemistry_spaced', JSON.stringify(reviewSchedules));
+
+      let completedLessons = JSON.parse(localStorage.getItem('mindly_chemistry_completed') || '[]');
+      if (!completedLessons.includes(lessonId)) {
+        completedLessons.push(lessonId);
+        localStorage.setItem('mindly_chemistry_completed', JSON.stringify(completedLessons));
+      }
+
+      alert(`Great job! Spaced repetition scheduled your review in ${daysToAdd} day(s). Returning to curriculum...`);
+      window.location.href = 'chemistry-curriculum.html';
+    }
+
+    function toggleFocusMode() {
+      document.getElementById('quiz-wrapper').classList.toggle('focus-mode');
+    }
+
+    renderQuizForm();
+  </script>
+</body>
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mindly | The Next Generation Of Studying</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       MINDLY DESIGN SYSTEM - FIRST DESIGN (DARK GLASSMORPHISM)
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-dark: #080811;
+      --surface-dark: #111221;
+      --card-glass: rgba(18, 20, 38, 0.7);
+      --border-glass: rgba(255, 255, 255, 0.08);
+      --brand-500: #6366f1;
+      --brand-purple: #a855f7;
+      --brand-cyan: #06b6d4;
+      --text-main: #f3f4f6;
+      --text-muted: #94a3b8;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+    }
+
+    /* Ambient Dynamic Mesh Glow Background */
+    .bg-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: 
+        radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.25) 0%, transparent 50%),
+        radial-gradient(circle at 80% 40%, rgba(168, 85, 247, 0.18) 0%, transparent 40%),
+        radial-gradient(circle at 40% 80%, rgba(6, 182, 212, 0.15) 0%, transparent 45%);
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(80px);
+    }
+
+    /* Sticky Glass Navigation Bar */
+    .navbar {
+      width: 100%;
+      background: rgba(8, 8, 17, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-glass);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 1.25rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .logo span {
+      background: linear-gradient(135deg, #818cf8, var(--brand-purple));
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-main);
+      transform: translateY(-1px);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    /* Buttons System */
+    .btn {
+      padding: 0.65rem 1.4rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-main);
+      border: 1px solid var(--border-glass);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(99, 102, 241, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      color: #ffffff;
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.35);
+      font-weight: 700;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.55);
+      opacity: 0.95;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border: 1px solid var(--border-glass);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(168, 85, 247, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .btn-large {
+      padding: 0.9rem 2.4rem;
+      font-size: 1.05rem;
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      z-index: 1;
+      max-width: 950px;
+      margin: 7rem auto 5rem auto;
+      padding: 0 1.5rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.75rem;
+    }
+
+    .badge {
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #818cf8;
+      padding: 0.45rem 1.25rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-title {
+      font-size: clamp(2.75rem, 5vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.12;
+      color: #ffffff;
+      letter-spacing: -1.5px;
+    }
+
+    .highlight {
+      background: linear-gradient(135deg, #ffffff 20%, #a5b4fc 60%, #c084fc 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      max-width: 680px;
+      line-height: 1.7;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Features Section & Cards Grid */
+    .features-section {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 5rem auto 7rem auto;
+      padding: 0 2rem;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 3.5rem;
+      letter-spacing: -0.75px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background: var(--card-glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
+      border-radius: 24px;
+      padding: 3rem 2.25rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(99, 102, 241, 0.35);
+      box-shadow: 0 30px 60px -10px rgba(99, 102, 241, 0.25);
+      background: rgba(22, 25, 45, 0.8);
+    }
+
+    .card-icon {
+      font-size: 1.75rem;
+      width: 60px;
+      height: 60px;
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.3px;
+    }
+
+    .feature-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    /* Footer */
+    .footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 3.5rem 2rem;
+      border-top: 1px solid var(--border-glass);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      background: rgba(8, 8, 17, 0.6);
+      backdrop-filter: blur(10px);
+    }
+
+    /* Responsive Design Optimization */
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 1rem 1.5rem;
+      }
+      .nav-links {
+        display: none;
+      }
+      .hero {
+        margin: 4rem auto 3rem auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Glowing Background Accent -->
+  <div class="bg-glow"></div>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="logo">Mindly<span>.</span></div>
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#stats">Stats</a>
+      <a href="#about">About</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="pages/login.html" class="btn btn-outline">Log In</a>
+      <a href="pages/getstarted.html" class="btn btn-primary">Get Started</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="badge">🚀 Revolutionize How You Learn</div>
+    <h1 class="hero-title">Master Any Subject with <span class="highlight">Mindly.</span></h1>
+    <p class="hero-subtitle">
+      The ultimate next-generation studying platform. Boost focus, track retention, and turn complex topics into seamless daily habits.
+    </p>
+    <div class="hero-cta">
+      <a href="pages/getstarted.html" class="btn btn-primary btn-large">Start Studying Free</a>
+      <a href="#features" class="btn btn-secondary btn-large">Explore Features</a>
+    </div>
+  </section>
+
+  <!-- Features Grid -->
+  <section id="features" class="features-section">
+    <h2 class="section-title">Built For <span class="highlight">Peak Performance</span></h2>
+    <div class="features-grid">
+
+      <div class="feature-card">
+        <div class="card-icon">⚡</div>
+        <h3>Smart Spaced Repetition</h3>
+        <p>Our algorithms calculate the exact moment you need to review material before you forget it.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="card-icon">🔥</div>
+        <h3>Study Streaks & Rewards</h3>
+        <p>Stay motivated with daily streaks, level progression, and friendly student leaderboards.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="card-icon">🎯</div>
+        <h3>Deep Focus Mode</h3>
+        <p>Integrated Pomodoro timers and ambient soundscapes designed to eliminate distractions.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2026 Mindly Technologies. All rights reserved.</p>
+  </footer>
+
+  <!-- Client-side JavaScript -->
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pre-Algebra Study & Practice | Mindly</title>
+  <link rel="stylesheet" href="../index.css">
+  <style>
+    .top-nav {
+      width: 100%;
+      background: rgba(25, 25, 35, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 1rem 2rem;
+    }
+
+    .nav-container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      list-style: none;
+    }
+
+    .nav-link {
+      color: #d4d4d8;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: #38bdf8;
+    }
+
+    .quiz-wrapper {
+      min-height: calc(100vh - 70px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem 1.5rem;
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s ease;
+    }
+
+    .quiz-wrapper.focus-mode .hide-in-focus {
+      display: none !important;
+    }
+
+    .quiz-container {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .card {
+      background: rgba(25, 25, 35, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .quiz-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .focus-toggle-btn {
+      background: rgba(56, 189, 248, 0.2);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #38bdf8;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .focus-toggle-btn:hover {
+      background: rgba(56, 189, 248, 0.4);
+      color: #ffffff;
+    }
+
+    h1, h2 {
+      font-weight: 800;
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.4rem; margin-top: 1rem; }
+
+    .lesson-body {
+      color: #d4d4d8;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .example-box {
+      background: rgba(15, 15, 20, 0.8);
+      border-left: 4px solid #38bdf8;
+      padding: 1.25rem;
+      border-radius: 0 10px 10px 0;
+      margin: 0.5rem 0;
+      font-family: monospace;
+      color: #f4f4f5;
+    }
+
+    .question-block {
+      background: rgba(15, 15, 20, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .question-block p {
+      font-size: 1.05rem;
+      color: #f4f4f5;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .options-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: rgba(25, 25, 35, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: #e4e4e7;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.95rem;
+    }
+
+    .option-label:hover {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+
+    .option-label input[type="radio"] {
+      accent-color: #38bdf8;
+      cursor: pointer;
+    }
+
+    .btn-action {
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 12px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+      width: 100%;
+      margin-top: 1.5rem;
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+    }
+
+    .btn-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(56, 189, 248, 0.6);
+    }
+
+    #results-view {
+      display: none;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .summary-item {
+      padding: 1rem;
+      background: rgba(15, 15, 20, 0.8);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .summary-item.correct { border-color: rgba(52, 211, 153, 0.5); }
+    .summary-item.incorrect { border-color: rgba(248, 113, 113, 0.5); }
+
+    .back-link {
+      color: #a1a1aa;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+    .back-link:hover { color: #ffffff; }
+  </style>
+</head>
+<body>
+
+  <div class="bg-glow"></div>
+
+  <nav class="top-nav">
+    <div class="nav-container">
+      <a href="dashboard.html" class="nav-logo">Mindly</a>
+      <ul class="nav-menu">
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="prealgebra-curriculum.html" class="nav-link active">Pre-Algebra Roadmap</a></li>
+        <li><a href="curriculum.html" class="nav-link">Algebra 1 Roadmap</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="quiz-wrapper" id="quiz-wrapper">
+    <div class="quiz-container">
+      
+      <div class="quiz-top-bar hide-in-focus">
+        <a href="prealgebra-curriculum.html" class="back-link">← Back to Pre-Algebra Curriculum</a>
+        <button class="focus-toggle-btn" onclick="toggleFocusMode()">✨ Toggle Deep Focus Mode</button>
+      </div>
+
+      <div class="card">
+
+        <div id="lesson-content-section">
+          <h1 id="lesson-title">Loading Lesson...</h1>
+          <div class="lesson-body" id="lesson-body-content"></div>
+        </div>
+
+        <div id="quiz-form-section">
+          <h2>Practice Quiz (15 Questions)</h2>
+          <p style="color: #a1a1aa; margin-bottom: 2rem; font-size: 0.95rem;">Read the lesson above, then answer all 15 questions below and submit to evaluate your understanding.</p>
+          
+          <form id="quiz-form" onsubmit="submitQuiz(event)">
+            <div id="questions-container"></div>
+            <button type="submit" class="btn-action">Submit Quiz & View Results 🚀</button>
+          </form>
+        </div>
+
+        <div id="results-view">
+          <h2>Quiz Results & Performance</h2>
+          <p id="score-summary" style="color: #34d399; font-weight: 600; font-size: 1.1rem;"></p>
+          
+          <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 15px; padding: 1.5rem; margin: 1rem 0;">
+            <h4 style="color: #38bdf8; font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;">🧠 Smart Spaced Repetition Scheduling</h4>
+            <p style="font-size: 0.9rem; color: #a1a1aa; margin-bottom: 1rem;">Rate your mastery confidence to set your next review interval:</p>
+            <div style="display: flex; gap: 1rem;">
+              <button type="button" onclick="handleSpacedRepetition('hard')" style="flex:1; padding:0.75rem; border-radius:8px; font-weight:600; cursor:pointer; background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4);">Need Review Soon (1 Day)</button>
+              <button type="button" onclick="handleSpacedRepetition('good')" style="flex:1; padding:0.75rem; border-radius:8px; font-weight:600; cursor:pointer; background: rgba(52, 211, 153, 0.2); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.4);">Mastered! (4 Days)</button>
+            </div>
+          </div>
+
+          <div id="summary-list" style="display: flex; flex-direction: column; gap: 1rem; max-height: 450px; overflow-y: auto;"></div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const lessonId = parseInt(urlParams.get('lesson')) || 201;
+
+    // Master Pre-Algebra Database (Lessons 201 - 208)
+    const prealgebraData = {
+      201: {
+        title: "Lesson 201: Operations with Integers and Absolute Value",
+        content: `
+          <p>Integers include positive and negative whole numbers. When adding integers with the same sign, add and keep the sign. With different signs, subtract the absolute values and keep the sign of the larger number. Absolute value measures distance from zero ($| -5 | = 5$).</p>
+          <div class="example-box">Example: -8 + 3 = -5 <br>Example: |-7| - 2 = 7 - 2 = 5</div>
+        `,
+        questions: [
+          { q: "Evaluate: -5 + 8", ans: "3", wrong: ["-3", "13", "-13"] },
+          { q: "Evaluate: -12 - 4", ans: "-16", wrong: ["-8", "16", "8"] },
+          { q: "Evaluate: -6 * -3", ans: "18", wrong: ["-18", "9", "-9"] },
+          { q: "Evaluate: -20 / 4", ans: "-5", wrong: ["5", "-4", "4"] },
+          { q: "Find the absolute value: |-15|", ans: "15", wrong: ["-15", "0", "1"] },
+          { q: "Evaluate: |-9| + |-4|", ans: "13", wrong: ["5", "-13", "-5"] },
+          { q: "Evaluate: -7 + (-9)", ans: "-16", wrong: ["2", "-2", "16"] },
+          { q: "Evaluate: 15 + (-22)", ans: "-7", wrong: ["7", "37", "-37"] },
+          { q: "Evaluate: (-2)³", ans: "-8", wrong: ["8", "-6", "6"] },
+          { q: "Evaluate: -45 / (-9)", ans: "5", wrong: ["-5", "9", "-9"] },
+          { q: "Evaluate: 8 - (-11)", ans: "19", wrong: ["-3", "3", "-19"] },
+          { q: "Evaluate: |-12| - |-12|", ans: "0", wrong: ["24", "-24", "1"] },
+          { q: "Evaluate: -3 * 4 * (-2)", ans: "24", wrong: ["-24", "12", "-12"] },
+          { q: "Evaluate: -50 / 5 + 3", ans: "-7", wrong: ["-13", "7", "13"] },
+          { q: "Evaluate: | -20 + 5 |", ans: "15", wrong: ["-15", "25", "-25"] }
+        ]
+      },
+      202: {
+        title: "Lesson 202: Fractions, Decimals, and Percent Conversions",
+        content: `
+          <p>Fractions, decimals, and percents are different ways to express parts of a whole.<br>
+          • Fraction to Decimal: Divide numerator by denominator.<br>
+          • Decimal to Percent: Multiply by 100 and add %.</p>
+          <div class="example-box">Example: Convert 3/4 to a decimal and percent $\\rightarrow$ 0.75 $\\rightarrow$ 75%</div>
+        `,
+        questions: [
+          { q: "Convert 3/4 to a decimal.", ans: "0.75", wrong: ["0.34", "0.8", "0.7"] },
+          { q: "Convert 0.6 to a fraction in simplest form.", ans: "3/5", wrong: ["6/10", "2/3", "1/2"] },
+          { q: "Convert 25% to a decimal.", ans: "0.25", wrong: ["2.5", "0.025", "25"] },
+          { q: "Convert 0.15 to a percent.", ans: "15%", wrong: ["1.5%", "150%", "0.15%"] },
+          { q: "What is 1/2 as a percent?", ans: "50%", wrong: ["20%", "5%", "25%"] },
+          { q: "Convert 7/8 to a decimal.", ans: "0.875", wrong: ["0.78", "0.8", "0.75"] },
+          { q: "Convert 120% to a decimal.", ans: "1.2", wrong: ["12", "0.12", "1.02"] },
+          { q: "Write 0.05 as a fraction in simplest form.", ans: "1/20", wrong: ["5/10", "1/5", "1/50"] },
+          { q: "What is 3/5 as a percent?", ans: "60%", wrong: ["35%", "30%", "6%", "65%"] },
+          { q: "Convert 45% to a fraction in simplest form.", ans: "9/20", wrong: ["4/5", "45/100", "3/4"] },
+          { q: "Convert 1.25 to a percent.", ans: "125%", wrong: ["12.5%", "1.25%", "1250%"] },
+          { q: "What is 9/10 as a decimal?", ans: "0.9", wrong: ["0.09", "0.99", "0.95"] },
+          { q: "Convert 8% to a decimal.", ans: "0.08", wrong: ["0.8", "8.0", "0.008"] },
+          { q: "Convert 1/3 to a repeating decimal.", ans: "0.333...", wrong: ["0.3", "0.34", "0.30"] },
+          { q: "Convert 150% to a fraction in simplest form.", ans: "3/2", wrong: ["15/10", "5/3", "3/5"] }
+        ]
+      },
+      203: {
+        title: "Lesson 203: Order of Operations (PEMDAS) with Exponents",
+        content: `
+          <p>Follow the standard order of operations: **P**arentheses, **E**xponents, **M**ultiplication & **D**ivision (left to right), **A**ddition & **S**ubtraction (left to right).</p>
+          <div class="example-box">Example: 5 + 3 * 2² = 5 + 3 * 4 = 5 + 12 = 17</div>
+        `,
+        questions: [
+          { q: "Evaluate: 5 + 3 * 2", ans: "11", wrong: ["16", "13", "10"] },
+          { q: "Evaluate: (8 - 3) * 4", ans: "20", wrong: ["-4", "32", "5"] },
+          { q: "Evaluate: 2³ + 4", ans: "12", wrong: ["10", "16", "14"] },
+          { q: "Evaluate: 20 - 4 * 3 + 2", ans: "10", wrong: ["50", "48", "16"] },
+          { q: "Evaluate: 6 + 18 / 3 - 2", ans: "10", wrong: ["6", "8", "12"] },
+          { q: "Evaluate: 5² - 3 * 4", ans: "13", wrong: ["40", "10", "37"] },
+          { q: "Evaluate: 30 / (2 + 3) * 2", ans: "12", wrong: ["3", "30", "15"] },
+          { q: "Evaluate: 4 + 6² / 9", ans: "8", wrong: ["4.4", "12", "10"] },
+          { q: "Evaluate: (12 - 4) / (2 + 2)", ans: "2", wrong: ["4", "8", "1"] },
+          { q: "Evaluate: 7 + 3 * (8 - 5)", ans: "16", wrong: ["30", "21", "13"] },
+          { q: "Evaluate: 24 / 4 * 2", ans: "12", wrong: ["3", "16", "6"] },
+          { q: "Evaluate: 5² - 5²", ans: "0", wrong: ["25", "50", "10"] },
+          { q: "Evaluate: 10 + 2 * 5 - 4 / 2", ans: "18", wrong: ["12", "14", "20"] },
+          { q: "Evaluate: 3 * (2 + 4)² / 9", ans: "12", wrong: ["36", "18", "24"] },
+          { q: "Evaluate: 20 - (3 + 2) * 2", ans: "10", wrong: ["30", "15", "8"] }
+        ]
+      },
+      204: {
+        title: "Lesson 204: Simplifying Algebraic Expressions & Like Terms",
+        content: `
+          <p>Combine <strong>like terms</strong> (terms with the exact same variables and exponents) by adding or subtracting their coefficients. Use the distributive property $a(b + c) = ab + ac$ to remove parentheses.</p>
+          <div class="example-box">Example: 3x + 5 - x + 2 = (3x - x) + (5 + 2) = 2x + 7</div>
+        `,
+        questions: [
+          { q: "Simplify: 3x + 5x", ans: "8x", wrong: ["8x²", "15x", "x⁸"] },
+          { q: "Simplify: 7y - 2y + 4", ans: "5y + 4", wrong: ["9y + 4", "5y - 4", "5y² + 4"] },
+          { q: "Distribute and simplify: 3(x + 4)", ans: "3x + 12", wrong: ["3x + 4", "x + 12", "3x + 7"] },
+          { q: "Simplify: 4a + 3b - a + 5b", ans: "3a + 8b", wrong: ["5a + 8b", "3a + 2b", "4ab"] },
+          { q: "Distribute and simplify: -2(x - 5)", ans: "-2x + 10", wrong: ["-2x - 10", "-2x + 5", "2x - 10"] },
+          { q: "Simplify: 5x + 3 - 2x + 7", ans: "3x + 10", wrong: ["7x + 10", "3x - 4", "3x + 4"] },
+          { q: "Distribute: 4(2x - 3) + 5", ans: "8x - 7", wrong: ["8x - 12", "8x - 17", "6x - 7"] },
+          { q: "Simplify: x + x + x + x", ans: "4x", wrong: ["x⁴", "4", "x + 4"] },
+          { q: "Combine like terms: 9m - 4m + 3n - n", ans: "5m + 2n", wrong: ["5m + 4n", "13m + 2n", "7mn"] },
+          { q: "Distribute: -(3x - 7)", ans: "-3x + 7", wrong: ["-3x - 7", "3x - 7", "3x + 7"] },
+          { q: "Simplify: 2(3x + 1) + 4(x - 2)", ans: "10x - 6", wrong: ["10x + 6", "7x - 1", "6x - 6"] },
+          { q: "Simplify: 6y² - 2y² + 3y", ans: "4y² + 3y", wrong: ["4y⁴ + 3y", "7y²", "4y"] },
+          { q: "Distribute: 5(3 - 2x)", ans: "15 - 10x", wrong: ["15 - 2x", "5 - 10x", "10x - 15"] },
+          { q: "Simplify: 8 - (3x + 2)", ans: "-3x + 6", wrong: ["3x + 6", "-3x + 10", "6x"] },
+          { q: "Simplify: 4(x + 2) + 3(2x + 1)", ans: "10x + 11", wrong: ["7x + 3", "10x + 3", "7x + 11"] }
+        ]
+      },
+      205: {
+        title: "Lesson 205: Solving One-Step Equations",
+        content: `
+          <p>To solve a one-step equation, isolate the variable by applying the opposite (inverse) operation to both sides.</p>
+          <div class="example-box">Example: x + 7 = 15 $\\rightarrow$ Subtract 7 from both sides $\\rightarrow$ x = 8</div>
+        `,
+        questions: [
+          { q: "Solve for x: x + 7 = 15", ans: "x = 8", wrong: ["x = 22", "x = 7", "x = 9"] },
+          { q: "Solve for y: y - 4 = 11", ans: "y = 15", wrong: ["y = 7", "y = 14", "y = 16"] },
+          { q: "Solve for m: 5m = 35", ans: "m = 7", wrong: ["m = 30", "m = 175", "m = 6"] },
+          { q: "Solve for x: x / 4 = 6", ans: "x = 24", wrong: ["x = 2", "x = 10", "x = 18"] },
+          { q: "Solve for a: a - 9 = 0", ans: "a = 9", wrong: ["a = -9", "a = 0", "a = 1"] },
+          { q: "Solve for b: 3b = 27", ans: "b = 9", wrong: ["b = 24", "b = 81", "b = 12"] },
+          { q: "Solve for c: c + 12 = 20", ans: "c = 8", wrong: ["c = 32", "c = 10", "c = 6"] },
+          { q: "Solve for w: w / 5 = 7", ans: "w = 35", wrong: ["w = 12", "w = 2", "w = 30"] },
+          { q: "Solve for x: 10x = 90", ans: "x = 9", wrong: ["x = 80", "x = 900", "x = 10"] },
+          { q: "Solve for y: y + 15 = 4", ans: "y = -11", wrong: ["y = 19", "y = 11", "y = -19"] },
+          { q: "Solve for k: k - 8 = -3", ans: "k = 5", wrong: ["k = -11", "k = 11", "k = -5"] },
+          { q: "Solve for z: z / -3 = 4", ans: "z = -12", wrong: ["z = 12", "z = -1", "z = 1"] },
+          { q: "Solve for p: 8p = 56", ans: "p = 7", wrong: ["p = 6", "p = 8", "p = 9"] },
+          { q: "Solve for x: x + 2.5 = 7.5", ans: "x = 5", wrong: ["x = 10", "x = 4", "x = 5.5"] },
+          { q: "Solve for n: 12 = n - 5", ans: "n = 17", wrong: ["n = 7", "n = -7", "n = 60"] }
+        ]
+      },
+      206: {
+        title: "Lesson 206: Solving Two-Step Equations",
+        content: `
+          <p>To solve a two-step equation:<br>
+          1. Undo addition or subtraction first.<br>
+          2. Undo multiplication or division second.</p>
+          <div class="example-box">Example: 2x + 3 = 13 $\\rightarrow$ 2x = 10 $\\rightarrow$ x = 5</div>
+        `,
+        questions: [
+          { q: "Solve for x: 2x + 3 = 13", ans: "x = 5", wrong: ["x = 8", "x = 5", "x = 10"] },
+          { q: "Solve for y: 3y - 4 = 11", ans: "y = 5", wrong: ["y = 3", "y = 6", "y = 4"] },
+          { q: "Solve for m: x/4 + 2 = 7", ans: "x = 20", wrong: ["x = 5", "x = 36", "x = 18"] },
+          { q: "Solve for a: 5a + 7 = 32", ans: "a = 5", wrong: ["a = 7", "a = 6", "a = 8"] },
+          { q: "Solve for b: 4b - 5 = 15", ans: "b = 5", wrong: ["b = 4", "b = 6", "b = 10"] },
+          { q: "Solve for x: -2x + 6 = 14", ans: "x = -4", wrong: ["x = 4", "x = -10", "x = 10"] },
+          { q: "Solve for c: 6c + 2 = 38", ans: "c = 6", wrong: ["c = 7", "c = 5", "c = 8"] },
+          { q: "Solve for w: w/3 - 1 = 4", ans: "w = 15", wrong: ["w = 9", "w = 12", "w = 18"] },
+          { q: "Solve for x: 7x - 8 = 20", ans: "x = 4", wrong: ["x = 3", "x = 5", "x = 2"] },
+          { q: "Solve for y: 9 + 2y = 19", ans: "y = 5", wrong: ["y = 4", "y = 6", "y = 7"] },
+          { q: "Solve for k: 3k + 10 = 25", ans: "k = 5", wrong: ["k = 11", "k = 8", "k = 4"] },
+          { q: "Solve for n: n/5 - 3 = 2", ans: "n = 25", wrong: ["n = 10", "n = 15", "n = 30"] },
+          { q: "Solve for x: 8x + 4 = 36", ans: "x = 4", wrong: ["x = 5", "x = 3", "x = 6"] },
+          { q: "Solve for p: 10p - 15 = 35", ans: "p = 5", wrong: ["p = 2", "p = 4", "p = 6"] },
+          { q: "Solve for x: 4x + 6 = 30", ans: "x = 6", wrong: ["x = 5", "x = 8", "x = 7"] }
+        ]
+      },
+      207: {
+        title: "Lesson 207: Ratios, Proportions, and Unit Rates",
+        content: `
+          <p>• <strong>Ratio:</strong> Comparison of two quantities.<br>
+          • <strong>Unit Rate:</strong> Ratio comparing a quantity to 1 unit.<br>
+          • <strong>Proportion:</strong> Equation stating two ratios are equal ($a/b = c/d$). Solve using cross-multiplication.</p>
+          <div class="example-box">Example: Solve proportion x / 4 = 15 / 20 $\\rightarrow$ 20x = 60 $\\rightarrow$ x = 3</div>
+        `,
+        questions: [
+          { q: "Find the unit rate: 150 miles in 3 hours", ans: "50 miles per hour", wrong: ["45 mph", "60 mph", "55 mph"] },
+          { q: "Solve the proportion for x: x / 4 = 15 / 20", ans: "x = 3", wrong: ["x = 5", "x = 12", "x = 6"] },
+          { q: "Find unit rate if 12 apples cost $3.00", ans: "$0.25 per apple", wrong: ["$0.30 per apple", "$0.20 per apple", "$0.40 per apple"] },
+          { q: "Solve for x: 3 / 5 = x / 20", ans: "x = 12", wrong: ["x = 15", "x = 10", "x = 25"] },
+          { q: "Write ratio of 10 red marbles to 30 total marbles in simplest form", ans: "1 : 3", wrong: ["1 : 4", "3 : 1", "10 : 30"] },
+          { q: "Solve for x: x / 7 = 6 / 14", ans: "x = 3", wrong: ["x = 4", "x = 2", "x = 6"] },
+          { q: "Find unit rate: 360 words typed in 6 minutes", ans: "60 words per minute", wrong: ["50 wpm", "70 wpm", "55 wpm"] },
+          { q: "Solve for x: 4 / x = 12 / 15", ans: "x = 5", wrong: ["x = 3", "x = 4", "x = 6"] },
+          { q: "If 5 pounds of bananas cost $2.50, what is the cost per pound?", ans: "$0.50", wrong: ["$0.40", "$0.60", "$0.75"] },
+          { q: "Solve for x: 2 / 3 = 10 / x", ans: "x = 15", wrong: ["x = 12", "x = 18", "x = 20"] },
+          { q: "Find unit rate: 450 miles on 15 gallons of gas", ans: "30 mpg", wrong: ["25 mpg", "35 mpg", "40 mpg"] },
+          { q: "Solve for x: x / 9 = 4 / 3", ans: "x = 12", wrong: ["x = 9", "x = 15", "x = 8"] },
+          { q: "If a car travels 60 miles in 45 minutes, what is its speed in mph?", ans: "80 mph", wrong: ["75 mph", "90 mph", "70 mph"] },
+          { q: "Solve for x: 5 / 8 = x / 24", ans: "x = 15", wrong: ["x = 12", "x = 20", "x = 10"] },
+          { q: "Find the ratio of 2 feet to 18 inches in simplest form", ans: "4 : 3", wrong: ["2 : 1", "1 : 9", "3 : 4"] }
+        ]
+      },
+      208: {
+        title: "Lesson 208: 🏆 Pre-Algebra Unit 1 Mastery Test",
+        content: `
+          <p>Congratulations on reaching the capstone assessment! This test covers comprehensive material from all Pre-Algebra Unit 1 lessons including integers, fraction/percent conversions, PEMDAS, combining like terms, one and two-step equations, and proportions.</p>
+        `,
+        questions: [
+          { q: "Evaluate: -8 + 15", ans: "7", wrong: ["-7", "23", "-23"] },
+          { q: "Convert 3/5 to a percent.", ans: "60%", wrong: ["35%", "30%", "65%"] },
+          { q: "Evaluate: 4 + 2 * 3²", ans: "22", wrong: ["36", "18", "28"] },
+          { q: "Simplify: 5x + 3 - 2x + 4", ans: "3x + 7", wrong: ["7x + 7", "3x - 1", "8x"] },
+          { q: "Solve for x: x + 9 = 17", ans: "x = 8", wrong: ["x = 26", "x = 7", "x = 9"] },
+          { q: "Solve for y: 3y - 5 = 16", ans: "y = 7", wrong: ["y = 5", "y = 6", "y = 8"] },
+          { q: "Solve the proportion: x / 5 = 12 / 20", ans: "x = 3", wrong: ["x = 4", "x = 5", "x = 6"] },
+          { q: "Evaluate: |-12| + (-5)", ans: "7", wrong: ["-17", "17", "-7"] },
+          { q: "Convert 0.35 to a fraction in simplest form.", ans: "7/20", wrong: ["35/10", "3/5", "7/10"] },
+          { q: "Evaluate: (10 - 4) / 2 + 3", ans: "6", wrong: ["4", "5", "8"] },
+          { q: "Distribute and simplify: -3(2x - 4)", ans: "-6x + 12", wrong: ["-6x - 12", "6x - 12", "-6x + 4"] },
+          { q: "Solve for m: 4m = 32", ans: "m = 8", wrong: ["m = 7", "m = 36", "m = 128"] },
+          { q: "Find the unit rate: 240 miles in 4 hours", ans: "60 mph", wrong: ["50 mph", "70 mph", "55 mph"] },
+          { q: "Solve for b: b / 3 + 2 = 9", ans: "b = 21", wrong: ["b = 33", "b = 14", "b = 18"] },
+          { q: "Evaluate: -4 * (-3) * 2", ans: "24", wrong: ["-24", "14", "-14"] }
+        ]
+      }
+    };
+
+    const currentLesson = prealgebraData[lessonId] || prealgebraData[201];
+
+    document.getElementById('lesson-title').textContent = currentLesson.title;
+    document.getElementById('lesson-body-content').innerHTML = currentLesson.content;
+
+    function shuffleArray(array) {
+      return [...array].sort(() => Math.random() - 0.5);
+    }
+
+    let activeQuizData = [];
+
+    function renderQuizForm() {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+
+      activeQuizData = currentLesson.questions.map((item, index) => ({
+        id: index,
+        question: item.q,
+        correctAnswer: item.ans,
+        options: shuffleArray([item.ans, ...item.wrong])
+      }));
+
+      activeQuizData.forEach((item, index) => {
+        let optionsHTML = '';
+        item.options.forEach((opt) => {
+          optionsHTML += `
+            <label class="option-label">
+              <input type="radio" name="q_${index}" value="${opt}" required>
+              <span>${opt}</span>
+            </label>
+          `;
+        });
+
+        const block = document.createElement('div');
+        block.className = 'question-block';
+        block.innerHTML = `
+          <p>Question ${index + 1}: ${item.question}</p>
+          <div class="options-group">${optionsHTML}</div>
+        `;
+        container.appendChild(block);
+      });
+    }
+
+    function submitQuiz(event) {
+      event.preventDefault();
+
+      let score = 0;
+      const summaryList = document.getElementById('summary-list');
+      summaryList.innerHTML = '';
+
+      activeQuizData.forEach((item, index) => {
+        const radios = document.getElementsByName(`q_${index}`);
+        let userAns = null;
+        for (const radio of radios) {
+          if (radio.checked) {
+            userAns = radio.value;
+            break;
+          }
+        }
+
+        const isCorrect = userAns === item.correctAnswer;
+        if (isCorrect) score++;
+
+        const summaryItem = document.createElement('div');
+        summaryItem.className = `summary-item ${isCorrect ? 'correct' : 'incorrect'}`;
+        summaryItem.innerHTML = `
+          <p style="font-weight:600; margin-bottom: 0.3rem; font-size:0.95rem;">Q${index + 1}: ${item.question}</p>
+          <p style="font-size: 0.85rem; color: ${isCorrect ? '#34d399' : '#f87171'}">Your Answer: ${userAns || 'No Answer'}</p>
+          <p style="font-size: 0.85rem; color: #34d399;">Correct Answer: ${item.correctAnswer}</p>
+        `;
+        summaryList.appendChild(summaryItem);
+      });
+
+      document.getElementById('lesson-content-section').style.display = 'none';
+      document.getElementById('quiz-form-section').style.display = 'none';
+      document.getElementById('results-view').style.display = 'flex';
+
+      document.getElementById('score-summary').textContent = `You scored ${score} out of ${activeQuizData.length} correct!`;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function handleSpacedRepetition(rating) {
+      let reviewSchedules = JSON.parse(localStorage.getItem('mindly_prealgebra_spaced') || '{}');
+      const now = new Date();
+      const daysToAdd = rating === 'good' ? 4 : 1;
+      const nextReviewDate = new Date(now.setDate(now.getDate() + daysToAdd));
+
+      reviewSchedules[lessonId] = {
+        lastReviewed: new Date().toISOString(),
+        nextReview: nextReviewDate.toISOString(),
+        interval: daysToAdd
+      };
+      localStorage.setItem('mindly_prealgebra_spaced', JSON.stringify(reviewSchedules));
+
+      let completedLessons = JSON.parse(localStorage.getItem('mindly_prealgebra_completed') || '[]');
+      if (!completedLessons.includes(lessonId)) {
+        completedLessons.push(lessonId);
+        localStorage.setItem('mindly_prealgebra_completed', JSON.stringify(completedLessons));
+      }
+
+      alert(`Great job! Spaced repetition scheduled your review in ${daysToAdd} day(s). Returning to curriculum...`);
+      window.location.href = 'prealgebra-curriculum.html';
+    }
+
+    function toggleFocusMode() {
+      document.getElementById('quiz-wrapper').classList.toggle('focus-mode');
+    }
+
+    renderQuizForm();
+  </script>
+</body>
+</html>
