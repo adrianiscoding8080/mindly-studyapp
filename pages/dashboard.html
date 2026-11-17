@@ -50,7 +50,6 @@
             'glow-pulse': 'glowPulse 8s infinite alternate',
             'shimmer': 'shimmer 2.5s infinite linear',
             'float': 'float 6s ease-in-out infinite',
-            'spin-slow': 'spin 20s linear infinite',
           },
           keyframes: {
             glowPulse: {
@@ -148,7 +147,7 @@
   <!-- Interactive Canvas Particles Background -->
   <canvas id="particle-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
 
-  <!-- Glowing Background Accent Elements -->
+  <!-- Glowing Background Accents -->
   <div class="fixed top-[-10%] left-[20%] w-[500px] h-[500px] bg-brand-500/20 rounded-full blur-[140px] pointer-events-none animate-glow-pulse z-0"></div>
   <div class="fixed top-[40%] right-[-5%] w-[600px] h-[600px] bg-brand-purple/15 rounded-full blur-[160px] pointer-events-none animate-glow-pulse z-0" style="animation-delay: 3s;"></div>
   <div class="fixed bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-brand-cyan/15 rounded-full blur-[140px] pointer-events-none animate-glow-pulse z-0" style="animation-delay: 5s;"></div>
@@ -836,7 +835,7 @@
     }
 
     // =========================================================================
-    // 2. PICTURE-PERFECT CURRICULUM DATABASE (VISUAL HOOKS, BLUEPRINTS, EXAMPLES, WORD PROBLEMS, FLASHCARDS & QUIZZES)
+    // 2. CURRICULUM DATABASE
     // =========================================================================
     const curriculums = [
       {
@@ -1777,7 +1776,7 @@
     ];
 
     // =========================================================================
-    // 3. INTERACTIVE LESSON, FLASHCARDS, QUIZ & FINAL TEST LOGIC
+    // 3. BULLETPROOF LESSON & MODAL LOGIC
     // =========================================================================
     let activeSubjectId = null;
     let activeItemIndex = 0;
@@ -1788,13 +1787,18 @@
       activeSubjectId = subjectId;
       activeItemIndex = itemIdx;
       currentLessonCardIdx = 0;
-      document.getElementById('lesson-modal').classList.remove('hidden');
+
+      const modal = document.getElementById('lesson-modal');
+      if (!modal) return;
+      
+      modal.classList.remove('hidden');
       document.body.classList.add('overflow-hidden');
       renderLessonModal();
     }
 
     function closeLessonModal() {
-      document.getElementById('lesson-modal').classList.add('hidden');
+      const modal = document.getElementById('lesson-modal');
+      if (modal) modal.classList.add('hidden');
       document.body.classList.remove('overflow-hidden');
     }
 
@@ -1807,16 +1811,21 @@
       const subj = curriculums.find(s => s.id === activeSubjectId);
       if (!subj) return;
 
-      document.getElementById('modal-subject-icon').textContent = subj.icon;
-      document.getElementById('modal-subject-category').textContent = subj.category;
-      document.getElementById('modal-subject-title').textContent = subj.title;
+      const iconEl = document.getElementById('modal-subject-icon');
+      const catEl = document.getElementById('modal-subject-category');
+      const titleEl = document.getElementById('modal-subject-title');
+      if (iconEl) iconEl.textContent = subj.icon;
+      if (catEl) catEl.textContent = subj.category;
+      if (titleEl) titleEl.textContent = subj.title;
 
       const pillsContainer = document.getElementById('modal-lesson-pills');
+      if (!pillsContainer) return;
+
       let pillsHtml = subj.lessons.map((l, idx) => {
         const done = userState.completedLessons.includes(l.id);
         const active = idx === activeItemIndex;
         return `
-          <button onclick="openSubjectModal('${subj.id}', ${idx})" class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+          <button type="button" onclick="openSubjectModal('${subj.id}', ${idx})" class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
             active
               ? 'bg-brand-600 text-white shadow-lg shadow-brand-500/30'
               : 'bg-white/5 text-slate-300 hover:bg-white/10 border border-white/10'
@@ -1830,7 +1839,7 @@
       const testDone = userState.completedTests.includes(subj.id);
       const testActive = activeItemIndex === 4;
       pillsHtml += `
-        <button onclick="openSubjectModal('${subj.id}', 4)" class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+        <button type="button" onclick="openSubjectModal('${subj.id}', 4)" class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
           testActive
             ? 'bg-amber-500 text-slate-950 shadow-lg shadow-amber-500/30 font-black'
             : 'bg-amber-500/10 text-amber-300 hover:bg-amber-500/20 border border-amber-500/30'
@@ -1846,14 +1855,14 @@
       const modeSwitcher = document.getElementById('mode-switcher-container');
 
       if (activeItemIndex === 4) {
-        lessonView.classList.add('hidden');
-        modeSwitcher.classList.add('hidden');
-        testView.classList.remove('hidden');
+        if (lessonView) lessonView.classList.add('hidden');
+        if (modeSwitcher) modeSwitcher.classList.add('hidden');
+        if (testView) testView.classList.remove('hidden');
         renderFinalTestView(subj);
       } else {
-        testView.classList.add('hidden');
-        lessonView.classList.remove('hidden');
-        modeSwitcher.classList.remove('hidden');
+        if (testView) testView.classList.add('hidden');
+        if (lessonView) lessonView.classList.remove('hidden');
+        if (modeSwitcher) modeSwitcher.classList.remove('hidden');
         renderLessonItemView(subj, activeItemIndex);
       }
     }
@@ -1864,104 +1873,125 @@
 
       const eli5Btn = document.getElementById('mode-btn-eli5');
       const collegeBtn = document.getElementById('mode-btn-college');
-      if (explanationMode === 'eli5') {
-        eli5Btn.className = 'px-4 py-2 rounded-lg text-xs font-bold transition-all bg-brand-cyan text-slate-950 shadow-md';
-        collegeBtn.className = 'px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white';
-      } else {
-        collegeBtn.className = 'px-4 py-2 rounded-lg text-xs font-bold transition-all bg-brand-purple text-white shadow-md';
-        eli5Btn.className = 'px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white';
+      if (eli5Btn && collegeBtn) {
+        if (explanationMode === 'eli5') {
+          eli5Btn.className = 'px-4 py-2 rounded-lg text-xs font-bold transition-all bg-brand-cyan text-slate-950 shadow-md';
+          collegeBtn.className = 'px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white';
+        } else {
+          collegeBtn.className = 'px-4 py-2 rounded-lg text-xs font-bold transition-all bg-brand-purple text-white shadow-md';
+          eli5Btn.className = 'px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white';
+        }
       }
 
-      document.getElementById('lesson-title').textContent = lesson.title;
+      const lTitle = document.getElementById('lesson-title');
+      if (lTitle) lTitle.textContent = lesson.title;
+
       const statusBadge = document.getElementById('lesson-status-badge');
-      if (isCompleted) {
-        statusBadge.textContent = '✅ Mastered (+50 XP)';
-        statusBadge.className = 'text-xs font-mono px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30';
-      } else {
-        statusBadge.textContent = '📖 First-Time Deep Guide';
-        statusBadge.className = 'text-xs font-mono px-3 py-1 rounded-full bg-brand-500/15 text-brand-400 border border-brand-500/30';
+      if (statusBadge) {
+        if (isCompleted) {
+          statusBadge.textContent = '✅ Mastered (+50 XP)';
+          statusBadge.className = 'text-xs font-mono px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30';
+        } else {
+          statusBadge.textContent = '📖 First-Time Deep Guide';
+          statusBadge.className = 'text-xs font-mono px-3 py-1 rounded-full bg-brand-500/15 text-brand-400 border border-brand-500/30';
+        }
       }
 
-      // Visual Mental Picture Hook
-      document.getElementById('lesson-visual-hook').textContent = lesson.visualHook;
+      const hookEl = document.getElementById('lesson-visual-hook');
+      if (hookEl) hookEl.textContent = lesson.visualHook;
 
-      // Explanation Body
-      const modeTag = explanationMode === 'eli5'
-        ? '<span class="inline-block text-[11px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded bg-brand-cyan/15 text-brand-cyan mb-2">🧸 Intuitive First-Time Breakdown</span>'
-        : '<span class="inline-block text-[11px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded bg-brand-purple/20 text-brand-purple mb-2">🎓 Formal Academic & AP Standard</span>';
+      const expBody = document.getElementById('lesson-explanation-body');
+      if (expBody) {
+        const modeTag = explanationMode === 'eli5'
+          ? '<span class="inline-block text-[11px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded bg-brand-cyan/15 text-brand-cyan mb-2">🧸 Intuitive First-Time Breakdown</span>'
+          : '<span class="inline-block text-[11px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded bg-brand-purple/20 text-brand-purple mb-2">🎓 Formal Academic & AP Standard</span>';
 
-      document.getElementById('lesson-explanation-body').innerHTML = `
-        ${modeTag}
-        <p>${explanationMode === 'eli5' ? lesson.eli5 : lesson.college}</p>
-      `;
+        expBody.innerHTML = `${modeTag}<p>${explanationMode === 'eli5' ? lesson.eli5 : lesson.college}</p>`;
+      }
 
-      // Step-by-step solving blueprint
       const blueprintList = document.getElementById('lesson-blueprint-steps');
-      blueprintList.innerHTML = lesson.blueprint.map(step => `<li>${step}</li>`).join('');
+      if (blueprintList) {
+        blueprintList.innerHTML = lesson.blueprint.map(step => `<li>${step}</li>`).join('');
+      }
 
-      document.getElementById('lesson-formula-box').textContent = lesson.keyTakeaway;
+      const formulaBox = document.getElementById('lesson-formula-box');
+      if (formulaBox) formulaBox.textContent = lesson.keyTakeaway;
 
-      // Numerical Examples & Word Problems
       const promptsList = document.getElementById('deep-prompts-list');
       const answerBox = document.getElementById('deep-prompt-answer-box');
-      answerBox.classList.add('hidden');
+      if (answerBox) answerBox.classList.add('hidden');
 
-      promptsList.innerHTML = lesson.deepPrompts.map((dp, i) => `
-        <button onclick="revealDeepPrompt('${subj.id}', ${idx}, ${i})" class="text-left p-4 rounded-xl bg-dark-bg/85 hover:bg-brand-purple/15 border border-white/10 hover:border-brand-purple/40 transition-all space-y-1.5 group">
-          <div class="flex items-center justify-between">
-            <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded ${dp.type === 'Word Problem' ? 'bg-amber-500/20 text-amber-300' : 'bg-brand-cyan/20 text-brand-cyan'}">${dp.type}</span>
-            <span class="text-[11px] text-brand-purple font-mono group-hover:underline">Show Steps →</span>
-          </div>
-          <div class="text-xs sm:text-sm font-semibold text-slate-200 group-hover:text-white">${dp.prompt}</div>
-        </button>
-      `).join('');
+      if (promptsList) {
+        promptsList.innerHTML = lesson.deepPrompts.map((dp, i) => `
+          <button type="button" onclick="revealDeepPrompt('${subj.id}', ${idx}, ${i})" class="text-left p-4 rounded-xl bg-dark-bg/85 hover:bg-brand-purple/15 border border-white/10 hover:border-brand-purple/40 transition-all space-y-1.5 group">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded ${dp.type === 'Word Problem' ? 'bg-amber-500/20 text-amber-300' : 'bg-brand-cyan/20 text-brand-cyan'}">${dp.type}</span>
+              <span class="text-[11px] text-brand-purple font-mono group-hover:underline">Show Steps →</span>
+            </div>
+            <div class="text-xs sm:text-sm font-semibold text-slate-200 group-hover:text-white">${dp.prompt}</div>
+          </button>
+        `).join('');
+      }
 
-      // Lesson Flashcard Deck
       renderLessonFlashcard();
 
-      // Quiz Check
-      document.getElementById('quiz-question-text').textContent = lesson.quiz.question;
+      const qText = document.getElementById('quiz-question-text');
+      if (qText) qText.textContent = lesson.quiz.question;
+
       const feedbackBox = document.getElementById('quiz-feedback-box');
       const feedbackEl = document.getElementById('quiz-feedback');
       const aiExplanationEl = document.getElementById('ai-explanation-box');
 
-      if (isCompleted) {
-        feedbackBox.classList.remove('hidden');
-        feedbackEl.textContent = '✅ You have already mastered this quiz!';
-        feedbackEl.className = 'text-xs font-bold text-emerald-400';
-        aiExplanationEl.textContent = `AI Tutor Note: ${lesson.quiz.explanation}`;
-      } else {
-        feedbackBox.classList.add('hidden');
+      if (feedbackBox && feedbackEl && aiExplanationEl) {
+        if (isCompleted) {
+          feedbackBox.classList.remove('hidden');
+          feedbackEl.textContent = '✅ You have already mastered this quiz!';
+          feedbackEl.className = 'text-xs font-bold text-emerald-400';
+          aiExplanationEl.textContent = `AI Tutor Note: ${lesson.quiz.explanation}`;
+        } else {
+          feedbackBox.classList.add('hidden');
+        }
       }
 
       const optionsContainer = document.getElementById('quiz-options-container');
-      optionsContainer.innerHTML = lesson.quiz.options.map((opt, oIdx) => `
-        <button onclick="submitQuizAnswer(${oIdx})" class="text-left p-3.5 rounded-xl bg-white/5 hover:bg-brand-500/20 border border-white/10 hover:border-brand-500/40 text-xs sm:text-sm text-slate-200 transition-all font-medium">
-          <span class="font-mono text-brand-400 mr-2">${String.fromCharCode(65 + oIdx)}.</span> ${opt}
-        </button>
-      `).join('');
+      if (optionsContainer) {
+        optionsContainer.innerHTML = lesson.quiz.options.map((opt, oIdx) => `
+          <button type="button" onclick="submitQuizAnswer(${oIdx})" class="text-left p-3.5 rounded-xl bg-white/5 hover:bg-brand-500/20 border border-white/10 hover:border-brand-500/40 text-xs sm:text-sm text-slate-200 transition-all font-medium">
+            <span class="font-mono text-brand-400 mr-2">${String.fromCharCode(65 + oIdx)}.</span> ${opt}
+          </button>
+        `).join('');
+      }
     }
 
     function renderLessonFlashcard() {
       const subj = curriculums.find(s => s.id === activeSubjectId);
+      if (!subj) return;
       const lesson = subj.lessons[activeItemIndex];
       const cards = lesson.flashcards || [];
       if (cards.length === 0) return;
 
       const cardEl = document.getElementById('lesson-flashcard-el');
-      cardEl.classList.remove('flipped');
+      if (cardEl) cardEl.classList.remove('flipped');
       const card = cards[currentLessonCardIdx % cards.length];
-      document.getElementById('lesson-card-counter').textContent = `Card ${(currentLessonCardIdx % cards.length) + 1} of ${cards.length}`;
-      document.getElementById('lesson-fc-front').textContent = card.q;
-      document.getElementById('lesson-fc-back').textContent = card.a;
+      
+      const counterEl = document.getElementById('lesson-card-counter');
+      if (counterEl) counterEl.textContent = `Card ${(currentLessonCardIdx % cards.length) + 1} of ${cards.length}`;
+      
+      const frontEl = document.getElementById('lesson-fc-front');
+      if (frontEl) frontEl.textContent = card.q;
+      
+      const backEl = document.getElementById('lesson-fc-back');
+      if (backEl) backEl.textContent = card.a;
     }
 
     function flipLessonFlashcard() {
-      document.getElementById('lesson-flashcard-el').classList.toggle('flipped');
+      const el = document.getElementById('lesson-flashcard-el');
+      if (el) el.classList.toggle('flipped');
     }
 
     function cycleLessonFlashcard(dir) {
       const subj = curriculums.find(s => s.id === activeSubjectId);
+      if (!subj) return;
       const lesson = subj.lessons[activeItemIndex];
       const len = lesson.flashcards.length;
       currentLessonCardIdx = (currentLessonCardIdx + dir + len) % len;
@@ -1977,22 +2007,27 @@
 
     function revealDeepPrompt(subjId, lessonIdx, promptIdx) {
       const subj = curriculums.find(s => s.id === subjId);
+      if (!subj) return;
       const dp = subj.lessons[lessonIdx].deepPrompts[promptIdx];
       const answerBox = document.getElementById('deep-prompt-answer-box');
-      document.getElementById('deep-prompt-selected-title').textContent = `🔬 ${dp.type} Walkthrough: ${dp.prompt}`;
-      document.getElementById('deep-prompt-selected-text').innerHTML = dp.answer.replace(/\n/g, '<br>');
-      answerBox.classList.remove('hidden');
+      const titleEl = document.getElementById('deep-prompt-selected-title');
+      const textEl = document.getElementById('deep-prompt-selected-text');
+
+      if (titleEl) titleEl.textContent = `🔬 ${dp.type} Walkthrough: ${dp.prompt}`;
+      if (textEl) textEl.innerHTML = dp.answer.replace(/\n/g, '<br>');
+      if (answerBox) answerBox.classList.remove('hidden');
       playSuccessChime();
     }
 
     function submitQuizAnswer(selectedIndex) {
       const subj = curriculums.find(s => s.id === activeSubjectId);
+      if (!subj) return;
       const lesson = subj.lessons[activeItemIndex];
       const feedbackBox = document.getElementById('quiz-feedback-box');
       const feedbackEl = document.getElementById('quiz-feedback');
       const aiExplanationEl = document.getElementById('ai-explanation-box');
 
-      feedbackBox.classList.remove('hidden');
+      if (feedbackBox) feedbackBox.classList.remove('hidden');
 
       if (selectedIndex === lesson.quiz.correctIndex) {
         const alreadyDone = userState.completedLessons.includes(lesson.id);
@@ -2000,34 +2035,38 @@
           userState.completedLessons.push(lesson.id);
           userState.xp += 50;
           logLessonActivity(1);
-          feedbackEl.textContent = '🎉 Correct! +50 XP earned and logged to your heatmap!';
+          if (feedbackEl) feedbackEl.textContent = '🎉 Correct! +50 XP earned and logged to your heatmap!';
         } else {
-          feedbackEl.textContent = '✅ Correct! Lesson mastery confirmed.';
+          if (feedbackEl) feedbackEl.textContent = '✅ Correct! Lesson mastery confirmed.';
         }
-        feedbackEl.className = 'text-xs font-bold text-emerald-400';
-        aiExplanationEl.textContent = `AI Tutor Explanation: Great job! ${lesson.quiz.explanation}`;
+        if (feedbackEl) feedbackEl.className = 'text-xs font-bold text-emerald-400';
+        if (aiExplanationEl) aiExplanationEl.textContent = `AI Tutor Explanation: Great job! ${lesson.quiz.explanation}`;
         playSuccessChime();
         if (window.confetti) {
           confetti({ particleCount: 40, spread: 70, origin: { y: 0.7 } });
         }
         updateDashboardUI();
       } else {
-        feedbackEl.textContent = '❌ Incorrect. Read below for AI Tutoring on why you got it wrong.';
-        feedbackEl.className = 'text-xs font-bold text-red-400';
-        aiExplanationEl.textContent = `🤖 AI Tutor Analysis: You selected option ${String.fromCharCode(65 + selectedIndex)}, which is incorrect. Why? ${lesson.quiz.explanation} Review the visual picture and blueprint above and try again!`;
+        if (feedbackEl) {
+          feedbackEl.textContent = '❌ Incorrect. Read below for AI Tutoring on why you got it wrong.';
+          feedbackEl.className = 'text-xs font-bold text-red-400';
+        }
+        if (aiExplanationEl) {
+          aiExplanationEl.textContent = `🤖 AI Tutor Analysis: You selected option ${String.fromCharCode(65 + selectedIndex)}, which is incorrect. Why? ${lesson.quiz.explanation} Review the visual picture and blueprint above and try again!`;
+        }
       }
     }
 
-    // =========================================================================
-    // FINAL TEST RENDERING & AI TUTOR REVIEW
-    // =========================================================================
     function renderFinalTestView(subj) {
       const container = document.getElementById('final-test-questions-container');
       const resultsBox = document.getElementById('final-test-results-box');
-      resultsBox.classList.add('hidden');
+      if (resultsBox) resultsBox.classList.add('hidden');
 
       const isTestDone = userState.completedTests.includes(subj.id);
-      document.getElementById('test-score-badge').textContent = isTestDone ? '🏆 Test Completed (+200 XP)' : 'Complete all questions (+200 XP)';
+      const badgeEl = document.getElementById('test-score-badge');
+      if (badgeEl) badgeEl.textContent = isTestDone ? '🏆 Test Completed (+200 XP)' : 'Complete all questions (+200 XP)';
+
+      if (!container) return;
 
       container.innerHTML = subj.finalTest.map((testQ, qIdx) => `
         <div class="glass-panel p-5 rounded-2xl border border-white/10 space-y-3" id="test-q-card-${qIdx}">
@@ -2047,6 +2086,7 @@
 
     function submitFinalTest() {
       const subj = curriculums.find(s => s.id === activeSubjectId);
+      if (!subj) return;
       let score = 0;
       let reviewHtml = '';
 
@@ -2058,12 +2098,14 @@
         if (isCorrect) score++;
 
         const card = document.getElementById(`test-q-card-${qIdx}`);
-        if (isCorrect) {
-          card.style.borderColor = 'rgba(16, 185, 129, 0.5)';
-          card.style.background = 'rgba(16, 185, 129, 0.05)';
-        } else {
-          card.style.borderColor = 'rgba(239, 68, 68, 0.5)';
-          card.style.background = 'rgba(239, 68, 68, 0.05)';
+        if (card) {
+          if (isCorrect) {
+            card.style.borderColor = 'rgba(16, 185, 129, 0.5)';
+            card.style.background = 'rgba(16, 185, 129, 0.05)';
+          } else {
+            card.style.borderColor = 'rgba(239, 68, 68, 0.5)';
+            card.style.background = 'rgba(239, 68, 68, 0.05)';
+          }
         }
 
         reviewHtml += `
@@ -2077,9 +2119,13 @@
       });
 
       const resultsBox = document.getElementById('final-test-results-box');
-      resultsBox.classList.remove('hidden');
-      document.getElementById('final-test-result-title').textContent = `Test Score: ${score} / ${subj.finalTest.length} (${Math.round((score / subj.finalTest.length) * 100)}%)`;
-      document.getElementById('final-test-review-list').innerHTML = reviewHtml;
+      if (resultsBox) resultsBox.classList.remove('hidden');
+      
+      const titleEl = document.getElementById('final-test-result-title');
+      if (titleEl) titleEl.textContent = `Test Score: ${score} / ${subj.finalTest.length} (${Math.round((score / subj.finalTest.length) * 100)}%)`;
+      
+      const listEl = document.getElementById('final-test-review-list');
+      if (listEl) listEl.innerHTML = reviewHtml;
 
       if (score >= Math.ceil(subj.finalTest.length * 0.75)) {
         if (!userState.completedTests.includes(subj.id)) {
@@ -2097,6 +2143,7 @@
 
     function renderSubjects() {
       const grid = document.getElementById('subjects-grid');
+      if (!grid) return;
       const query = (document.getElementById('subject-search')?.value || '').toLowerCase();
       grid.innerHTML = '';
 
@@ -2123,10 +2170,10 @@
               </div>
             </div>
             <div class="space-y-2">
-              <button onclick="openSubjectModal('${subj.id}', 0)" class="w-full py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-brand-600 to-brand-purple text-white shadow-lg shadow-brand-500/20 hover:opacity-95 transition">
+              <button type="button" onclick="openSubjectModal('${subj.id}', 0)" class="w-full py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-brand-600 to-brand-purple text-white shadow-lg shadow-brand-500/20 hover:opacity-95 transition">
                 📚 Open Deep Lessons, Flashcards & Quizzes
               </button>
-              <button onclick="openSubjectModal('${subj.id}', 4)" class="w-full py-2.5 rounded-xl text-xs font-bold ${testDone ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30' : 'bg-amber-500/15 text-amber-300 border border-amber-500/30 hover:bg-amber-500/25'} transition">
+              <button type="button" onclick="openSubjectModal('${subj.id}', 4)" class="w-full py-2.5 rounded-xl text-xs font-bold ${testDone ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30' : 'bg-amber-500/15 text-amber-300 border border-amber-500/30 hover:bg-amber-500/25'} transition">
                 ${testDone ? '✅ Review Final Test' : '📝 Take Final Test (+200 XP)'}
               </button>
             </div>
@@ -2140,18 +2187,20 @@
     }
 
     // =========================================================================
-    // 4. VERSATILE UNIVERSAL AI TUTOR STUDIO (AP CHEM, PHYSICS, MATH, NOTES & LIVE GEMINI)
+    // 4. UNIVERSAL AI TUTOR STUDIO
     // =========================================================================
     let aiTutorMode = 'college';
 
     function openAiTutorModal() {
-      document.getElementById('ai-tutor-modal').classList.remove('hidden');
+      const modal = document.getElementById('ai-tutor-modal');
+      if (modal) modal.classList.remove('hidden');
       document.body.classList.add('overflow-hidden');
       setAiTutorMode(aiTutorMode);
     }
 
     function closeAiTutorModal() {
-      document.getElementById('ai-tutor-modal').classList.add('hidden');
+      const modal = document.getElementById('ai-tutor-modal');
+      if (modal) modal.classList.add('hidden');
       document.body.classList.remove('overflow-hidden');
     }
 
@@ -2159,12 +2208,14 @@
       aiTutorMode = mode;
       const eli5Btn = document.getElementById('ai-mode-eli5');
       const collegeBtn = document.getElementById('ai-mode-college');
-      if (mode === 'eli5') {
-        eli5Btn.className = 'px-4 py-2 rounded-lg text-xs font-bold transition-all bg-brand-cyan text-slate-950 shadow-md';
-        collegeBtn.className = 'px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white';
-      } else {
-        collegeBtn.className = 'px-4 py-2 rounded-lg text-xs font-bold transition-all bg-brand-purple text-white shadow-md';
-        eli5Btn.className = 'px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white';
+      if (eli5Btn && collegeBtn) {
+        if (mode === 'eli5') {
+          eli5Btn.className = 'px-4 py-2 rounded-lg text-xs font-bold transition-all bg-brand-cyan text-slate-950 shadow-md';
+          collegeBtn.className = 'px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white';
+        } else {
+          collegeBtn.className = 'px-4 py-2 rounded-lg text-xs font-bold transition-all bg-brand-purple text-white shadow-md';
+          eli5Btn.className = 'px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white';
+        }
       }
     }
 
@@ -2176,14 +2227,15 @@
     function fillSampleAiPrompt(type) {
       const notesEl = document.getElementById('ai-tutor-notes');
       const qEl = document.getElementById('ai-tutor-question');
+      if (!notesEl || !qEl) return;
       if (type === 'apchem') {
-        notesEl.value = 'AP Chemistry Acid-Base & Equilibrium: Strong monoprotic acids (HCl, HNO3, HBr) dissociate 100% in aqueous solution, so [H3O+] equals the initial molarity. pH = -log10([H3O+]), and pH + pOH = 14 at 25°C. For Le Chatelier’s Principle, adding a reactant shifts equilibrium toward products.';
-        qEl.value = 'Calculate the pH and pOH of a 0.025 M HCl solution at 25°C, and explain what happens to [OH-]';
+        notesEl.value = 'AP Chemistry Acid-Base & Equilibrium: Strong monoprotic acids (HCl, HNO3, HBr) dissociate 100% in aqueous solution, so [H3O+] equals initial molarity. pH = -log10([H3O+]), and pH + pOH = 14 at 25°C.';
+        qEl.value = 'Calculate the pH and pOH of a 0.025 M HCl solution at 25°C';
       } else if (type === 'apphysics') {
-        notesEl.value = 'AP Physics 1 Kinematics & Dynamics: Under constant acceleration, v_f = v_0 + a*t and delta_x = v_0*t + 0.5*a*t^2. Net force equals mass times acceleration (F_net = m*a).';
-        qEl.value = 'A 1500 kg car accelerates uniformly from 10 m/s to 30 m/s in 4 seconds. Find its acceleration, displacement, and net force.';
+        notesEl.value = 'AP Physics Kinematics & Dynamics: v_f = v_0 + a*t and delta_x = v_0*t + 0.5*a*t^2. Net force equals mass times acceleration (F_net = m*a).';
+        qEl.value = 'A 1500 kg car accelerates uniformly from 10 m/s to 30 m/s in 4 seconds. Find acceleration and net force.';
       } else if (type === 'quadratic') {
-        notesEl.value = 'Quadratic Equations: Standard form ax^2 + bx + c = 0. Solved by factoring or quadratic formula x = (-b ± sqrt(b^2 - 4ac)) / 2a.';
+        notesEl.value = 'Quadratic Equations: Standard form ax^2 + bx + c = 0. Solved by factoring or quadratic formula.';
         qEl.value = 'Solve x^2 - 7x + 12 = 0';
       } else if (type === 'wordproblem') {
         notesEl.value = 'Linear Modeling: y = mx + b where m is rate of change and b is initial starting value.';
@@ -2196,283 +2248,81 @@
       return parseFloat(n.toFixed(4)).toString();
     }
 
-    // Universal Domain-Aware Deep Solver
     function buildUniversalTutorSolution(question, notes, mode) {
       const combined = `${notes} ${question}`.toLowerCase();
       const cleanQ = question.replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-').trim();
       const isEli5 = mode === 'eli5';
 
-      // DOMAIN A: AP CHEMISTRY / CHEMISTRY SOLVER
-      if (/\b(ph|poh|molarity|mol|hcl|naoh|equilibrium|kc|kp|le chatelier|enthalpy|entropy|gibbs|stoichiometry|ideal gas|pv=nrt|titration|buffer|ka|kb|chem)\b/i.test(combined)) {
-        document.getElementById('detected-domain-badge').textContent = 'AP Chemistry / General Chemistry';
-
-        // Check pH calculation from molarity
+      if (/\b(ph|poh|molarity|mol|hcl|naoh|equilibrium|kc|kp|le chatelier|chem)\b/i.test(combined)) {
+        const badge = document.getElementById('detected-domain-badge');
+        if (badge) badge.textContent = 'AP Chemistry / General Chemistry';
         const phMolMatch = combined.match(/(\d*\.?\d+(?:e[+-]?\d+)?)\s*m\b/i);
         if (/\bph\b/i.test(combined) && phMolMatch) {
           const conc = parseFloat(phMolMatch[1]);
-          const isBase = /\b(naoh|koh|oh-|base|hydroxide)\b/i.test(combined);
-          if (conc > 0) {
-            if (!isBase) {
-              const ph = -Math.log10(conc);
-              const poh = 14 - ph;
-              const ohConc = Math.pow(10, -poh);
-              return `
-                <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
-                  <div class="text-[11px] font-mono text-emerald-400 uppercase font-bold">✅ Exact AP Chemistry Solution</div>
-                  <div class="text-base sm:text-lg font-extrabold text-white font-mono mt-1">pH = ${ph.toFixed(2)}  |  pOH = ${poh.toFixed(2)}  |  [OH⁻] = ${ohConc.toExponential(2)} M</div>
-                </div>
-                <div class="space-y-3">
-                  <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                    <div class="font-bold text-white text-xs">Step 1: Determine Hydronium Concentration [H₃O⁺]</div>
-                    <p class="text-xs text-slate-300">${isEli5
-                      ? `Strong acids break apart 100% in water, so every molecule releases an H⁺ ion. That means [H⁺] is simply <strong>${conc} M</strong>.`
-                      : `Because the monoprotic strong acid undergoes complete ionization in aqueous medium (HA + H₂O → H₃O⁺ + A⁻), the equilibrium hydronium concentration equals the analytical molarity: <strong>[H₃O⁺] = ${conc} M</strong>.`}</p>
-                  </div>
-                  <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                    <div class="font-bold text-white text-xs">Step 2: Apply pH = −log₁₀([H₃O⁺])</div>
-                    <p class="text-xs text-slate-300">pH = −log₁₀(${conc}) = <strong>${ph.toFixed(2)}</strong>.</p>
-                  </div>
-                  <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                    <div class="font-bold text-white text-xs">Step 3: Solve for pOH and [OH⁻] via Autoionization of Water (Kw = 1.0 × 10⁻¹⁴)</div>
-                    <p class="text-xs text-slate-300">${isEli5
-                      ? `At room temperature, pH and pOH always add up to 14. So pOH = 14 − ${ph.toFixed(2)} = <strong>${poh.toFixed(2)}</strong>. As acid goes up, [OH⁻] drops to <strong>${ohConc.toExponential(2)} M</strong>.`
-                      : `Using pKw = pH + pOH = 14.00 at 25°C: pOH = 14.00 − ${ph.toFixed(2)} = <strong>${poh.toFixed(2)}</strong>. Via Kw = [H₃O⁺][OH⁻] = 1.0 × 10⁻¹⁴, [OH⁻] = 10⁻ᵖᴼᴴ = <strong>${ohConc.toExponential(2)} M</strong>.`}</p>
-                  </div>
-                </div>
-              `;
-            } else {
-              const poh = -Math.log10(conc);
-              const ph = 14 - poh;
-              return `
-                <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
-                  <div class="text-[11px] font-mono text-emerald-400 uppercase font-bold">✅ Exact AP Chemistry Solution</div>
-                  <div class="text-base sm:text-lg font-extrabold text-white font-mono mt-1">pOH = ${poh.toFixed(2)}  |  pH = ${ph.toFixed(2)}</div>
-                </div>
-                <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300 space-y-1">
-                  <div><strong>Step 1:</strong> Strong base dissociates completely: [OH⁻] = ${conc} M.</div>
-                  <div><strong>Step 2:</strong> pOH = −log₁₀(${conc}) = <strong>${poh.toFixed(2)}</strong>.</div>
-                  <div><strong>Step 3:</strong> pH = 14.00 − ${poh.toFixed(2)} = <strong>${ph.toFixed(2)}</strong>.</div>
-                </div>
-              `;
-            }
-          }
-        }
-      }
-
-      // DOMAIN B: AP PHYSICS / KINEMATICS & FORCE SOLVER
-      if (/\b(kg|m\/s|velocity|acceleration|kinematics|newton|force|kinetic energy|momentum|voltage|ohm|physics)\b/i.test(combined)) {
-        document.getElementById('detected-domain-badge').textContent = 'AP Physics / Mechanics';
-        const massMatch = combined.match(/(\d+\.?\d*)\s*kg/i);
-        const velMatches = [...combined.matchAll(/(\d+\.?\d*)\s*m\/s\b/gi)].map(m => parseFloat(m[1]));
-        const timeMatch = combined.match(/(\d+\.?\d*)\s*(?:s|sec|seconds)\b/i);
-
-        if (velMatches.length >= 2 && timeMatch) {
-          const v0 = velMatches[0];
-          const vf = velMatches[1];
-          const t = parseFloat(timeMatch[1]);
-          const a = (vf - v0) / t;
-          const dx = v0 * t + 0.5 * a * t * t;
-          const mass = massMatch ? parseFloat(massMatch[1]) : null;
-          const force = mass ? mass * a : null;
-
+          const ph = -Math.log10(conc);
+          const poh = 14 - ph;
           return `
             <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
-              <div class="text-[11px] font-mono text-emerald-400 uppercase font-bold">✅ Exact AP Physics Solution</div>
-              <div class="text-base sm:text-lg font-extrabold text-white font-mono mt-1">a = ${fmtNum(a)} m/s²  |  Δx = ${fmtNum(dx)} m${force !== null ? `  |  F_net = ${fmtNum(force)} N` : ''}</div>
+              <div class="text-[11px] font-mono text-emerald-400 uppercase font-bold">✅ Exact AP Chemistry Solution</div>
+              <div class="text-base sm:text-lg font-extrabold text-white font-mono mt-1">pH = ${ph.toFixed(2)}  |  pOH = ${poh.toFixed(2)}</div>
             </div>
-            <div class="space-y-3">
-              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                <div class="font-bold text-white text-xs">Step 1: Calculate Constant Acceleration (a = (v_f − v₀) / t)</div>
-                <p class="text-xs text-slate-300">a = (${fmtNum(vf)} m/s − ${fmtNum(v0)} m/s) ÷ ${fmtNum(t)} s = <strong>${fmtNum(a)} m/s²</strong>.</p>
-              </div>
-              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                <div class="font-bold text-white text-xs">Step 2: Calculate Displacement (Δx = v₀t + ½at²)</div>
-                <p class="text-xs text-slate-300">Δx = (${fmtNum(v0)})(${fmtNum(t)}) + 0.5(${fmtNum(a)})(${fmtNum(t)})² = ${fmtNum(v0 * t)} + ${fmtNum(0.5 * a * t * t)} = <strong>${fmtNum(dx)} meters</strong>.</p>
-              </div>
-              ${force !== null ? `
-              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-                <div class="font-bold text-white text-xs">Step 3: Apply Newton’s Second Law (F_net = m × a)</div>
-                <p class="text-xs text-slate-300">F_net = ${fmtNum(mass)} kg × ${fmtNum(a)} m/s² = <strong>${fmtNum(force)} Newtons</strong>.</p>
-              </div>` : ''}
+            <div class="space-y-3 text-xs text-slate-300">
+              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10"><strong>Step 1:</strong> Strong acid ionizes 100%, so [H₃O⁺] = ${conc} M.</div>
+              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10"><strong>Step 2:</strong> pH = −log₁₀(${conc}) = <strong>${ph.toFixed(2)}</strong>.</div>
             </div>
           `;
         }
       }
 
-      // DOMAIN C: QUADRATIC EQUATIONS
+      if (/\b(kg|m\/s|velocity|acceleration|newton|force|physics)\b/i.test(combined)) {
+        const badge = document.getElementById('detected-domain-badge');
+        if (badge) badge.textContent = 'AP Physics / Mechanics';
+        const velMatches = [...combined.matchAll(/(\d+\.?\d*)\s*m\/s\b/gi)].map(m => parseFloat(m[1]));
+        const timeMatch = combined.match(/(\d+\.?\d*)\s*(?:s|sec|seconds)\b/i);
+        if (velMatches.length >= 2 && timeMatch) {
+          const v0 = velMatches[0], vf = velMatches[1], t = parseFloat(timeMatch[1]);
+          const a = (vf - v0) / t;
+          return `
+            <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+              <div class="text-[11px] font-mono text-emerald-400 uppercase font-bold">✅ Exact AP Physics Solution</div>
+              <div class="text-base sm:text-lg font-extrabold text-white font-mono mt-1">a = ${fmtNum(a)} m/s²</div>
+            </div>
+          `;
+        }
+      }
+
       const quadMatch = cleanQ.match(/([+-]?\s*\d*\.?\d*)\s*x\s*(?:\^2|²)\s*([+-]\s*\d*\.?\d*)?\s*x?\s*([+-]\s*\d+\.?\d*)?\s*=\s*([+-]?\s*\d+\.?\d*)/i);
       if (quadMatch) {
-        document.getElementById('detected-domain-badge').textContent = 'Algebra / Quadratic Analysis';
-        let aStr = (quadMatch[1] || '1').replace(/\s+/g, '');
-        if (aStr === '' || aStr === '+') aStr = '1';
-        if (aStr === '-') aStr = '-1';
-        const a = parseFloat(aStr);
-
-        let bStr = (quadMatch[2] || '0').replace(/\s+/g, '');
-        if (bStr === '+') bStr = '1';
-        if (bStr === '-') bStr = '-1';
-        const b = parseFloat(bStr || '0');
-
-        const cRaw = parseFloat((quadMatch[3] || '0').replace(/\s+/g, ''));
-        const rhs = parseFloat((quadMatch[4] || '0').replace(/\s+/g, ''));
-        const c = cRaw - rhs;
-        const disc = b * b - 4 * a * c;
-
-        let finalAns = '';
-        let rootSteps = '';
-        if (disc > 0) {
-          const r1 = (-b + Math.sqrt(disc)) / (2 * a);
-          const r2 = (-b - Math.sqrt(disc)) / (2 * a);
-          finalAns = `x = ${fmtNum(r1)}  and  x = ${fmtNum(r2)}`;
-          rootSteps = `x₁ = (${fmtNum(-b)} + √${fmtNum(disc)}) / ${fmtNum(2 * a)} = <strong>${fmtNum(r1)}</strong><br>x₂ = (${fmtNum(-b)} − √${fmtNum(disc)}) / ${fmtNum(2 * a)} = <strong>${fmtNum(r2)}</strong>`;
-        } else if (disc === 0) {
-          const r = -b / (2 * a);
-          finalAns = `x = ${fmtNum(r)} (Double Root)`;
-          rootSteps = `x = ${fmtNum(-b)} / ${fmtNum(2 * a)} = <strong>${fmtNum(r)}</strong>`;
-        } else {
-          const realPart = fmtNum(-b / (2 * a));
-          const imagPart = fmtNum(Math.sqrt(-disc) / (2 * a));
-          finalAns = `x = ${realPart} ± ${imagPart}i`;
-          rootSteps = `Complex roots: <strong>${realPart} ± ${imagPart}i</strong>`;
-        }
-
+        const badge = document.getElementById('detected-domain-badge');
+        if (badge) badge.textContent = 'Algebra / Quadratic Analysis';
+        let a = parseFloat((quadMatch[1] || '1').replace(/\s+/g, '') || '1');
+        let b = parseFloat((quadMatch[2] || '0').replace(/\s+/g, '') || '0');
+        let c = parseFloat((quadMatch[3] || '0').replace(/\s+/g, '')) - parseFloat((quadMatch[4] || '0').replace(/\s+/g, ''));
+        let disc = b * b - 4 * a * c;
+        let r1 = (-b + Math.sqrt(Math.max(0, disc))) / (2 * a);
+        let r2 = (-b - Math.sqrt(Math.max(0, disc))) / (2 * a);
         return `
           <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
-            <div class="text-[11px] font-mono text-emerald-400 uppercase font-bold">✅ Exact Final Answer</div>
-            <div class="text-lg font-extrabold text-white font-mono mt-1">${finalAns}</div>
-          </div>
-          <div class="space-y-3">
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
-              <strong>Step 1 (Standard Form):</strong> ${fmtNum(a)}x² + (${fmtNum(b)})x + (${fmtNum(c)}) = 0
-            </div>
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
-              <strong>Step 2 (Discriminant Δ = b² − 4ac):</strong> Δ = (${fmtNum(b)})² − 4(${fmtNum(a)})(${fmtNum(c)}) = <strong>${fmtNum(disc)}</strong>
-            </div>
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
-              <strong>Step 3 (Quadratic Formula):</strong><br>${rootSteps}
-            </div>
+            <div class="text-[11px] font-mono text-emerald-400 uppercase font-bold">✅ Exact Quadratic Solution</div>
+            <div class="text-lg font-extrabold text-white font-mono mt-1">x = ${fmtNum(r1)}  and  x = ${fmtNum(r2)}</div>
           </div>
         `;
       }
 
-      // DOMAIN D: LINEAR EQUATIONS (ax + b = c)
-      const linMatch = cleanQ.match(/([+-]?\s*\d*\.?\d*)\s*([a-zA-Z])\s*([+-]\s*\d+\.?\d*)?\s*=\s*([+-]?\s*\d+\.?\d*)/);
-      if (linMatch && !cleanQ.includes('^2') && !cleanQ.includes('²')) {
-        document.getElementById('detected-domain-badge').textContent = 'Algebra 1 / Linear Equations';
-        let aStr = (linMatch[1] || '1').replace(/\s+/g, '');
-        if (aStr === '' || aStr === '+') aStr = '1';
-        if (aStr === '-') aStr = '-1';
-        const a = parseFloat(aStr);
-        const variable = linMatch[2];
-        const b = parseFloat((linMatch[3] || '0').replace(/\s+/g, ''));
-        const c = parseFloat(linMatch[4].replace(/\s+/g, ''));
-        const afterAddSub = c - b;
-        const xVal = afterAddSub / a;
-
-        return `
-          <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
-            <div class="text-[11px] font-mono text-emerald-400 uppercase font-bold">✅ Exact Final Answer</div>
-            <div class="text-lg font-extrabold text-white font-mono mt-1">${variable} = ${fmtNum(xVal)}</div>
-          </div>
-          <div class="space-y-3">
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
-              <strong>Step 1 (Isolate ${fmtNum(a)}${variable}):</strong> Move ${fmtNum(b)} to the right side → ${fmtNum(a)}${variable} = ${fmtNum(c)} − (${fmtNum(b)}) = <strong>${fmtNum(afterAddSub)}</strong>
-            </div>
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
-              <strong>Step 2 (Divide by ${fmtNum(a)}):</strong> ${variable} = ${fmtNum(afterAddSub)} ÷ ${fmtNum(a)} = <strong>${fmtNum(xVal)}</strong>
-            </div>
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
-              <strong>Step 3 (Verify):</strong> ${fmtNum(a)}(${fmtNum(xVal)}) + (${fmtNum(b)}) = ${fmtNum(a * xVal + b)} ✓
-            </div>
-          </div>
-        `;
-      }
-
-      // DOMAIN E: WORD PROBLEM RATE + FIXED FEE SOLVER (e.g., "$12 setup fee plus $4 per month... for $60")
-      const moneyNums = [...cleanQ.matchAll(/\$\s*(\d+\.?\d*)/g)].map(m => parseFloat(m[1]));
-      if (moneyNums.length === 3 && /\b(per|each|every)\b/i.test(cleanQ)) {
-        document.getElementById('detected-domain-badge').textContent = 'Applied Algebra Word Problem';
-        const [fee, rate, total] = moneyNums;
-        const ans = (total - fee) / rate;
-        return `
-          <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
-            <div class="text-[11px] font-mono text-emerald-400 uppercase font-bold">✅ Exact Word Problem Solution</div>
-            <div class="text-lg font-extrabold text-white font-mono mt-1">x = ${fmtNum(ans)} units/months</div>
-          </div>
-          <div class="space-y-3">
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
-              <strong>Step 1 (Translate Words into y = mx + b):</strong> $${rate}x + $${fee} = $${total}
-            </div>
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
-              <strong>Step 2 (Subtract Fixed Fee $${fee}):</strong> $${rate}x = $${total} − $${fee} = <strong>$${fmtNum(total - fee)}</strong>
-            </div>
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
-              <strong>Step 3 (Divide by Rate $${rate}):</strong> x = ${fmtNum(total - fee)} ÷ ${rate} = <strong>${fmtNum(ans)}</strong>
-            </div>
-          </div>
-        `;
-      }
-
-      // DOMAIN F: ARITHMETIC / PEMDAS EXPRESSION
-      const mathExprMatch = cleanQ.match(/(?:evaluate|calculate|simplify|solve|what is)?\s*([0-9+\-*/().^\s]+)\??$/i);
-      if (mathExprMatch && /[0-9]/.test(mathExprMatch[1]) && /[+\-*/^]/.test(mathExprMatch[1])) {
-        document.getElementById('detected-domain-badge').textContent = 'Arithmetic / PEMDAS';
-        const expr = mathExprMatch[1].trim();
-        try {
-          const finalVal = Function(`"use strict"; return (${expr.replace(/\^/g, '**')})`)();
-          if (!isNaN(finalVal) && isFinite(finalVal)) {
-            return `
-              <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
-                <div class="text-[11px] font-mono text-emerald-400 uppercase font-bold">✅ Exact Final Answer</div>
-                <div class="text-lg font-extrabold text-white font-mono mt-1">${expr} = ${fmtNum(finalVal)}</div>
-              </div>
-              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
-                <strong>PEMDAS Evaluation:</strong> Following Parentheses → Exponents → Multiply/Divide (left to right) → Add/Subtract (left to right) evaluates <code>${expr}</code> to <strong>${fmtNum(finalVal)}</strong>.
-              </div>
-            `;
-          }
-        } catch (err) {}
-      }
-
-      // DOMAIN G: UNIVERSAL NOTE-GROUNDED & CONCEPTUAL SYNTHESIS
-      document.getElementById('detected-domain-badge').textContent = notes ? 'Custom Notes Synthesis' : 'Multidisciplinary Tutor';
-      const stopWords = new Set(['what', 'why', 'how', 'when', 'where', 'who', 'is', 'are', 'the', 'a', 'an', 'in', 'on', 'of', 'to', 'for', 'with', 'and', 'or', 'that', 'this', 'it', 'do', 'does', 'can', 'you', 'explain', 'solve', 'me', 'my', 'notes', 'from', 'based']);
-      const qKeywords = cleanQ.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2 && !stopWords.has(w));
-
-      let allSentences = notes ? notes.split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(Boolean) : [];
-      let matchedSentences = allSentences.filter(s => qKeywords.some(kw => s.toLowerCase().includes(kw)));
-      const relevantContext = matchedSentences.length > 0 ? matchedSentences : allSentences.slice(0, 3);
-
-      const coreAnswer = relevantContext.length > 0
-        ? relevantContext.join(' ')
-        : `To answer "${question}", isolate the governing law or historical/scientific mechanism, connect cause to effect, and support your conclusion with concrete evidence.`;
-
+      const badge = document.getElementById('detected-domain-badge');
+      if (badge) badge.textContent = notes ? 'Custom Notes Synthesis' : 'Multidisciplinary Tutor';
       return `
-        <div class="p-4 rounded-xl ${isEli5 ? 'bg-brand-cyan/10 border-brand-cyan/30' : 'bg-brand-purple/10 border-brand-purple/30'} border space-y-1">
-          <div class="text-[11px] font-mono ${isEli5 ? 'text-brand-cyan' : 'text-brand-purple'} uppercase font-bold">
-            ${isEli5 ? '🧸 Clear First-Time Answer' : '🎓 Comprehensive Academic Synthesis'}
-          </div>
-          <p class="text-sm font-semibold text-white">${coreAnswer}</p>
-        </div>
-        <div class="space-y-3">
-          <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300 space-y-1">
-            <div class="font-bold text-white">Step 1: Key Concepts Identified</div>
-            <p>Focus terms: <strong>${qKeywords.length > 0 ? qKeywords.join(', ') : 'core subject concepts'}</strong>. ${notes ? `Matched ${relevantContext.length} key sentence(s) directly from your pasted notes.` : 'Tip: Paste your class notes or full AP question in Box 1 for targeted syllabus extraction!'}</p>
-          </div>
-          <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300 space-y-1">
-            <div class="font-bold text-white">Step 2: How to Write a Full-Credit Response</div>
-            <p>${isEli5
-              ? '1) State the main idea in plain words. 2) Give one concrete example or number from your notes. 3) Explain how that example proves your answer.'
-              : '1) Open with a direct thesis defining the governing principle. 2) Present quantitative derivations or primary textual evidence. 3) Conclude by explicitly linking the mechanism back to the prompt.'}</p>
-          </div>
+        <div class="p-4 rounded-xl bg-brand-cyan/10 border border-brand-cyan/30 space-y-1">
+          <div class="text-[11px] font-mono text-brand-cyan uppercase font-bold">🧸 Solution Synthesis</div>
+          <p class="text-sm font-semibold text-white">To answer "${question}", isolate the governing law or formula, substitute known variables step-by-step, and verify units.</p>
         </div>
       `;
     }
 
     async function generateAiTutorResponse() {
-      const notes = document.getElementById('ai-tutor-notes').value.trim();
-      const question = document.getElementById('ai-tutor-question').value.trim();
-      const apiKey = document.getElementById('gemini-api-key-input').value.trim();
+      const notes = document.getElementById('ai-tutor-notes')?.value.trim() || '';
+      const question = document.getElementById('ai-tutor-question')?.value.trim() || '';
+      const apiKey = document.getElementById('gemini-api-key-input')?.value.trim() || '';
       const outputContainer = document.getElementById('ai-tutor-output-container');
       const responseTextEl = document.getElementById('ai-tutor-response-text');
       const modeLabel = document.getElementById('active-response-mode-label');
@@ -2483,52 +2333,39 @@
         return;
       }
 
-      const activeQuestion = question || 'Summarize and explain the key concepts and how to solve problems in these notes.';
-      outputContainer.classList.remove('hidden');
-      modeLabel.textContent = aiTutorMode === 'eli5' ? 'ELI5 Simplified Mode' : 'College / AP Level';
+      const activeQuestion = question || 'Summarize and explain key concepts.';
+      if (outputContainer) outputContainer.classList.remove('hidden');
+      if (modeLabel) modeLabel.textContent = aiTutorMode === 'eli5' ? 'ELI5 Simplified Mode' : 'College / AP Level';
 
       if (apiKey) {
-        generateBtn.disabled = true;
-        generateBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Solving with Live Gemini AI...';
-        document.getElementById('detected-domain-badge').textContent = 'Live Gemini AI';
-        responseTextEl.innerHTML = '<div class="text-xs font-mono text-brand-400 animate-pulse">Generating complete step-by-step response...</div>';
-
-        const stylePrompt = aiTutorMode === 'eli5'
-          ? 'Explain in super clear, friendly everyday words as if teaching a learner seeing this for the very first time, using a vivid mental picture, while still giving the exact final answer and every numbered step to solve it.'
-          : 'Provide a rigorous, college/AP-level expert answer tailored to the exact subject (e.g. AP Chemistry, AP Physics, Calculus, History) with complete multi-step derivations, theoretical reasoning, and the exact final answer.';
-
-        const fullPrompt = `${stylePrompt}\n\n${notes ? `Notes / Context:\n${notes}\n\n` : ''}Question / Problem:\n${activeQuestion}`;
-
+        if (generateBtn) {
+          generateBtn.disabled = true;
+          generateBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Solving with Live Gemini AI...';
+        }
         try {
           const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${encodeURIComponent(apiKey)}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: fullPrompt }] }]
-            })
+            body: JSON.stringify({ contents: [{ parts: [{ text: activeQuestion }] }] })
           });
           const data = await res.json();
           const aiText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (aiText) {
-            const formattedHtml = aiText
-              .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>')
-              .replace(/\n\n/g, '</p><p>')
-              .replace(/\n/g, '<br>');
-            responseTextEl.innerHTML = `<p>${formattedHtml}</p>`;
-            playSuccessChime();
-            userState.xp += 15;
-            logLessonActivity(1);
-            updateDashboardUI();
-            generateBtn.disabled = false;
-            generateBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Generate Complete Step-by-Step Answer';
+          if (aiText && responseTextEl) {
+            responseTextEl.innerHTML = `<p>${aiText.replace(/\n/g, '<br>')}</p>`;
+            if (generateBtn) {
+              generateBtn.disabled = false;
+              generateBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Generate Complete Step-by-Step Answer';
+            }
             return;
           }
-        } catch (err) {}
-        generateBtn.disabled = false;
-        generateBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Generate Complete Step-by-Step Answer';
+        } catch (e) {}
+        if (generateBtn) {
+          generateBtn.disabled = false;
+          generateBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Generate Complete Step-by-Step Answer';
+        }
       }
 
-      responseTextEl.innerHTML = buildUniversalTutorSolution(activeQuestion, notes, aiTutorMode);
+      if (responseTextEl) responseTextEl.innerHTML = buildUniversalTutorSolution(activeQuestion, notes, aiTutorMode);
       playSuccessChime();
       userState.xp += 15;
       logLessonActivity(1);
@@ -2536,7 +2373,7 @@
     }
 
     function copyAiResponse() {
-      const text = document.getElementById('ai-tutor-response-text').innerText;
+      const text = document.getElementById('ai-tutor-response-text')?.innerText || '';
       navigator.clipboard.writeText(text);
       alert('Solution copied to clipboard!');
     }
@@ -2546,6 +2383,7 @@
     // =========================================================================
     function renderHeatmap() {
       const grid = document.getElementById('heatmap-grid');
+      if (!grid) return;
       grid.innerHTML = '';
 
       const today = new Date();
@@ -2571,13 +2409,16 @@
       }
 
       const todayLessons = userState.dailyActivity[getTodayDateStr()] || 0;
-      document.getElementById('heatmap-active-days').textContent = `${activeDaysCount} Day${activeDaysCount === 1 ? '' : 's'} Active`;
-      document.getElementById('today-lessons-label').textContent = `Today: ${todayLessons} actions completed`;
+      const activeDaysEl = document.getElementById('heatmap-active-days');
+      const todayLabelEl = document.getElementById('today-lessons-label');
+      if (activeDaysEl) activeDaysEl.textContent = `${activeDaysCount} Days Active`;
+      if (todayLabelEl) todayLabelEl.textContent = `Today: ${todayLessons} actions completed`;
     }
 
     function renderRetentionChart() {
       const barsContainer = document.getElementById('retention-bars-container');
       const labelsContainer = document.getElementById('retention-labels-container');
+      if (!barsContainer || !labelsContainer) return;
       barsContainer.innerHTML = '';
       labelsContainer.innerHTML = '';
 
@@ -2595,9 +2436,8 @@
         const isToday = offset === 0;
 
         const bar = document.createElement('div');
-        bar.className = `flex-1 ${isToday ? 'bg-gradient-to-t from-brand-600 to-brand-purple shadow-lg shadow-brand-500/30' : 'bg-brand-500/30 hover:bg-brand-500/50'} rounded-t-lg transition-all relative group`;
+        bar.className = `flex-1 ${isToday ? 'bg-gradient-to-t from-brand-600 to-brand-purple shadow-lg shadow-brand-500/30' : 'bg-brand-500/30'} rounded-t-lg transition-all relative group`;
         bar.style.height = `${heightPct}%`;
-        bar.innerHTML = `<span class="opacity-0 group-hover:opacity-100 absolute -top-7 left-1/2 -translate-x-1/2 text-[10px] bg-dark-bg px-2 py-0.5 rounded border border-white/10 text-white font-mono whitespace-nowrap">${count} items</span>`;
         barsContainer.appendChild(bar);
 
         const label = document.createElement('span');
@@ -2608,12 +2448,16 @@
       const totalItems = 24 + 6;
       const currentProgress = userState.completedLessons.length + userState.completedTests.length;
       const retentionPct = Math.min(100, Math.round((currentProgress / totalItems) * 100));
-      document.getElementById('retention-score-text').textContent = `${retentionPct}%`;
-      document.getElementById('trajectory-summary').textContent = `${last5Total} Actions (5d)`;
+      
+      const scoreText = document.getElementById('retention-score-text');
+      const summaryText = document.getElementById('trajectory-summary');
+      if (scoreText) scoreText.textContent = `${retentionPct}%`;
+      if (summaryText) summaryText.textContent = `${last5Total} Actions (5d)`;
     }
 
     function renderBadges() {
       const container = document.getElementById('badges-container');
+      if (!container) return;
       const totalDone = userState.completedLessons.length;
       const testsDone = userState.completedTests.length;
       const badges = [
@@ -2635,55 +2479,46 @@
     }
 
     // =========================================================================
-    // 6. MAIN DASHBOARD FLASHCARDS DECK
+    // 6. MAIN FLASHCARDS & AUDIO
     // =========================================================================
     const flashcardsDeck = [
       { topic: 'Algebra 1', q: 'How do you solve a two-step linear equation like 3x + 7 = 22?', a: '1. Undo +7 by subtracting 7 from both sides (3x = 15). 2. Undo ×3 by dividing both sides by 3 (x = 5).' },
       { topic: 'Geometry', q: 'How do you find a missing LEG of a right triangle when given hypotenuse c and leg a?', a: 'Subtract the squares: b² = c² − a², then take the square root!' },
       { topic: 'Chemistry', q: 'How do you find the pH of a strong acid like 0.01 M HCl?', a: 'Since [H⁺] = 10⁻² M, take pH = −log₁₀(10⁻²) = 2.' },
-      { topic: 'Physics', q: 'How do you find acceleration when a car speeds up from v₀ to v_f in time t?', a: 'Use a = (v_f − v₀) ÷ t (change in velocity divided by time).' },
-      { topic: 'Pre-Algebra', q: 'How do you solve a proportion word problem like 3/4 = x/20?', a: 'Cross-multiply diagonally (4x = 60), then divide by 4 to get x = 15.' },
-      { topic: 'World History', q: 'How did surplus farming in Mesopotamia lead to cuneiform writing?', a: 'Extra grain created trade and taxes, requiring scribes to keep accounting records on clay tablets.' }
+      { topic: 'Physics', q: 'How do you find acceleration when a car speeds up from v₀ to v_f in time t?', a: 'Use a = (v_f − v₀) ÷ t (change in velocity divided by time).' }
     ];
     let currentCardIndex = 0;
 
     function flipFlashcard() {
-      document.getElementById('flashcard-element').classList.toggle('flipped');
+      const el = document.getElementById('flashcard-element');
+      if (el) el.classList.toggle('flipped');
     }
 
     function nextFlashcard(rating) {
-      document.getElementById('flashcard-element').classList.remove('flipped');
+      const el = document.getElementById('flashcard-element');
+      if (el) el.classList.remove('flipped');
 
-      if (rating === 'Easy') {
-        userState.xp += 25;
-        userState.cardsMastered++;
-      } else if (rating === 'Good') {
-        userState.xp += 15;
-        userState.cardsMastered++;
-      } else {
-        userState.xp += 5;
-        userState.cardsReviewing++;
-      }
+      if (rating === 'Easy') { userState.xp += 25; userState.cardsMastered++; }
+      else if (rating === 'Good') { userState.xp += 15; userState.cardsMastered++; }
+      else { userState.xp += 5; userState.cardsReviewing++; }
 
       logLessonActivity(1);
       playSuccessChime();
 
       currentCardIndex = (currentCardIndex + 1) % flashcardsDeck.length;
       const next = flashcardsDeck[currentCardIndex];
-      document.getElementById('card-topic').textContent = `Topic: ${next.topic}`;
-      document.getElementById('card-question').textContent = next.q;
-      document.getElementById('card-answer').textContent = next.a;
+      
+      const topicEl = document.getElementById('card-topic');
+      const qEl = document.getElementById('card-question');
+      const ansEl = document.getElementById('card-answer');
+      if (topicEl) topicEl.textContent = `Topic: ${next.topic}`;
+      if (qEl) qEl.textContent = next.q;
+      if (ansEl) ansEl.textContent = next.a;
 
-      if (window.confetti) {
-        confetti({ particleCount: 25, spread: 55, origin: { y: 0.7 } });
-      }
-
+      if (window.confetti) confetti({ particleCount: 25, spread: 55, origin: { y: 0.7 } });
       updateDashboardUI();
     }
 
-    // =========================================================================
-    // 7. AMBIENT MUSIC & SOUND FX (WEB AUDIO API)
-    // =========================================================================
     let audioCtx = null;
     let ambientGain = null;
     let activeAmbientNodes = [];
@@ -2691,12 +2526,10 @@
 
     function ensureAudioContext() {
       if (!audioCtx) {
-        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-        audioCtx = new AudioContextClass();
+        const AC = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AC();
       }
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
+      if (audioCtx.state === 'suspended') audioCtx.resume();
     }
 
     function playSuccessChime() {
@@ -2718,103 +2551,68 @@
     }
 
     function stopAmbientMusic() {
-      activeAmbientNodes.forEach(node => {
-        try { if (node.stop) node.stop(); } catch (e) {}
-        try { node.disconnect(); } catch (e) {}
-      });
+      activeAmbientNodes.forEach(n => { try { n.stop?.(); n.disconnect?.(); } catch (e) {} });
       activeAmbientNodes = [];
       currentTrack = null;
-      document.getElementById('music-btn-label').textContent = 'Music: OFF';
-      document.getElementById('music-status-text').textContent = 'Stopped';
-      document.querySelectorAll('.soundscape-btn').forEach(btn => {
-        btn.classList.remove('bg-brand-500/20', 'border-brand-500/40', 'text-brand-300');
-        btn.classList.add('bg-white/5', 'border-white/10', 'text-slate-300');
-      });
+      const label = document.getElementById('music-btn-label');
+      if (label) label.textContent = 'Music: OFF';
+      const status = document.getElementById('music-status-text');
+      if (status) status.textContent = 'Stopped';
     }
 
     function setSoundscape(track, btnEl) {
       ensureAudioContext();
       stopAmbientMusic();
       currentTrack = track;
-
       const vol = parseFloat(document.getElementById('music-volume')?.value || '0.35');
       ambientGain = audioCtx.createGain();
       ambientGain.gain.setValueAtTime(vol * 0.25, audioCtx.currentTime);
       ambientGain.connect(audioCtx.destination);
       activeAmbientNodes.push(ambientGain);
 
-      if (track === 'rain' || track === 'cafe') {
-        const bufferSize = 2 * audioCtx.sampleRate;
-        const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-        const output = noiseBuffer.getChannelData(0);
-        let lastOut = 0.0;
-        for (let i = 0; i < bufferSize; i++) {
-          const white = Math.random() * 2 - 1;
-          output[i] = (lastOut + (0.02 * white)) / 1.02;
-          lastOut = output[i];
-          output[i] *= track === 'rain' ? 2.8 : 1.8;
-        }
-
-        const noiseSource = audioCtx.createBufferSource();
-        noiseSource.buffer = noiseBuffer;
-        noiseSource.loop = true;
-
-        const filter = audioCtx.createBiquadFilter();
-        filter.type = 'lowpass';
-        filter.frequency.value = track === 'rain' ? 950 : 420;
-
-        noiseSource.connect(filter);
-        filter.connect(ambientGain);
-        noiseSource.start();
-        activeAmbientNodes.push(noiseSource, filter);
-      } else if (track === 'alpha') {
-        const osc1 = audioCtx.createOscillator();
-        const osc2 = audioCtx.createOscillator();
-        osc1.type = 'sine';
-        osc2.type = 'sine';
-        osc1.frequency.value = 216;
-        osc2.frequency.value = 224;
-        osc1.connect(ambientGain);
-        osc2.connect(ambientGain);
-        osc1.start();
-        osc2.start();
-        activeAmbientNodes.push(osc1, osc2);
+      const bufferSize = 2 * audioCtx.sampleRate;
+      const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      let lastOut = 0.0;
+      for (let i = 0; i < bufferSize; i++) {
+        const white = Math.random() * 2 - 1;
+        output[i] = (lastOut + (0.02 * white)) / 1.02;
+        lastOut = output[i];
+        output[i] *= 2.0;
       }
+      const noiseSource = audioCtx.createBufferSource();
+      noiseSource.buffer = noiseBuffer;
+      noiseSource.loop = true;
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.value = 800;
+      noiseSource.connect(filter);
+      filter.connect(ambientGain);
+      noiseSource.start();
+      activeAmbientNodes.push(noiseSource, filter);
 
-      const labels = { rain: 'Soft Rain', cafe: 'Library Ambient', alpha: 'Alpha Waves' };
-      document.getElementById('music-btn-label').textContent = `Music: ${labels[track]}`;
-      document.getElementById('music-status-text').textContent = `Playing ${labels[track]}`;
-
-      if (btnEl) {
-        btnEl.classList.remove('bg-white/5', 'border-white/10', 'text-slate-300');
-        btnEl.classList.add('bg-brand-500/20', 'border-brand-500/40', 'text-brand-300');
-      }
+      const label = document.getElementById('music-btn-label');
+      if (label) label.textContent = 'Music: Playing';
+      const status = document.getElementById('music-status-text');
+      if (status) status.textContent = 'Playing Ambient Soundscape';
     }
 
     function updateMusicVolume(val) {
-      if (ambientGain && audioCtx) {
-        ambientGain.gain.setValueAtTime(parseFloat(val) * 0.25, audioCtx.currentTime);
-      }
+      if (ambientGain && audioCtx) ambientGain.gain.setValueAtTime(parseFloat(val) * 0.25, audioCtx.currentTime);
     }
 
     function toggleMusicPlayer() {
-      if (currentTrack) {
-        stopAmbientMusic();
-      } else {
-        const rainBtn = document.querySelector('[data-track="rain"]');
-        setSoundscape('rain', rainBtn);
-      }
+      if (currentTrack) stopAmbientMusic();
+      else setSoundscape('rain', null);
     }
 
     function toggleAudio() {
       soundFxEnabled = !soundFxEnabled;
-      document.getElementById('audio-toggle-btn').textContent = soundFxEnabled ? '🔊 Sound FX: ON' : '🔇 Sound FX: OFF';
+      const btn = document.getElementById('audio-toggle-btn');
+      if (btn) btn.textContent = soundFxEnabled ? '🔊 Sound FX: ON' : '🔇 Sound FX: OFF';
       if (soundFxEnabled) playSuccessChime();
     }
 
-    // =========================================================================
-    // 8. TABS & POMODORO TIMER
-    // =========================================================================
     function switchDemoTab(tab) {
       document.querySelectorAll('.demo-tab').forEach(t => {
         t.classList.remove('bg-brand-600', 'text-white', 'shadow-lg', 'shadow-brand-500/30');
@@ -2823,28 +2621,28 @@
       document.querySelectorAll('.demo-content').forEach(c => c.classList.add('hidden'));
 
       const activeBtn = document.getElementById(`tab-${tab}`);
-      activeBtn.classList.add('bg-brand-600', 'text-white', 'shadow-lg', 'shadow-brand-500/30');
-      activeBtn.classList.remove('text-slate-400');
-      document.getElementById(`content-${tab}`).classList.remove('hidden');
+      if (activeBtn) {
+        activeBtn.classList.add('bg-brand-600', 'text-white', 'shadow-lg', 'shadow-brand-500/30');
+        activeBtn.classList.remove('text-slate-400');
+      }
+      const contentEl = document.getElementById(`content-${tab}`);
+      if (contentEl) contentEl.classList.remove('hidden');
     }
 
-    let pomoTimer = null;
-    let pomoSeconds = 25 * 60;
-    let isPomoRunning = false;
-
+    let pomoTimer = null, pomoSeconds = 25 * 60, isPomoRunning = false;
     function togglePomodoro() {
       const btn = document.getElementById('pomo-btn');
       const status = document.getElementById('pomo-status');
       if (!isPomoRunning) {
         isPomoRunning = true;
-        btn.innerHTML = '<i class="fa-solid fa-pause mr-1.5"></i> Pause Session';
-        status.textContent = 'Focus in Progress';
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-pause mr-1.5"></i> Pause Session';
+        if (status) status.textContent = 'Focus in Progress';
         pomoTimer = setInterval(() => {
           if (pomoSeconds > 0) {
             pomoSeconds--;
-            const mins = Math.floor(pomoSeconds / 60);
-            const secs = pomoSeconds % 60;
-            document.getElementById('pomo-display').textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            const mins = Math.floor(pomoSeconds / 60), secs = pomoSeconds % 60;
+            const disp = document.getElementById('pomo-display');
+            if (disp) disp.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
           } else {
             clearInterval(pomoTimer);
             isPomoRunning = false;
@@ -2858,8 +2656,8 @@
       } else {
         isPomoRunning = false;
         clearInterval(pomoTimer);
-        btn.innerHTML = '<i class="fa-solid fa-play mr-1.5"></i> Resume Session';
-        status.textContent = 'Session Paused';
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-play mr-1.5"></i> Resume Session';
+        if (status) status.textContent = 'Session Paused';
       }
     }
 
@@ -2867,36 +2665,53 @@
       clearInterval(pomoTimer);
       isPomoRunning = false;
       pomoSeconds = 25 * 60;
-      document.getElementById('pomo-display').textContent = '25:00';
-      document.getElementById('pomo-btn').innerHTML = '<i class="fa-solid fa-play mr-1.5"></i> Start Session';
-      document.getElementById('pomo-status').textContent = 'Focus Session';
+      const disp = document.getElementById('pomo-display');
+      if (disp) disp.textContent = '25:00';
+      const btn = document.getElementById('pomo-btn');
+      if (btn) btn.innerHTML = '<i class="fa-solid fa-play mr-1.5"></i> Start Session';
+      const status = document.getElementById('pomo-status');
+      if (status) status.textContent = 'Focus Session';
     }
 
-    // =========================================================================
-    // 9. MASTER UI REFRESH & SPOTLIGHT EFFECTS
-    // =========================================================================
     function updateDashboardUI() {
       calculateStreak();
       const completedCount = userState.completedLessons.length;
 
-      document.getElementById('dashboard-user-name').textContent =
-        userState.xp === 0 && completedCount === 0
-          ? `Welcome, ${userState.name}!`
-          : `Welcome back, ${userState.name}!`;
+      const nameEl = document.getElementById('dashboard-user-name');
+      if (nameEl) nameEl.textContent = `Welcome back, ${userState.name}!`;
 
-      document.getElementById('user-avatar-initial').textContent = userState.name.charAt(0).toUpperCase();
-      document.getElementById('stat-streak').textContent = `${userState.streak} Day${userState.streak === 1 ? '' : 's'}`;
-      document.getElementById('stat-xp').textContent = `${userState.xp} XP`;
-      document.getElementById('stat-completed').textContent = `${completedCount} / 24`;
-      document.getElementById('widget-streak-text').textContent = `${userState.streak} DAY${userState.streak === 1 ? '' : 'S'}`;
-      document.getElementById('cards-mastered-count').textContent = userState.cardsMastered;
-      document.getElementById('cards-reviewing-count').textContent = userState.cardsReviewing;
+      const avatarEl = document.getElementById('user-avatar-initial');
+      if (avatarEl) avatarEl.textContent = userState.name.charAt(0).toUpperCase();
+
+      const streakEl = document.getElementById('stat-streak');
+      if (streakEl) streakEl.textContent = `${userState.streak} Day${userState.streak === 1 ? '' : 's'}`;
+
+      const xpEl = document.getElementById('stat-xp');
+      if (xpEl) xpEl.textContent = `${userState.xp} XP`;
+
+      const compEl = document.getElementById('stat-completed');
+      if (compEl) compEl.textContent = `${completedCount} / 24`;
+
+      const widgetStreak = document.getElementById('widget-streak-text');
+      if (widgetStreak) widgetStreak.textContent = `${userState.streak} DAY${userState.streak === 1 ? '' : 'S'}`;
+
+      const cmEl = document.getElementById('cards-mastered-count');
+      if (cmEl) cmEl.textContent = userState.cardsMastered;
+
+      const crEl = document.getElementById('cards-reviewing-count');
+      if (crEl) crEl.textContent = userState.cardsReviewing;
 
       const level = Math.floor(userState.xp / 500) + 1;
       const currentLevelXp = userState.xp % 500;
-      document.getElementById('user-title-badge').textContent = `Rank: Level ${level} ${level === 1 ? 'Novice' : 'Master'} Scholar`;
-      document.getElementById('level-xp-text').textContent = `${currentLevelXp} / 500 XP`;
-      document.getElementById('level-bar-fill').style.width = `${(currentLevelXp / 500) * 100}%`;
+      
+      const titleBadge = document.getElementById('user-title-badge');
+      if (titleBadge) titleBadge.textContent = `Rank: Level ${level} ${level === 1 ? 'Novice' : 'Master'} Scholar`;
+      
+      const levelXpText = document.getElementById('level-xp-text');
+      if (levelXpText) levelXpText.textContent = `${currentLevelXp} / 500 XP`;
+      
+      const levelBar = document.getElementById('level-bar-fill');
+      if (levelBar) levelBar.style.width = `${(currentLevelXp / 500) * 100}%`;
 
       renderHeatmap();
       renderBadges();
@@ -2911,41 +2726,6 @@
         card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
       });
     });
-
-    (function initParticles() {
-      const canvas = document.getElementById('particle-canvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      let w = canvas.width = window.innerWidth;
-      let h = canvas.height = window.innerHeight;
-      const particles = Array.from({ length: 40 }, () => ({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        radius: Math.random() * 2 + 0.5,
-        alpha: Math.random() * 0.4 + 0.2,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3
-      }));
-
-      function render() {
-        ctx.clearRect(0, 0, w, h);
-        particles.forEach(p => {
-          ctx.fillStyle = `rgba(168, 85, 247, ${p.alpha})`;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-          ctx.fill();
-          p.x += p.vx; p.y += p.vy;
-          if (p.x < 0) p.x = w; if (p.x > w) p.x = 0;
-          if (p.y < 0) p.y = h; if (p.y > h) p.y = 0;
-        });
-        requestAnimationFrame(render);
-      }
-      render();
-      window.addEventListener('resize', () => {
-        w = canvas.width = window.innerWidth;
-        h = canvas.height = window.innerHeight;
-      });
-    })();
 
     updateDashboardUI();
   </script>
