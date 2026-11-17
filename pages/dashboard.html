@@ -179,7 +179,7 @@
           <!-- Command Navigation Links -->
           <div class="flex items-center gap-2 sm:gap-3 flex-wrap justify-end">
             <button onclick="openAiTutorModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-brand-600 via-brand-purple to-brand-cyan shadow-lg shadow-brand-500/30 hover:scale-105 transition-all flex items-center gap-2">
-              <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> AI Tutor Studio
+              <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Universal AI Tutor
             </button>
             <button onclick="toggleMusicPlayer()" id="music-toggle-btn" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-white/5 border border-white/10 hover:bg-white/10 transition-all flex items-center gap-1.5">
               <i class="fa-solid fa-music text-brand-purple"></i> <span id="music-btn-label">Music: OFF</span>
@@ -266,7 +266,7 @@
             <div class="flex justify-between items-center mb-4">
               <div>
                 <h3 class="font-bold text-white text-lg flex items-center gap-2"><i class="fa-regular fa-calendar-days text-brand-400"></i> 30-Day Study Heatmap</h3>
-                <p class="text-xs text-slate-400">Tracks actual lessons & tests completed each day.</p>
+                <p class="text-xs text-slate-400">Tracks actual lessons, flashcards & tests completed each day.</p>
               </div>
               <span class="text-xs text-emerald-400 font-semibold px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full font-mono" id="heatmap-active-days">0 Days Active</span>
             </div>
@@ -300,7 +300,7 @@
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <h2 class="text-2xl font-bold text-white tracking-tight">Interactive Curriculums & Final Tests</h2>
-              <p class="text-xs text-slate-400">Open any subject to study core lessons, take quizzes, and conquer the end-of-course Final Test!</p>
+              <p class="text-xs text-slate-400">Each lesson includes visual mental hooks, step-by-step blueprints, numerical & word problems, flashcards, and quizzes!</p>
             </div>
             
             <div class="flex items-center gap-3">
@@ -343,9 +343,9 @@
                 <div class="inline-flex items-center gap-2 text-xs font-semibold text-brand-cyan bg-brand-cyan/10 px-3 py-1 rounded-lg">
                   <i class="fa-solid fa-brain"></i> Adaptive Memory Engine
                 </div>
-                <h3 class="text-2xl font-bold text-white">Spaced Repetition Flashcard</h3>
+                <h3 class="text-2xl font-bold text-white">Mastery Flashcard Deck</h3>
                 <p class="text-slate-400 text-sm leading-relaxed">
-                  Flip cards to test recall. Rating a card records your study session on your heatmap and earns XP.
+                  Test how to solve key formulas and concepts across all 6 subjects. Rating a card logs your activity and earns XP.
                 </p>
                 <div class="pt-2 flex items-center gap-4 text-xs text-slate-400 font-mono">
                   <div class="flex items-center gap-1.5">
@@ -363,16 +363,16 @@
                     <div class="flashcard-front absolute inset-0 p-6 flex flex-col justify-between items-center">
                       <span class="text-xs font-mono text-slate-500 uppercase tracking-wider" id="card-topic">Topic: Algebra 1</span>
                       <p class="text-lg font-semibold text-white px-4" id="card-question">
-                        What does the slope-intercept form equation look like?
+                        How do you solve a two-step linear equation like 3x + 7 = 22?
                       </p>
                       <span class="text-xs text-brand-400 font-medium flex items-center gap-1 group-hover:scale-105 transition-transform">
-                        <i class="fa-solid fa-rotate-left"></i> Click to reveal answer
+                        <i class="fa-solid fa-rotate-left"></i> Click to flip & see solution method
                       </span>
                     </div>
                     <div class="flashcard-back absolute inset-0 p-6 flex flex-col justify-between items-center bg-dark-surface/95 rounded-2xl">
-                      <span class="text-xs font-mono text-brand-purple uppercase tracking-wider">Answer Key</span>
-                      <p class="text-base text-slate-200 px-4" id="card-answer">
-                        y = mx + b, where m is the slope and b is the y-intercept.
+                      <span class="text-xs font-mono text-brand-purple uppercase tracking-wider">Step-by-Step Method</span>
+                      <p class="text-sm sm:text-base text-slate-200 px-4" id="card-answer">
+                        1. Undo +7 by subtracting 7 from both sides (3x = 15). 2. Undo ×3 by dividing both sides by 3 (x = 5).
                       </p>
                       <div class="text-xs text-emerald-400 font-medium">
                         <i class="fa-solid fa-check"></i> Select your recall level below
@@ -477,10 +477,10 @@
   </div>
 
   <!-- =========================================================================
-       INTERACTIVE LESSON, QUIZ & FINAL TEST MODAL
+       PICTURE-PERFECT LESSON, WORD PROBLEMS, FLASHCARDS & QUIZ MODAL
        ========================================================================= -->
-  <div id="lesson-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-    <div class="glass-panel bg-[#0d0f1d] border border-white/15 rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 sm:p-8 relative space-y-6">
+  <div id="lesson-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+    <div class="glass-panel bg-[#0d0f1d] border border-white/15 rounded-3xl max-w-5xl w-full max-h-[92vh] overflow-y-auto shadow-2xl p-6 sm:p-8 relative space-y-6">
       
       <!-- Top Modal Header -->
       <div class="flex items-start justify-between gap-4 border-b border-white/10 pb-5">
@@ -498,70 +498,122 @@
 
       <!-- Lesson & Test Selector Pills -->
       <div>
-        <div class="text-xs font-mono text-slate-400 uppercase mb-2">Select Module or Final Test:</div>
+        <div class="text-xs font-mono text-slate-400 uppercase mb-2">Select Lesson Module or Final Exam:</div>
         <div id="modal-lesson-pills" class="flex flex-wrap gap-2"></div>
       </div>
 
       <!-- Explanation Depth Mode Switcher (Hidden during Test) -->
       <div id="mode-switcher-container" class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-dark-bg/90 p-3 rounded-2xl border border-white/10">
         <div class="flex items-center gap-2 text-xs text-slate-300 font-semibold">
-          <i class="fa-solid fa-graduation-cap text-brand-purple"></i>
-          <span>Tutor Explanation Depth:</span>
+          <i class="fa-solid fa-eye text-brand-cyan"></i>
+          <span>Learning Perspective:</span>
         </div>
         <div class="flex items-center gap-2 bg-white/5 p-1 rounded-xl">
           <button id="mode-btn-eli5" onclick="setExplanationMode('eli5')" class="px-4 py-2 rounded-lg text-xs font-bold transition-all bg-brand-cyan text-slate-950 shadow-md">
-            🧸 Explain Like I'm 5
+            🧸 First-Time Visual Picture (ELI5)
           </button>
           <button id="mode-btn-college" onclick="setExplanationMode('college')" class="px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white">
-            🎓 Standard Tutoring
+            🎓 Deep Academic & AP Mastery
           </button>
         </div>
       </div>
 
       <!-- Active Lesson Content Card (Hidden during Test) -->
       <div id="lesson-content-view" class="space-y-6">
-        <div class="glass-panel rounded-2xl p-6 border border-white/10 space-y-4">
+        
+        <!-- 1. Picture-Perfect Concept Guide -->
+        <div class="glass-panel rounded-2xl p-6 border border-white/10 space-y-5">
           <div class="flex items-center justify-between flex-wrap gap-2">
-            <h3 id="lesson-title" class="text-xl font-bold text-white">Lesson Title</h3>
-            <span id="lesson-status-badge" class="text-xs font-mono px-3 py-1 rounded-full bg-brand-500/15 text-brand-400 border border-brand-500/30">In Progress</span>
+            <h3 id="lesson-title" class="text-xl sm:text-2xl font-extrabold text-white">Lesson Title</h3>
+            <span id="lesson-status-badge" class="text-xs font-mono px-3 py-1 rounded-full bg-brand-500/15 text-brand-400 border border-brand-500/30">Active Lesson</span>
           </div>
 
+          <!-- Visual Mental Picture Hook -->
+          <div class="p-4 rounded-2xl bg-brand-cyan/10 border border-brand-cyan/30 space-y-1.5">
+            <div class="text-xs font-mono uppercase text-brand-cyan font-bold flex items-center gap-1.5">
+              <i class="fa-solid fa-lightbulb"></i> Picture This First (Mental Model)
+            </div>
+            <p id="lesson-visual-hook" class="text-sm text-slate-100 leading-relaxed"></p>
+          </div>
+
+          <!-- Detailed Explanation -->
           <div id="lesson-explanation-body" class="text-slate-200 text-sm sm:text-base leading-relaxed space-y-3"></div>
 
-          <div id="lesson-formula-box" class="p-4 rounded-xl bg-dark-bg border border-brand-500/20 font-mono text-xs sm:text-sm text-brand-300"></div>
+          <!-- Step-by-Step Blueprint: How to Solve Any Problem Like This -->
+          <div class="p-4 rounded-2xl bg-dark-bg/95 border border-brand-500/25 space-y-2">
+            <div class="text-xs font-mono uppercase text-brand-400 font-bold">🧭 How to Solve Every Problem Like This (Step-by-Step Blueprint)</div>
+            <ol id="lesson-blueprint-steps" class="list-decimal list-inside text-xs sm:text-sm text-slate-200 space-y-1.5"></ol>
+          </div>
+
+          <!-- Core Formula / Key Takeaway -->
+          <div id="lesson-formula-box" class="p-4 rounded-xl bg-dark-bg border border-emerald-500/25 font-mono text-xs sm:text-sm text-emerald-300"></div>
         </div>
 
-        <!-- DIVE DEEPER / PRACTICE PROBLEMS -->
-        <div class="glass-panel rounded-2xl p-6 border border-brand-purple/25 bg-brand-purple/5 space-y-4">
+        <!-- 2. Worked Numerical Examples & Real-World Word Problems -->
+        <div class="glass-panel rounded-2xl p-6 border border-brand-purple/30 bg-brand-purple/5 space-y-4">
           <div class="flex items-center justify-between flex-wrap gap-2">
             <div class="flex items-center gap-2">
               <span class="text-lg">🔬</span>
-              <h4 class="font-bold text-white text-base">Practice Problems & Step-by-Step Solutions</h4>
+              <h4 class="font-bold text-white text-base">Example Problems & Word Problems</h4>
             </div>
-            <span class="text-[11px] font-mono text-brand-purple">Click any prompt to view solutions</span>
+            <span class="text-[11px] font-mono text-brand-purple">Click any problem to reveal the full step-by-step walkthrough</span>
           </div>
 
           <div id="deep-prompts-list" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
 
-          <div id="deep-prompt-answer-box" class="hidden p-4 rounded-xl bg-dark-bg/95 border border-brand-purple/40 text-sm text-slate-200 leading-relaxed space-y-2">
-            <div class="text-xs font-mono text-brand-purple uppercase font-bold" id="deep-prompt-selected-title">Solution Guide</div>
-            <p id="deep-prompt-selected-text"></p>
+          <div id="deep-prompt-answer-box" class="hidden p-5 rounded-2xl bg-dark-bg/95 border border-brand-purple/40 text-sm text-slate-200 leading-relaxed space-y-2">
+            <div class="text-xs font-mono text-brand-purple uppercase font-bold" id="deep-prompt-selected-title">Solution Walkthrough</div>
+            <div id="deep-prompt-selected-text" class="space-y-2 text-xs sm:text-sm"></div>
           </div>
         </div>
 
-        <!-- Interactive Quiz Check -->
-        <div class="glass-panel rounded-2xl p-6 border border-emerald-500/20 space-y-4">
-          <div class="flex items-center gap-2">
-            <span class="text-lg">✅</span>
-            <h4 class="font-bold text-white text-base">Module Quiz Check (+50 XP)</h4>
+        <!-- 3. Lesson-Specific Interactive Flashcard Deck -->
+        <div class="glass-panel rounded-2xl p-6 border border-brand-cyan/25 bg-brand-cyan/5 space-y-4">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center gap-2">
+              <span class="text-lg">🃏</span>
+              <h4 class="font-bold text-white text-base">How-To Mastery Flashcards (For This Lesson)</h4>
+            </div>
+            <span class="text-xs font-mono text-brand-cyan" id="lesson-card-counter">Card 1 of 2</span>
           </div>
-          <p id="quiz-question-text" class="text-sm text-slate-300 font-medium"></p>
+
+          <div class="max-w-xl mx-auto perspective-1000">
+            <div id="lesson-flashcard-el" onclick="flipLessonFlashcard()" class="flashcard-inner relative w-full h-48 cursor-pointer rounded-2xl bg-dark-bg/90 border border-brand-cyan/30 shadow-xl p-5 flex items-center justify-center text-center select-none">
+              <div class="flashcard-front absolute inset-0 p-5 flex flex-col justify-between items-center">
+                <span class="text-[10px] font-mono text-brand-cyan uppercase tracking-wider">QUESTION / METHOD CHECK</span>
+                <p class="text-sm sm:text-base font-bold text-white" id="lesson-fc-front">How do you start solving this problem?</p>
+                <span class="text-[11px] text-slate-400"><i class="fa-solid fa-rotate"></i> Tap card to flip</span>
+              </div>
+              <div class="flashcard-back absolute inset-0 p-5 flex flex-col justify-between items-center bg-[#090b16] rounded-2xl">
+                <span class="text-[10px] font-mono text-emerald-400 uppercase tracking-wider">STEP-BY-STEP ANSWER</span>
+                <p class="text-xs sm:text-sm text-slate-200" id="lesson-fc-back">Follow the step-by-step rule!</p>
+                <span class="text-[11px] text-emerald-400">Tap again to flip back</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-center gap-3">
+            <button onclick="cycleLessonFlashcard(-1)" class="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-300">← Previous Card</button>
+            <button onclick="cycleLessonFlashcard(1)" class="px-4 py-2 rounded-xl bg-brand-cyan/20 hover:bg-brand-cyan/30 border border-brand-cyan/40 text-xs font-bold text-brand-cyan">Next Card (+10 XP) →</button>
+          </div>
+        </div>
+
+        <!-- 4. Interactive Quiz Check (Includes Word Problem Check) -->
+        <div class="glass-panel rounded-2xl p-6 border border-emerald-500/25 space-y-4">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center gap-2">
+              <span class="text-lg">✅</span>
+              <h4 class="font-bold text-white text-base">Test Your Understanding Quiz (+50 XP)</h4>
+            </div>
+            <span class="text-[11px] font-mono text-emerald-400">Unlock mastery & streak XP</span>
+          </div>
+          <p id="quiz-question-text" class="text-sm sm:text-base text-white font-semibold"></p>
           <div id="quiz-options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
           
           <!-- AI Review & Why You Got It Wrong Box -->
           <div id="quiz-feedback-box" class="hidden p-4 rounded-xl bg-dark-bg border border-white/10 space-y-3">
             <div id="quiz-feedback" class="text-xs font-bold"></div>
-            <div id="ai-explanation-box" class="text-xs text-slate-300 leading-relaxed border-t border-white/5 pt-2"></div>
+            <div id="ai-explanation-box" class="text-xs sm:text-sm text-slate-300 leading-relaxed border-t border-white/5 pt-2"></div>
           </div>
         </div>
       </div>
@@ -573,7 +625,7 @@
             <h3 class="text-xl font-bold text-amber-300"><i class="fa-solid fa-file-lines mr-2"></i> End-of-Course Final Test</h3>
             <span class="text-xs font-mono px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40" id="test-score-badge">Complete all questions (+200 XP)</span>
           </div>
-          <p class="text-xs text-slate-300">Answer all final test questions below. Review your answers and read the AI Tutor analysis on any incorrect response.</p>
+          <p class="text-xs text-slate-300">Includes both core concept checks and real-world word problems. Any missed question automatically triggers AI error diagnostics.</p>
         </div>
 
         <div id="final-test-questions-container" class="space-y-6"></div>
@@ -594,7 +646,7 @@
   </div>
 
   <!-- =========================================================================
-       GOD TIER AI TUTOR STUDIO MODAL (DEEP STEP-BY-STEP SOLVER)
+       UNIVERSAL MULTI-SUBJECT AI TUTOR STUDIO MODAL
        ========================================================================= -->
   <div id="ai-tutor-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
     <div class="glass-panel bg-[#0b0c16] border border-brand-500/30 rounded-3xl max-w-4xl w-full max-h-[92vh] overflow-y-auto shadow-[0_0_60px_rgba(99,102,241,0.25)] p-6 sm:p-8 relative space-y-6">
@@ -608,8 +660,8 @@
             </div>
           </div>
           <div>
-            <div class="text-[11px] font-mono text-brand-400 uppercase tracking-widest">GOD TIER AI TUTOR STUDIO</div>
-            <h2 class="text-xl sm:text-2xl font-extrabold text-white">Deep Step-by-Step Problem Solver & Note Analyzer</h2>
+            <div class="text-[11px] font-mono text-brand-400 uppercase tracking-widest">UNIVERSAL AI TUTOR STUDIO</div>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-white">Paste Any Question, AP Problem, or Study Notes</h2>
           </div>
         </div>
         <button onclick="closeAiTutorModal()" class="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition">
@@ -619,12 +671,12 @@
 
       <!-- Quick Sample Prompts Bar -->
       <div class="space-y-2">
-        <div class="text-[11px] font-mono text-slate-400 uppercase">Try a Sample Problem (Click to Fill):</div>
+        <div class="text-[11px] font-mono text-slate-400 uppercase">Test Versatility — Click Any Subject Sample:</div>
         <div class="flex flex-wrap gap-2">
-          <button onclick="fillSampleAiPrompt('algebra')" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-brand-500/20 border border-white/10 text-xs text-slate-300 transition">📐 Solve: 4x - 9 = 23</button>
-          <button onclick="fillSampleAiPrompt('quadratic')" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-brand-500/20 border border-white/10 text-xs text-slate-300 transition">📈 Quadratic: x^2 - 5x + 6 = 0</button>
-          <button onclick="fillSampleAiPrompt('pemdas')" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-brand-500/20 border border-white/10 text-xs text-slate-300 transition">🔢 Evaluate: 12 + 3 * (8 - 2)^2 / 4</button>
-          <button onclick="fillSampleAiPrompt('notes')" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-brand-500/20 border border-white/10 text-xs text-slate-300 transition">🧬 Analyze Biology/Chemistry Notes</button>
+          <button onclick="fillSampleAiPrompt('apchem')" class="px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-xs text-emerald-300 transition">🧪 AP Chem: Equilibrium & Kc / pH</button>
+          <button onclick="fillSampleAiPrompt('apphysics')" class="px-3 py-1.5 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-xs text-cyan-300 transition">⚛️ AP Physics: Kinematics & Forces</button>
+          <button onclick="fillSampleAiPrompt('quadratic')" class="px-3 py-1.5 rounded-lg bg-brand-500/10 hover:bg-brand-500/20 border border-brand-500/30 text-xs text-brand-300 transition">📈 Algebra: x^2 - 7x + 12 = 0</button>
+          <button onclick="fillSampleAiPrompt('wordproblem')" class="px-3 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-xs text-amber-300 transition">📝 Word Problem: Slope & Rate</button>
         </div>
       </div>
 
@@ -632,27 +684,27 @@
       <div class="space-y-4">
         <div>
           <label class="text-xs font-mono text-slate-300 uppercase mb-1.5 block flex items-center justify-between">
-            <span>1. Paste Your Study Notes, Textbook Passage, or Word Problem Context:</span>
-            <span class="text-slate-500 text-[10px]">Optional</span>
+            <span>1. Paste Notes, Formulas, or Full Problem Text (AP Chem, Physics, Math, History, etc.):</span>
+            <span class="text-slate-500 text-[10px]">Context-Aware</span>
           </label>
-          <textarea id="ai-tutor-notes" rows="3" placeholder="Paste lecture notes, a word problem, or formulas here..." class="w-full p-4 rounded-2xl bg-dark-bg/90 border border-white/10 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-brand-500 transition-colors resize-y"></textarea>
+          <textarea id="ai-tutor-notes" rows="3" placeholder="Paste any textbook paragraph, AP problem statement, chemical reaction, or class notes here..." class="w-full p-4 rounded-2xl bg-dark-bg/90 border border-white/10 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-brand-500 transition-colors resize-y"></textarea>
         </div>
 
         <div>
           <label class="text-xs font-mono text-slate-300 uppercase mb-1.5 block">
-            2. Enter Your Question or Equation to Solve Step-by-Step:
+            2. Ask Your Question or Paste the Equation to Solve:
           </label>
-          <input type="text" id="ai-tutor-question" placeholder="e.g., Solve 3x + 7 = 22, or Explain how covalent bonds work from my notes" class="w-full px-4 py-3 rounded-xl bg-dark-bg/90 border border-white/10 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-brand-500 transition-colors">
+          <input type="text" id="ai-tutor-question" placeholder="e.g., Calculate the pH of a 0.025 M HCl solution, or Solve 5x - 12 = 38" class="w-full px-4 py-3 rounded-xl bg-dark-bg/90 border border-white/10 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-brand-500 transition-colors">
         </div>
 
         <!-- Optional Live Gemini API Key -->
         <details class="bg-dark-bg/60 border border-white/10 rounded-xl p-3 text-xs">
           <summary class="cursor-pointer font-mono text-slate-400 hover:text-white flex items-center justify-between">
-            <span>🔑 Optional: Connect Live Gemini API Key (for Unlimited Open-Ended Questions)</span>
-            <span class="text-[10px] text-brand-400">Built-in Solver works without key</span>
+            <span>🔑 Optional: Connect Live Gemini API Key (for Unlimited Open-Ended Subjects)</span>
+            <span class="text-[10px] text-brand-400">Built-in Multi-Subject Solver active</span>
           </summary>
           <div class="mt-3 space-y-2">
-            <p class="text-[11px] text-slate-400">Leave blank to use Mindly's built-in step-by-step math & note analyzer. Or paste a Gemini API key to query <code class="text-brand-300">gemini-3.8-flash</code> directly from your browser.</p>
+            <p class="text-[11px] text-slate-400">Works immediately without an API key for AP Chemistry (pH, molarity, ideal gas, equilibrium), Physics (kinematics, F=ma, Ohm's law), Algebra/Quadratics, Geometry, and Note Analysis. Add a Gemini key for unrestricted live generation.</p>
             <input type="password" id="gemini-api-key-input" placeholder="AIzaSy..." class="w-full px-3 py-2 rounded-lg bg-dark-bg border border-white/15 text-xs text-slate-200 font-mono focus:outline-none focus:border-brand-500">
           </div>
         </details>
@@ -665,13 +717,13 @@
               🧸 Simplify (ELI5)
             </button>
             <button id="ai-mode-college" onclick="setAiTutorMode('college')" class="px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white">
-              🎓 College / Deep Dive
+              🎓 College / AP Level
             </button>
           </div>
         </div>
 
         <button id="ai-generate-btn" onclick="generateAiTutorResponse()" class="w-full py-3.5 bg-gradient-to-r from-brand-600 via-brand-purple to-brand-cyan text-white font-bold rounded-xl shadow-lg shadow-brand-500/30 hover:opacity-95 transition text-xs sm:text-sm flex items-center justify-center gap-2">
-          <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Solve & Explain Step-by-Step
+          <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Generate Complete Step-by-Step Answer
         </button>
       </div>
 
@@ -679,7 +731,7 @@
       <div id="ai-tutor-output-container" class="hidden space-y-3 pt-4 border-t border-white/10">
         <div class="flex items-center justify-between flex-wrap gap-2">
           <span class="text-xs font-mono text-brand-400 uppercase font-bold flex items-center gap-2">
-            <i class="fa-solid fa-robot"></i> Solution & Deep Breakdown (<span id="active-response-mode-label">ELI5 Mode</span>)
+            <i class="fa-solid fa-robot"></i> Detected Domain: <span id="detected-domain-badge" class="text-emerald-400">General</span> • <span id="active-response-mode-label">College / AP Level</span>
           </span>
           <div class="flex items-center gap-2">
             <button onclick="switchModeAndRegenerate()" class="text-[11px] text-brand-300 hover:text-white bg-brand-500/15 px-2.5 py-1 rounded-lg border border-brand-500/30 transition">🔄 Switch Depth Mode</button>
@@ -784,7 +836,7 @@
     }
 
     // =========================================================================
-    // 2. CURRICULUM DATABASE WITH FINAL TESTS
+    // 2. PICTURE-PERFECT CURRICULUM DATABASE (VISUAL HOOKS, BLUEPRINTS, EXAMPLES, WORD PROBLEMS, FLASHCARDS & QUIZZES)
     // =========================================================================
     const curriculums = [
       {
@@ -797,85 +849,150 @@
           {
             id: 'prealg-1',
             title: 'Order of Operations (PEMDAS)',
-            eli5: 'Think of PEMDAS like the traffic rules of math! If everyone drove however they wanted, crashes would happen. PEMDAS tells us whether to add, subtract, multiply, or divide first so everyone gets the exact same correct answer.',
-            college: 'The standard order of operations dictates the priority sequence: Parentheses/Brackets, Exponents, Multiplication & Division (left to right), and Addition & Subtraction (left to right) to evaluate arithmetic expressions unambiguously.',
-            keyTakeaway: 'Mnemonic: Please Excuse My Dear Aunt Sally (Parentheses, Exponents, Multiplication/Division, Addition/Subtraction)',
+            visualHook: 'Picture an intersection with no traffic lights—cars would crash! In math, an expression like 8 + 4 × 2 is an intersection. PEMDAS acts as the traffic signal that tells every mathematician around the world which operation goes first so everyone arrives at the exact same destination.',
+            eli5: 'Always unlock boxes (Parentheses) first, power up Exponents second, do Multiplication & Division from left to right like reading a book, and finish with Addition & Subtraction from left to right.',
+            college: 'Standard arithmetic precedence establishes a strict hierarchy: Grouping Symbols → Exponentiation → Multiplication & Division (left-associative) → Addition & Subtraction (left-associative), ensuring expressions evaluate uniquely.',
+            blueprint: [
+              'Scan for Parentheses or brackets ( ) and solve inside them first.',
+              'Evaluate any Exponents (powers like 3²).',
+              'Perform Multiplication and Division strictly from left to right.',
+              'Perform Addition and Subtraction strictly from left to right.'
+            ],
+            keyTakeaway: 'PEMDAS Rule: Parentheses → Exponents → Multiply/Divide (L→R) → Add/Subtract (L→R)',
             deepPrompts: [
               {
+                type: 'Numerical Example',
                 prompt: 'Evaluate: 8 + 4 × (2 + 3)² ÷ 2',
-                answer: 'Step 1 (Parentheses): (2 + 3) = 5. Expression becomes: 8 + 4 × 5² ÷ 2. Step 2 (Exponents): 5² = 25. Expression becomes: 8 + 4 × 25 ÷ 2. Step 3 (Multiplication & Division left to right): 4 × 25 = 100, then 100 ÷ 2 = 50. Step 4 (Addition): 8 + 50 = 58.'
+                answer: '• Step 1 (Parentheses): (2 + 3) = 5 → 8 + 4 × 5² ÷ 2\n• Step 2 (Exponents): 5² = 25 → 8 + 4 × 25 ÷ 2\n• Step 3 (Multiply/Divide L→R): 4 × 25 = 100, then 100 ÷ 2 = 50\n• Step 4 (Add): 8 + 50 = 58.'
+              },
+              {
+                type: 'Word Problem',
+                prompt: 'Maya buys 3 notebooks at $4 each and 2 pens at $2 each, then uses a $5 gift card. Write and solve one expression for her total cost.',
+                answer: '• Expression: 3 × 4 + 2 × 2 − 5\n• Step 1 (Multiply first): (3 × 4) = 12 and (2 × 2) = 4 → 12 + 4 − 5\n• Step 2 (Add/Subtract L→R): 16 − 5 = $11 total.'
               }
             ],
+            flashcards: [
+              { q: 'If both Division and Multiplication appear in 24 ÷ 4 × 2, which do you do first?', a: 'Division! Multiplication and Division have equal rank, so you always go left to right: (24 ÷ 4) × 2 = 6 × 2 = 12.' },
+              { q: 'How do you handle nested parentheses like 2 × [10 − (3 + 1)]?', a: 'Work from the innermost parentheses outward: (3 + 1) = 4, then [10 − 4] = 6, then 2 × 6 = 12.' }
+            ],
             quiz: {
-              question: 'In PEMDAS, what operation should be evaluated first in 5 + 3 × (4 - 2)?',
-              options: ['Addition (5 + 3)', 'Multiplication (3 × 4)', 'Parentheses (4 - 2)', 'Subtraction from 5'],
-              correctIndex: 2,
-              explanation: 'Parentheses always come first in PEMDAS. You must evaluate (4 - 2) before performing multiplication or addition.'
+              question: 'Word Problem: A concert ticket costs $30. Alex buys 2 tickets, pays a $6 booking fee, and splits the total bill equally with 1 friend. Which expression gives Alex’s share, and what is the amount?',
+              options: ['30 × 2 + 6 ÷ 2 = $63', '(30 × 2 + 6) ÷ 2 = $33', '30 × (2 + 6) ÷ 2 = $120', '(30 + 6) × 2 ÷ 2 = $36'],
+              correctIndex: 1,
+              explanation: 'You must group the total bill in parentheses (30 × 2 + 6) = $66 BEFORE dividing by 2 people, giving $33 each.'
             }
           },
           {
             id: 'prealg-2',
             title: 'Fractions, Decimals & Percentages',
-            eli5: 'Fractions, decimals, and percentages are just three different ways of writing the exact same piece of pizza! If you eat half a pizza, that is 1/2, 0.5, or 50%.',
-            college: 'Fractions represent ratio parts a/b, decimals represent base-10 fractional expansions, and percentages represent parts per hundred.',
-            keyTakeaway: 'Conversion: 3/4 = 0.75 = 75%',
+            visualHook: 'Picture a pizza cut into 4 equal slices. Eating 3 slices is the fraction 3/4, the decimal 0.75 of a whole pizza, and 75% of the pie. They are not different amounts—just three different languages describing the exact same slice!',
+            eli5: 'To turn a fraction into a decimal, divide the top number by the bottom number. To turn that decimal into a percent, slide the decimal point two spaces to the right!',
+            college: 'Rational numbers p/q map to terminating or repeating base-10 decimals via division, and percentages scale those ratios to a denominator of 100.',
+            blueprint: [
+              'Fraction → Decimal: Divide numerator by denominator (top ÷ bottom).',
+              'Decimal → Percent: Multiply by 100 (move decimal 2 places right).',
+              'Percent → Decimal: Divide by 100 (move decimal 2 places left).'
+            ],
+            keyTakeaway: 'Conversion Triangle: 3/4  =  0.75  =  75%',
             deepPrompts: [
               {
+                type: 'Numerical Example',
                 prompt: 'Convert 5/8 into a decimal and a percentage.',
-                answer: 'Decimal: 5 ÷ 8 = 0.625. Percentage: 0.625 × 100 = 62.5%.'
+                answer: '• Step 1 (Divide): 5 ÷ 8 = 0.625\n• Step 2 (Multiply by 100): 0.625 × 100 = 62.5%.'
+              },
+              {
+                type: 'Word Problem',
+                prompt: 'A $60 jacket is on sale for 25% off. How much money do you save, and what is the sale price?',
+                answer: '• Step 1 (Percent to Decimal): 25% = 0.25\n• Step 2 (Discount): 0.25 × $60 = $15 saved\n• Step 3 (Sale Price): $60 − $15 = $45.'
               }
             ],
+            flashcards: [
+              { q: 'How do you find 15% of any number quickly?', a: 'Convert 15% to 0.15 and multiply by the number (or find 10% by moving the decimal left once, then add half of that!).' },
+              { q: 'How do you convert 0.08 into a simplified fraction?', a: '0.08 is 8 hundredths = 8/100. Divide top and bottom by 4 to get 2/25.' }
+            ],
             quiz: {
-              question: 'What is 3/5 expressed as a percentage?',
-              options: ['30%', '40%', '60%', '75%'],
+              question: 'Word Problem: On a 40-question science test, Jordan answered 34 questions correctly. What percentage did Jordan score?',
+              options: ['75%', '80%', '85%', '90%'],
               correctIndex: 2,
-              explanation: 'To convert 3/5 to a percentage, divide 3 by 5 to get 0.6, then multiply by 100 to get 60%.'
+              explanation: 'Divide 34 by 40 to get 0.85, then multiply by 100 to get 85%.'
             }
           },
           {
             id: 'prealg-3',
             title: 'Negative Numbers & Absolute Value',
-            eli5: 'Negative numbers are like owing money or digging a hole below ground level. Absolute value is just how far away a number is from zero, ignoring whether you are above or below ground.',
-            college: 'Negative numbers lie to the left of zero on the real number line. The absolute value |x| defines the non-negative magnitude of x.',
-            keyTakeaway: 'Rule: |-5| = 5 and |5| = 5',
+            visualHook: 'Picture an elevator in a skyscraper. Floor 0 is the street lobby. Positive numbers go up into the sky; negative numbers go down into the underground parking garage. Absolute value asks: "How many floors away from the lobby are you?"—which is always a positive count of floors.',
+            eli5: 'Adding a negative is like moving down the elevator. Subtracting a negative cancels out—two minuses turn into a plus, moving you UP!',
+            college: 'The integers extend natural numbers across zero. Absolute value |x| defines the Euclidean distance from zero on the real line, mapping ℝ → [0, ∞).',
+            blueprint: [
+              'Same signs when adding: Add the sizes and keep the shared sign (e.g., −4 + −6 = −10).',
+              'Different signs when adding: Subtract the smaller size from the larger and keep the larger number’s sign.',
+              'Subtracting a negative: Rewrite a − (−b) as a + b.'
+            ],
+            keyTakeaway: 'Distance Rule: |-15| = 15  |  Double Negative Rule: 5 - (-3) = 5 + 3 = 8',
             deepPrompts: [
               {
+                type: 'Numerical Example',
                 prompt: 'Calculate: −12 + (−5) − (−8)',
-                answer: 'First, −12 + (−5) = −17. Next, subtracting −8 is the same as adding 8: −17 + 8 = −9.'
+                answer: '• Step 1: −12 + (−5) = −17\n• Step 2 (Flip double negative): −17 − (−8) = −17 + 8 = −9.'
+              },
+              {
+                type: 'Word Problem',
+                prompt: 'A submarine is at −250 meters (below sea level). It rises 90 meters, then dives 40 meters. What is its new depth?',
+                answer: '• Start: −250 m\n• Rise 90 m: −250 + 90 = −160 m\n• Dive 40 m: −160 − 40 = −200 meters (200 m below sea level).'
               }
             ],
+            flashcards: [
+              { q: 'Why does subtracting a negative number make a number larger?', a: 'Subtracting a negative removes a debt/downward pull, which has the exact same effect as adding a positive: a − (−b) = a + b.' },
+              { q: 'What is −|−9|?', a: '−9! First evaluate inside the bars: |−9| = 9. Then apply the negative sign outside to get −9.' }
+            ],
             quiz: {
-              question: 'What is the value of |-15|?',
-              options: ['-15', '0', '15', '30'],
+              question: 'Word Problem: At midnight the temperature was −6°F. By noon it warmed up by 19°F. What was the temperature at noon?',
+              options: ['−25°F', '−13°F', '13°F', '25°F'],
               correctIndex: 2,
-              explanation: 'Absolute value measures distance from zero, which is always expressed as a positive number. Therefore, |-15| = 15.'
+              explanation: 'Start at −6 and add 19: −6 + 19 = 13°F.'
             }
           },
           {
             id: 'prealg-4',
-            title: 'Introduction to Basic Ratios & Proportions',
-            eli5: 'If a recipe calls for 2 cups of flour for every 1 cup of sugar, making a bigger batch means doubling both so it still tastes delicious!',
-            college: 'A ratio compares two quantities by division (a:b). A proportion states that two ratios are equal (a/b = c/d), solvable via cross-multiplication.',
-            keyTakeaway: 'Cross-multiplication rule: If a/b = c/d, then ad = bc',
+            title: 'Ratios & Proportions',
+            visualHook: 'Picture zooming in on a photo on your phone. If you double the width without doubling the height, the photo looks stretched and distorted! A proportion keeps the width-to-height ratio locked so the picture scales up cleanly.',
+            eli5: 'Write both ratios as matching fractions (like miles over hours = miles over hours), then cross-multiply diagonally to find the missing number.',
+            college: 'A proportion expresses equivalence between two rational ratios a/b = c/d (b, d ≠ 0), uniquely solved via the cross-product property ad = bc.',
+            blueprint: [
+              'Set up two equal fractions with matching units on top and bottom.',
+              'Cross-multiply diagonally: multiply top-left × bottom-right and bottom-left × top-right.',
+              'Divide both sides by the number attached to x.'
+            ],
+            keyTakeaway: 'Cross-Multiply: If a/b = c/d, then a·d = b·c',
             deepPrompts: [
               {
-                prompt: 'Solve for x in the proportion: 3/4 = x / 20',
-                answer: 'Cross-multiply: 3 × 20 = 4 × x  ⇒  60 = 4x  ⇒  x = 15.'
+                type: 'Numerical Example',
+                prompt: 'Solve for x: 3/4 = x / 20',
+                answer: '• Step 1 (Cross-multiply): 4 × x = 3 × 20 → 4x = 60\n• Step 2 (Divide by 4): x = 60 ÷ 4 = 15.'
+              },
+              {
+                type: 'Word Problem',
+                prompt: 'A car travels 180 miles on 6 gallons of gas. How many miles can it travel on 11 gallons?',
+                answer: '• Setup: 180 miles / 6 gal = x miles / 11 gal\n• Cross-multiply: 6x = 180 × 11 = 1980\n• Divide: x = 1980 ÷ 6 = 330 miles.'
               }
             ],
+            flashcards: [
+              { q: 'What is the #1 mistake when setting up a proportion word problem?', a: 'Flipping the units on one side! Always keep the same unit in both numerators and the same unit in both denominators.' },
+              { q: 'How do you find a unit rate?', a: 'Divide the first quantity by the second quantity so the denominator becomes 1 (e.g., 180 miles ÷ 6 gal = 30 miles per 1 gallon).' }
+            ],
             quiz: {
-              question: 'Solve for x if 2/5 = x / 25.',
-              options: ['5', '10', '15', '20'],
-              correctIndex: 1,
-              explanation: 'Cross-multiply: 2 × 25 = 5 × x ⇒ 50 = 5x ⇒ x = 10.'
+              question: 'Word Problem: A blueprint uses a scale where 2 inches represents 15 feet. How long is a wall that measures 7 inches on the blueprint?',
+              options: ['30 feet', '45 feet', '52.5 feet', '105 feet'],
+              correctIndex: 2,
+              explanation: 'Set up 2/15 = 7/x. Cross-multiply: 2x = 105 → x = 52.5 feet.'
             }
           }
         ],
         finalTest: [
           { q: 'Evaluate: 6 + 2 × (3² - 5)', options: ['14', '18', '22', '32'], correctIndex: 0, explanation: 'Parentheses first: (9 - 5) = 4. Then multiplication: 2 × 4 = 8. Then addition: 6 + 8 = 14.' },
-          { q: 'What is 7/8 as a decimal?', options: ['0.75', '0.825', '0.875', '0.9'], correctIndex: 2, explanation: 'Dividing 7 by 8 yields 0.875.' },
+          { q: 'Word Problem: A $80 pair of shoes is discounted by 15%. What is the final price?', options: ['$12', '$65', '$68', '$72'], correctIndex: 2, explanation: '15% of 80 is 0.15 × 80 = $12 off. $80 − $12 = $68.' },
           { q: 'Calculate: -20 - (-12) + 5', options: ['-3', '-13', '3', '17'], correctIndex: 0, explanation: '-20 + 12 = -8. Then -8 + 5 = -3.' },
-          { q: 'Solve for x in 4/5 = 12 / x', options: ['10', '15', '20', '25'], correctIndex: 1, explanation: 'Cross-multiply: 4x = 60 ⇒ x = 15.' }
+          { q: 'Word Problem: If 5 pounds of apples cost $12, how much do 8 pounds cost?', options: ['$16.40', '$18.00', '$19.20', '$20.00'], correctIndex: 2, explanation: '5/12 = 8/x → 5x = 96 → x = $19.20.' }
         ]
       },
       {
@@ -887,64 +1004,152 @@
         lessons: [
           {
             id: 'alg1-1',
-            title: 'Solving One and Two-Step Equations',
-            eli5: 'An equation is like a balanced playground seesaw. Whatever you do to one side, you must do to the exact other side to keep the seesaw balanced!',
-            college: 'Algebraic equations maintain equality through inverse operations. To isolate variable x, undo operations in reverse PEMDAS order.',
-            keyTakeaway: 'Golden Rule: What you do to one side of the equals sign, you must do to the other.',
-            deepPrompts: [{ prompt: 'Solve for x: 3x + 7 = 22', answer: 'Subtract 7 from both sides: 3x = 15. Divide by 3: x = 5.' }],
+            title: 'Solving Multi-Step Equations',
+            visualHook: 'Picture a mystery gift box sitting on a balanced scale with extra weights beside it. To discover how much the mystery box weighs alone, you remove the extra weights from BOTH sides equally until only the box remains!',
+            eli5: 'Undo addition/subtraction first to peel away loose numbers, then undo multiplication/division last to get x completely by itself.',
+            college: 'Linear equations ax + b = c are solved in a field by applying additive and multiplicative inverses in reverse order of operations.',
+            blueprint: [
+              'Distribute and combine like terms on each side first.',
+              'Undo addition or subtraction by doing the opposite to both sides.',
+              'Undo multiplication or division to isolate x.',
+              'Plug your answer back in to verify both sides match.'
+            ],
+            keyTakeaway: 'Balance Principle: Whatever operation you apply to the left side, apply identically to the right side.',
+            deepPrompts: [
+              {
+                type: 'Numerical Example',
+                prompt: 'Solve for x: 3x + 7 = 22',
+                answer: '• Step 1 (Subtract 7): 3x = 22 − 7 → 3x = 15\n• Step 2 (Divide by 3): x = 15 ÷ 3 = 5\n• Check: 3(5) + 7 = 22 ✓'
+              },
+              {
+                type: 'Word Problem',
+                prompt: 'A gym charges a $25 sign-up fee plus $15 per month. If Sam spent $115 total, how many months (m) did he pay for?',
+                answer: '• Equation: 15m + 25 = 115\n• Step 1 (Subtract 25): 15m = 90\n• Step 2 (Divide by 15): m = 6 months.'
+              }
+            ],
+            flashcards: [
+              { q: 'In 4x − 9 = 23, what do you undo first and why?', a: 'Undo −9 first by adding 9 to both sides! Always peel away addition/subtraction before dividing by the coefficient.' },
+              { q: 'How do you solve an equation with variables on both sides, like 5x + 2 = 3x + 10?', a: 'Subtract 3x from both sides to gather variables on one side (2x + 2 = 10), then subtract 2 (2x = 8) and divide by 2 (x = 4).' }
+            ],
             quiz: {
-              question: 'Solve for x: 4x - 5 = 11',
-              options: ['x = 2', 'x = 3', 'x = 4', 'x = 6'],
-              correctIndex: 2,
-              explanation: 'Add 5 to both sides (4x = 16), then divide by 4 (x = 4).'
+              question: 'Word Problem: A streaming service charges $12 per month plus a one-time $8 setup fee. If Taylor paid $80 in total, how many months did Taylor subscribe?',
+              options: ['5 months', '6 months', '7 months', '8 months'],
+              correctIndex: 1,
+              explanation: 'Set up 12m + 8 = 80. Subtract 8 (12m = 72), then divide by 12 to get m = 6 months.'
             }
           },
           {
             id: 'alg1-2',
             title: 'Slope-Intercept Form (y = mx + b)',
-            eli5: 'Think of y = mx + b like renting a bicycle. The b is the flat starting fee, and m is how much money you pay for every mile (x) you ride!',
-            college: 'The slope-intercept form represents linear functions where m is the slope and b is the y-intercept.',
-            keyTakeaway: 'Equation: y = mx + b  (m = slope, b = y-intercept)',
-            deepPrompts: [{ prompt: 'Find the slope between (2, 3) and (4, 7).', answer: 'm = (7 - 3) / (4 - 2) = 4 / 2 = 2.' }],
+            visualHook: 'Picture taking a taxi cab. Before the car even moves an inch, the meter starts at $4 (that is b, your y-intercept). Every mile you drive adds $2 to the fare (that is m, your slope or rate of change).',
+            eli5: 'm is how steep the line climbs (Rise over Run), and b is where the line crosses the vertical y-axis.',
+            college: 'Linear functions f(x) = mx + b exhibit constant first differences m = Δy/Δx and initial value f(0) = b.',
+            blueprint: [
+              'Identify two points (x₁, y₁) and (x₂, y₂) on the line.',
+              'Compute slope m = (y₂ − y₁) / (x₂ − x₁).',
+              'Plug m and one point into y = mx + b to solve for b.',
+              'Write the final equation y = mx + b.'
+            ],
+            keyTakeaway: 'Slope Formula: m = (y₂ − y₁) / (x₂ − x₁)  |  Line Form: y = mx + b',
+            deepPrompts: [
+              {
+                type: 'Numerical Example',
+                prompt: 'Find the slope between (2, 3) and (4, 7) and write the equation.',
+                answer: '• Step 1 (Slope): m = (7 − 3) / (4 − 2) = 4 / 2 = 2\n• Step 2 (Find b): 3 = 2(2) + b → 3 = 4 + b → b = −1\n• Equation: y = 2x − 1.'
+              },
+              {
+                type: 'Word Problem',
+                prompt: 'A water tank holds 500 gallons and drains at 20 gallons per minute. Write a linear equation for water left (y) after x minutes.',
+                answer: '• Starting amount (b): 500\n• Rate of change (m): −20 (negative because it is draining)\n• Equation: y = −20x + 500.'
+              }
+            ],
+            flashcards: [
+              { q: 'What does a negative slope look like on a graph?', a: 'Going from left to right, the line falls downward (decreasing y as x increases).' },
+              { q: 'How do you graph y = (2/3)x + 1 starting from scratch?', a: '1. Plot the y-intercept at (0, 1). 2. From there, rise UP 2 units and run RIGHT 3 units to plot (3, 3), then connect!' }
+            ],
             quiz: {
-              question: 'In y = 4x - 7, what is the y-intercept (b)?',
-              options: ['4', '-7', '7', '1'],
+              question: 'Word Problem: A plant is 4 inches tall when planted and grows 1.5 inches every week. Which equation models its height h after w weeks?',
+              options: ['h = 4w + 1.5', 'h = 1.5w + 4', 'h = 5.5w', 'h = 1.5w − 4'],
               correctIndex: 1,
-              explanation: 'In y = mx + b, b represents the constant y-intercept term, which is -7 here.'
+              explanation: 'The starting height is b = 4, and the growth rate per week is m = 1.5, giving h = 1.5w + 4.'
             }
           },
           {
             id: 'alg1-3',
             title: 'Systems of Linear Equations',
-            eli5: 'Sometimes you have two secrets. By using two different clues together, you can crack both secrets at once!',
-            college: 'A system of linear equations involves finding simultaneous values satisfying multiple equations.',
-            keyTakeaway: 'Methods: Substitution, Elimination, or Graphing intersection point (x, y)',
-            deepPrompts: [{ prompt: 'Solve: x + y = 10 and x - y = 2', answer: 'Add equations: 2x = 12 ⇒ x = 6. Plug in: 6 + y = 10 ⇒ y = 4. Solution: (6, 4).' }],
+            visualHook: 'Picture two hikers walking along straight trails on a map. A system of equations asks: "At what exact GPS coordinate (x, y) do their paths cross each other?"',
+            eli5: 'Line up the two equations vertically and add or subtract them so one variable cancels out completely, letting you solve for the other!',
+            college: 'A 2×2 linear system determines the intersection of two affine hyperplanes in ℝ², solvable via Gaussian elimination or substitution.',
+            blueprint: [
+              'Align both equations in standard form (Ax + By = C).',
+              'Add or subtract the equations to eliminate one variable (like +y and −y).',
+              'Solve for the remaining variable.',
+              'Substitute that value back into either original equation to find the second variable.'
+            ],
+            keyTakeaway: 'Solution Format: Always write your answer as an ordered pair (x, y).',
+            deepPrompts: [
+              {
+                type: 'Numerical Example',
+                prompt: 'Solve: x + y = 10 and x − y = 2',
+                answer: '• Step 1 (Add equations): (x + x) + (y − y) = 10 + 2 → 2x = 12 → x = 6\n• Step 2 (Plug in): 6 + y = 10 → y = 4\n• Solution: (6, 4).'
+              },
+              {
+                type: 'Word Problem',
+                prompt: 'Two numbers add up to 20, and their difference is 4. Find both numbers.',
+                answer: '• System: x + y = 20 and x − y = 4\n• Add equations: 2x = 24 → x = 12\n• Plug in: 12 + y = 20 → y = 8. The numbers are 12 and 8.'
+              }
+            ],
+            flashcards: [
+              { q: 'When do two linear equations have NO solution?', a: 'When the lines are parallel (same slope m, different y-intercepts b)—they never intersect!' },
+              { q: 'When is Substitution faster than Elimination?', a: 'When one equation already has a variable isolated, such as y = 2x + 1.' }
+            ],
             quiz: {
-              question: 'What is the solution (x, y) to x + y = 5 and x - y = 1?',
-              options: ['(3, 2)', '(4, 1)', '(5, 0)', '(2, 3)'],
-              correctIndex: 0,
-              explanation: 'Adding equations gives 2x = 6 (x = 3). Plugging into x + y = 5 gives y = 2.'
+              question: 'Word Problem: Adult tickets cost $10 and student tickets cost $6. If 15 tickets were sold for $118 total, how many adult tickets were sold?',
+              options: ['5 adult tickets', '7 adult tickets', '8 adult tickets', '10 adult tickets'],
+              correctIndex: 1,
+              explanation: 'a + s = 15 and 10a + 6s = 118. Multiply first by 6 (6a + 6s = 90) and subtract: 4a = 28 → a = 7 adult tickets.'
             }
           },
           {
             id: 'alg1-4',
             title: 'Factoring Quadratic Expressions',
-            eli5: 'Multiplying polynomials is like wrapping a present. Factoring is unwrapping it back into multiplying pieces.',
-            college: 'Factoring converts standard quadratic polynomials ax² + bx + c into products of binomials.',
-            keyTakeaway: 'Example: x² + 5x + 6 = (x + 2)(x + 3)',
-            deepPrompts: [{ prompt: 'Factor completely: x² - 9', answer: 'Difference of squares: (x - 3)(x + 3).' }],
+            visualHook: 'Picture multiplying (x + 2)(x + 3) like building a rectangle out of four tiles. Factoring is taking the finished rectangle x² + 5x + 6 and figuring out what length and width formed its sides!',
+            eli5: 'Find two magic numbers that MULTIPLY to give the last number (c) and ADD to give the middle number (b).',
+            college: 'Factoring decomposes monic quadratics x² + bx + c into linear binomials (x + r₁)(x + r₂) where r₁r₂ = c and r₁ + r₂ = b.',
+            blueprint: [
+              'Write the quadratic in standard form x² + bx + c.',
+              'List factor pairs of c.',
+              'Pick the pair whose sum equals b.',
+              'Write as (x + first)(x + second). Set each equal to 0 if solving!'
+            ],
+            keyTakeaway: 'Diamond Rule: Multiply to c  |  Add to b',
+            deepPrompts: [
+              {
+                type: 'Numerical Example',
+                prompt: 'Factor and solve: x² − 5x + 6 = 0',
+                answer: '• Find two numbers multiplying to +6 and adding to −5: −2 and −3.\n• Factored form: (x − 2)(x − 3) = 0\n• Roots: x = 2 and x = 3.'
+              },
+              {
+                type: 'Word Problem',
+                prompt: 'A rectangular garden has an area of x² + 7x + 12 square feet. If its width is (x + 3), what is its length?',
+                answer: '• Factor x² + 7x + 12: 3 × 4 = 12 and 3 + 4 = 7 → (x + 3)(x + 4)\n• Since width = (x + 3), the length is (x + 4) feet.'
+              }
+            ],
+            flashcards: [
+              { q: 'How do you factor a Difference of Squares like x² − 49?', a: 'Use a² − b² = (a − b)(a + b): x² − 49 = (x − 7)(x + 7).' },
+              { q: 'Once factored into (x − 4)(x + 9) = 0, what are the solutions for x?', a: 'Flip the signs by setting each factor to zero: x = 4 and x = −9.' }
+            ],
             quiz: {
-              question: 'What are the factors of x² + 8x + 15?',
-              options: ['(x + 1)(x + 15)', '(x + 3)(x + 5)', '(x - 3)(x - 5)', '(x + 2)(x + 6)'],
+              question: 'Word Problem: The area of a square patio is x² + 10x + 25. What is the length of one side of the patio?',
+              options: ['x + 2', 'x + 5', 'x + 10', 'x + 25'],
               correctIndex: 1,
-              explanation: '3 and 5 multiply to 15 and add up to 8, yielding (x + 3)(x + 5).'
+              explanation: '5 × 5 = 25 and 5 + 5 = 10, so x² + 10x + 25 = (x + 5)(x + 5). Each side is (x + 5).'
             }
           }
         ],
         finalTest: [
           { q: 'Solve for x: 5x + 3 = 23', options: ['x = 3', 'x = 4', 'x = 5', 'x = 6'], correctIndex: 1, explanation: 'Subtract 3 (5x = 20) and divide by 5 (x = 4).' },
-          { q: 'What is the slope of y = -3x + 8?', options: ['8', '-3', '3', '1'], correctIndex: 1, explanation: 'In y = mx + b, m is the coefficient of x, which is -3.' },
+          { q: 'Word Problem: A plumber charges $45 for a house visit plus $30 per hour. How much does a 3-hour repair cost?', options: ['$90', '$120', '$135', '$165'], correctIndex: 2, explanation: 'y = 30(3) + 45 = 90 + 45 = $135.' },
           { q: 'Solve the system: 2x + y = 7 and x - y = 2', options: ['(2, 3)', '(3, 1)', '(4, 2)', '(1, 1)'], correctIndex: 1, explanation: 'Add equations: 3x = 9 (x = 3). Then y = 1.' },
           { q: 'Factor: x² - 16', options: ['(x - 4)(x - 4)', '(x + 4)(x + 4)', '(x - 4)(x + 4)', '(x - 8)(x + 2)'], correctIndex: 2, explanation: 'Difference of squares: a² - b² = (a - b)(a + b).' }
         ]
@@ -959,64 +1164,148 @@
           {
             id: 'geo-1',
             title: 'Pythagorean Theorem',
-            eli5: 'If you build squares on the two shorter sides of a right triangle, their combined area equals the giant square built on the longest slanted side!',
-            college: 'In any right-angled triangle, the sum of squared leg lengths equals the squared hypotenuse length: a² + b² = c².',
-            keyTakeaway: 'Formula: a² + b² = c²',
-            deepPrompts: [{ prompt: 'Find hypotenuse c if a = 6 and b = 8.', answer: '6² + 8² = 36 + 64 = 100 ⇒ c = 10.' }],
+            visualHook: 'Picture a ladder leaning against a vertical brick wall. The wall, the ground, and the ladder form a right triangle. The ladder is always the longest side (the hypotenuse c, directly across from the 90° corner).',
+            eli5: 'Square the two shorter legs (a² and b²), add them together, and take the square root to find the slanted ladder length c!',
+            college: 'In Euclidean inner-product spaces, orthogonal vectors satisfy ||a + b||² = ||a||² + ||b||², yielding a² + b² = c².',
+            blueprint: [
+              'Identify the right angle (90°) and label the side opposite it as c (hypotenuse).',
+              'Plug known values into a² + b² = c².',
+              'If solving for c, add a² + b² then take √. If solving for a leg, subtract c² − a² then take √.'
+            ],
+            keyTakeaway: 'Right Triangle Formula: a² + b² = c²',
+            deepPrompts: [
+              {
+                type: 'Numerical Example',
+                prompt: 'Find hypotenuse c if legs are a = 6 and b = 8.',
+                answer: '• 6² + 8² = c² → 36 + 64 = 100\n• c = √100 = 10.'
+              },
+              {
+                type: 'Word Problem',
+                prompt: 'A 13-foot ladder leans against a wall with its base 5 feet from the wall. How high up the wall does the ladder reach?',
+                answer: '• Here c = 13 (ladder) and a = 5 (ground), so 5² + b² = 13²\n• 25 + b² = 169 → b² = 144\n• b = √144 = 12 feet high.'
+              }
+            ],
+            flashcards: [
+              { q: 'How do you find a missing LEG (b) instead of the hypotenuse (c)?', a: 'Subtract! b² = c² − a², then take the square root.' },
+              { q: 'Name two famous Pythagorean Triples to memorize for fast test-taking.', a: '(3, 4, 5) and (5, 12, 13)—plus their multiples like (6, 8, 10)!' }
+            ],
             quiz: {
-              question: 'In a right triangle with legs 3 and 4, what is the hypotenuse?',
-              options: ['5', '7', '12', '25'],
-              correctIndex: 0,
-              explanation: '3² + 4² = 9 + 16 = 25. The square root of 25 is 5.'
+              question: 'Word Problem: You walk 9 blocks east and 12 blocks north. How many blocks is the straight diagonal shortcut back to your start?',
+              options: ['13 blocks', '15 blocks', '18 blocks', '21 blocks'],
+              correctIndex: 1,
+              explanation: '9² + 12² = 81 + 144 = 225. √225 = 15 blocks.'
             }
           },
           {
             id: 'geo-2',
             title: 'Angles, Triangles & Polygons',
-            eli5: 'Every triangle in the universe is like a strict club: the three inside corner angles always add up to exactly 180 degrees!',
-            college: 'The interior angle sum of an n-sided polygon is given by (n − 2) × 180°.',
-            keyTakeaway: 'Triangle Angle Sum Theorem: ∠A + ∠B + ∠C = 180°',
-            deepPrompts: [{ prompt: 'Find the third angle of a triangle with angles 50° and 60°.', answer: '180° - 110° = 70°.' }],
+            visualHook: 'Picture tearing off the three corners of any paper triangle and taping them together point-to-point. Every single time, those three corners form a perfectly flat straight line—180 degrees!',
+            eli5: 'Every triangle adds up to 180°. Every 4-sided shape adds up to 360°. Each extra side adds another 180°!',
+            college: 'Triangulating an n-gon partitions it into (n − 2) triangles, proving the interior angle sum is (n − 2) × 180°.',
+            blueprint: [
+              'Count the number of sides (n) of the polygon.',
+              'Use Sum = (n − 2) × 180° to find the total interior degrees.',
+              'For a regular polygon, divide the sum by n to get one angle.'
+            ],
+            keyTakeaway: 'Polygon Interior Sum = (n − 2) × 180°',
+            deepPrompts: [
+              {
+                type: 'Numerical Example',
+                prompt: 'Find the third angle of a triangle with angles 50° and 60°.',
+                answer: '180° − (50° + 60°) = 180° − 110° = 70°.'
+              },
+              {
+                type: 'Word Problem',
+                prompt: 'A stop sign is a regular octagon (8 sides). What is the measure of one interior angle?',
+                answer: '• Total sum: (8 − 2) × 180° = 6 × 180° = 1080°\n• Divide by 8 equal angles: 1080° ÷ 8 = 135°.'
+              }
+            ],
+            flashcards: [
+              { q: 'What is the difference between Complementary and Supplementary angles?', a: 'Complementary angles add to 90° (a Corner); Supplementary angles add to 180° (a Straight line).' },
+              { q: 'What are Vertical Angles?', a: 'Opposite angles formed by two intersecting lines—they are always equal!' }
+            ],
             quiz: {
-              question: 'What is the sum of interior angles in any standard triangle?',
-              options: ['90°', '180°', '270°', '360°'],
+              question: 'Word Problem: An isosceles triangle has a top vertex angle of 40°. What is the measure of each of the two equal base angles?',
+              options: ['40°', '70°', '80°', '140°'],
               correctIndex: 1,
-              explanation: 'The interior angles of any Euclidean triangle always sum to 180°.'
+              explanation: '180° − 40° = 140° left for the two equal base angles. 140° ÷ 2 = 70° each.'
             }
           },
           {
             id: 'geo-3',
             title: 'Area, Perimeter & Circumference',
-            eli5: 'Perimeter is walking around the outside fence. Area is how much grass carpet you need to cover the flat ground inside.',
-            college: 'Perimeter measures linear boundary length, area measures 2D surface coverage.',
-            keyTakeaway: 'Circle Area = πr², Circumference = 2πr',
-            deepPrompts: [{ prompt: 'Find area of circle with radius r = 7 cm (π ≈ 22/7).', answer: '(22/7) × 7² = 154 cm².' }],
+            visualHook: 'Picture building a backyard patio: Perimeter is the wooden fence you buy to go around the edge, while Area is the square tiles you buy to cover the ground inside.',
+            eli5: 'Circumference is a circle’s perimeter (C = 2πr), and Circle Area is the space inside (A = πr²). Always square the radius FIRST before multiplying by π!',
+            college: 'Area integrates 2D Lebesgue measure over bounded regions, while perimeter/circumference computes boundary arc length.',
+            blueprint: [
+              'Check whether the problem gives diameter (all the way across) or radius (halfway across). If given diameter, divide by 2 first!',
+              'For Circumference: C = 2πr.',
+              'For Circle Area: A = πr² (square r first, then multiply by π).'
+            ],
+            keyTakeaway: 'Circle Area = πr²  |  Circumference = 2πr',
+            deepPrompts: [
+              {
+                type: 'Numerical Example',
+                prompt: 'Find the area of a circle with radius r = 7 cm (use π ≈ 22/7).',
+                answer: 'A = (22/7) × 7² = (22/7) × 49 = 22 × 7 = 154 cm².'
+              },
+              {
+                type: 'Word Problem',
+                prompt: 'A circular trampoline has a diameter of 12 feet. What is its area in terms of π?',
+                answer: '• Step 1: Diameter = 12 ft → radius r = 12 ÷ 2 = 6 ft\n• Step 2: Area = π(6²) = 36π sq ft.'
+              }
+            ],
+            flashcards: [
+              { q: 'If a problem gives you a circle’s DIAMETER of 10, how do you find its area?', a: 'Cut the diameter in half first! Radius r = 5, so Area = π(5²) = 25π.' },
+              { q: 'What is the area of a triangle with base b and height h?', a: 'A = ½ × base × height (half of a rectangle!).' }
+            ],
             quiz: {
-              question: 'What is the formula for the area of a circle?',
-              options: ['2πr', 'πr²', '4πr²', 'bh / 2'],
+              question: 'Word Problem: A bicycle wheel has a radius of 14 inches. About how far does the bike roll in 1 full wheel rotation? (Use π ≈ 22/7)',
+              options: ['44 inches', '88 inches', '154 inches', '616 inches'],
               correctIndex: 1,
-              explanation: 'Circle area formula is πr².'
+              explanation: 'One rotation equals the circumference: C = 2 × (22/7) × 14 = 88 inches.'
             }
           },
           {
             id: 'geo-4',
             title: 'Volume & Surface Area of 3D Solids',
-            eli5: 'Volume is how much water a pool can hold. Surface area is how much wrapping paper you need to cover the outside.',
-            college: 'Volume measures 3D spatial capacity, while surface area computes the sum of all 2D boundary face areas.',
-            keyTakeaway: 'Rectangular Prism Volume = length × width × height',
-            deepPrompts: [{ prompt: 'Find volume of a box with length 5, width 2, height 3.', answer: '5 × 2 × 3 = 30.' }],
+            visualHook: 'Picture a cardboard Amazon shipping box: Surface Area is the amount of flat cardboard used to make the box, and Volume is how many 1-inch cubes you can pack inside it.',
+            eli5: 'For any prism or cylinder, find the Area of the flat bottom base first, then multiply by how tall it stands!',
+            college: 'By Cavalieri’s Principle, the volume of any generalized prism or cylinder equals Base Area × Perpendicular Height (V = B·h).',
+            blueprint: [
+              'Identify the shape of the base (rectangle, triangle, or circle).',
+              'Compute Base Area (B).',
+              'Multiply B × height (h) for Volume.'
+            ],
+            keyTakeaway: 'Universal Prism/Cylinder Volume: V = Base Area × Height',
+            deepPrompts: [
+              {
+                type: 'Numerical Example',
+                prompt: 'Find the volume of a box with length 5, width 2, and height 3.',
+                answer: 'V = 5 × 2 × 3 = 30 cubic units.'
+              },
+              {
+                type: 'Word Problem',
+                prompt: 'A cylindrical soda can has radius 3 cm and height 10 cm. What is its volume in terms of π?',
+                answer: '• Base Area (circle): B = π(3²) = 9π cm²\n• Volume: V = 9π × 10 = 90π cm³.'
+              }
+            ],
+            flashcards: [
+              { q: 'How does the volume of a Cone compare to a Cylinder with the same base and height?', a: 'A cone holds exactly ONE-THIRD (⅓) of the cylinder: V = ⅓πr²h.' },
+              { q: 'What is the formula for the volume of a Sphere?', a: 'V = (4/3)πr³.' }
+            ],
             quiz: {
-              question: 'What is the volume of a rectangular box with length 5, width 2, and height 3?',
-              options: ['10', '25', '30', '60'],
+              question: 'Word Problem: An aquarium tank is 20 inches long, 10 inches wide, and 12 inches tall. How many cubic inches of water fill it completely?',
+              options: ['240 in³', '1,200 in³', '2,400 in³', '4,800 in³'],
               correctIndex: 2,
-              explanation: 'Volume = l × w × h = 5 × 2 × 3 = 30.'
+              explanation: 'V = 20 × 10 × 12 = 2,400 cubic inches.'
             }
           }
         ],
         finalTest: [
           { q: 'Find hypotenuse if legs are 9 and 12.', options: ['13', '15', '18', '21'], correctIndex: 1, explanation: '9² + 12² = 81 + 144 = 225. √225 = 15.' },
           { q: 'What is the sum of interior angles in a pentagon (5 sides)?', options: ['360°', '540°', '720°', '1080°'], correctIndex: 1, explanation: '(5 - 2) × 180° = 3 × 180° = 540°.' },
-          { q: 'What is the circumference of a circle with radius 10 cm (π ≈ 3.14)?', options: ['31.4 cm', '62.8 cm', '314 cm', '100 cm'], correctIndex: 1, explanation: 'C = 2πr = 2 × 3.14 × 10 = 62.8 cm.' },
+          { q: 'Word Problem: A circular pizza has a diameter of 16 inches. What is its radius?', options: ['4 in', '8 in', '16 in', '32 in'], correctIndex: 1, explanation: 'Radius is half the diameter: 16 ÷ 2 = 8 inches.' },
           { q: 'What is the volume of a cube with side length 4 cm?', options: ['16 cm³', '32 cm³', '64 cm³', '128 cm³'], correctIndex: 2, explanation: 'Volume = 4³ = 64 cm³.' }
         ]
       },
@@ -1030,57 +1319,141 @@
           {
             id: 'chem-1',
             title: 'Atomic Structure & Subatomic Particles',
-            eli5: 'Every atom is like a tiny solar system! In the center you have protons and neutrons, while speedy electrons zip around the outside.',
-            college: 'Atoms consist of a dense nucleus containing protons and neutrons, surrounded by electrons in quantum orbitals.',
-            keyTakeaway: 'Particles: Proton (+), Neutron (0), Electron (-)',
-            deepPrompts: [{ prompt: 'Protons, neutrons, and electrons in Carbon-12 (Z = 6)?', answer: '6 protons, 6 electrons, 6 neutrons (12 - 6).' }],
+            visualHook: 'Picture a giant football stadium. A tiny marble sitting on the 50-yard line is the nucleus (packed with heavy protons and neutrons), while tiny gnats zooming around the upper bleachers are the electrons!',
+            eli5: 'Protons (+) give the atom its identity (like a fingerprint), Neutrons (0) add glue/weight, and Electrons (-) orbit outside and do all the chemical bonding.',
+            college: 'Atomic number Z defines nuclear proton count, mass number A = Z + N sums nucleons, and valence electrons occupy quantized orbitals.',
+            blueprint: [
+              'Protons = Atomic Number (Z) from the Periodic Table.',
+              'Electrons = Protons (in a neutral atom).',
+              'Neutrons = Mass Number (A) − Atomic Number (Z).'
+            ],
+            keyTakeaway: 'Neutrons = Mass Number − Atomic Number  |  Charge = Protons − Electrons',
+            deepPrompts: [
+              {
+                type: 'Numerical Example',
+                prompt: 'Find protons, neutrons, and electrons in Carbon-14 (Z = 6).',
+                answer: '• Protons = 6\n• Electrons = 6\n• Neutrons = 14 − 6 = 8 neutrons.'
+              },
+              {
+                type: 'Word Problem',
+                prompt: 'An ion of Magnesium (Z = 12) has 10 electrons and a mass number of 24. What is its charge and neutron count?',
+                answer: '• Charge: 12 protons − 10 electrons = +2 (Mg²⁺)\n• Neutrons: 24 − 12 = 12 neutrons.'
+              }
+            ],
+            flashcards: [
+              { q: 'What are Isotopes?', a: 'Atoms of the SAME element (same protons) with DIFFERENT numbers of neutrons (different mass numbers).' },
+              { q: 'If an atom gains 2 electrons, is its charge +2 or −2?', a: '−2! Electrons are negatively charged, so gaining 2 negatives gives a −2 anion.' }
+            ],
             quiz: {
-              question: 'Which subatomic particle carries a negative charge?',
-              options: ['Proton', 'Neutron', 'Electron', 'Nucleon'],
+              question: 'Word Problem: An atom of Chlorine-37 has an atomic number of 17. How many neutrons are inside its nucleus?',
+              options: ['17', '18', '20', '37'],
               correctIndex: 2,
-              explanation: 'Electrons carry a negative electrical charge, balancing positive protons.'
+              explanation: 'Neutrons = Mass Number (37) − Atomic Number (17) = 20 neutrons.'
             }
           },
           {
             id: 'chem-2',
-            title: 'The Periodic Table & Chemical Bonding',
-            eli5: 'Elements on the periodic table love to trade or share electrons like trading cards so they can complete their outer shell!',
-            college: 'Ionic bonds form via electron transfer, whereas covalent bonds form via electron sharing to satisfy valence octets.',
-            keyTakeaway: 'Octet Rule: Atoms strive for 8 valence electrons for stability.',
-            deepPrompts: [{ prompt: 'Why does Na bond with Cl to form salt?', answer: 'Sodium gives up an electron (Na⁺) and chlorine accepts it (Cl⁻), creating strong electrostatic attraction.' }],
+            title: 'Chemical Bonding & Polarity',
+            visualHook: 'Picture two kids with a toy. In an Ionic bond, one kid gives the toy completely to the other, and opposites attract. In a Covalent bond, they share the toy—and if one kid pulls harder (higher electronegativity), it becomes a Polar covalent bond!',
+            eli5: 'Metal + Nonmetal = Ionic (transfer electrons). Nonmetal + Nonmetal = Covalent (share electrons).',
+            college: 'Electronegativity differences Δχ govern bond character: Δχ > 1.7 favors ionic transfer, while 0.4 < Δχ ≤ 1.7 yields polar covalent dipoles.',
+            blueprint: [
+              'Identify elements as Metals (left of staircase) or Nonmetals (right of staircase).',
+              'Metal + Nonmetal → Ionic bond (ions held by electrostatic force).',
+              'Nonmetal + Nonmetal → Covalent bond (shared electron pairs).'
+            ],
+            keyTakeaway: 'Octet Rule: Atoms transfer or share electrons to achieve 8 valence electrons.',
+            deepPrompts: [
+              {
+                type: 'Numerical Example',
+                prompt: 'Classify the bonds in NaCl and CO₂.',
+                answer: '• NaCl: Sodium (metal) + Chlorine (nonmetal) = Ionic bond.\n• CO₂: Carbon (nonmetal) + Oxygen (nonmetal) = Covalent bond.'
+              },
+              {
+                type: 'Word Problem',
+                prompt: 'Why does water (H₂O) dissolve table salt (NaCl) so easily?',
+                answer: 'Water is a polar molecule with a partial negative oxygen end (δ−) and partial positive hydrogen ends (δ+). These charged ends pull Na⁺ and Cl⁻ ions apart!'
+              }
+            ],
+            flashcards: [
+              { q: 'Why do ionic compounds conduct electricity when dissolved in water?', a: 'In water, the crystal lattice breaks into free-moving charged ions (cations and anions) that carry electric current.' },
+              { q: 'What causes Hydrogen Bonding?', a: 'Strong dipole attraction when Hydrogen is covalently bonded to highly electronegative N, O, or F.' }
+            ],
             quiz: {
-              question: 'What bond forms when electrons are transferred from metal to nonmetal?',
-              options: ['Ionic bond', 'Covalent bond', 'Metallic bond', 'Hydrogen bond'],
-              correctIndex: 0,
-              explanation: 'Transfer of electrons creates oppositely charged ions, forming an ionic bond.'
+              question: 'Which compound contains primarily IONIC bonds?',
+              options: ['CH₄ (Methane)', 'H₂O (Water)', 'KBr (Potassium Bromide)', 'O₂ (Oxygen gas)'],
+              correctIndex: 2,
+              explanation: 'Potassium (K) is an alkali metal and Bromine (Br) is a halogen nonmetal, forming an ionic bond.'
             }
           },
           {
             id: 'chem-3',
-            title: 'Balancing Chemical Equations',
-            eli5: 'Nature is like an accountant that never loses a single atom! Whatever ingredients you put in, you must get the exact same number out.',
-            college: 'The Law of Conservation of Mass requires chemical equations to be balanced by placing stoichiometric coefficients.',
-            keyTakeaway: 'Rule: Total atoms in = Total atoms out.',
-            deepPrompts: [{ prompt: 'Balance: H₂ + O₂ → H₂O', answer: '2H₂ + O₂ → 2H₂O.' }],
+            title: 'Balancing Chemical Equations & Stoichiometry',
+            visualHook: 'Picture baking a cake: if you put 2 cups of flour and 3 eggs into the oven, no atoms vanish into thin air—every single atom ends up inside the baked cake!',
+            eli5: 'Never change the small subscript numbers inside a formula! Only adjust the big coefficient numbers in front until both sides have equal atoms.',
+            college: 'Stoichiometric coefficients enforce mass conservation across reactants and products, establishing molar conversion ratios.',
+            blueprint: [
+              'List each element on the reactant (left) and product (right) sides.',
+              'Place whole-number coefficients in front of formulas to balance atoms one element at a time.',
+              'Leave pure elements like O₂ or H₂ for last.'
+            ],
+            keyTakeaway: 'Law of Conservation of Mass: Atoms Reactants = Atoms Products',
+            deepPrompts: [
+              {
+                type: 'Numerical Example',
+                prompt: 'Balance: Fe + O₂ → Fe₂O₃',
+                answer: '• Balance O (2 vs 3 → LCM is 6): Put 3 before O₂ and 2 before Fe₂O₃.\n• Now we have 4 Fe on right → put 4 before Fe.\n• Balanced: 4Fe + 3O₂ → 2Fe₂O₃.'
+              },
+              {
+                type: 'Word Problem',
+                prompt: 'In 2H₂ + O₂ → 2H₂O, how many moles of water form from 6 moles of H₂?',
+                answer: '• Ratio from equation: 2 mol H₂ produces 2 mol H₂O (1:1 ratio).\n• Therefore, 6 moles of H₂ produces 6 moles of H₂O.'
+              }
+            ],
+            flashcards: [
+              { q: 'How do you calculate Molarity (M)?', a: 'Molarity (M) = Moles of solute ÷ Liters of solution.' },
+              { q: 'Why can’t you change subscripts (like turning H₂O into H₂O₂) when balancing?', a: 'Changing subscripts changes the actual chemical substance (water vs. toxic hydrogen peroxide)!' }
+            ],
             quiz: {
-              question: 'What law dictates that chemical equations must be balanced?',
-              options: ['Law of Conservation of Mass', 'Newton’s First Law', 'Boyle’s Law', 'Ohm’s Law'],
-              correctIndex: 0,
-              explanation: 'Matter cannot be created or destroyed, requiring mass balance in reactions.'
+              question: 'What coefficients balance: __CH₄ + __O₂ → __CO₂ + __H₂O?',
+              options: ['1, 1, 1, 1', '1, 2, 1, 2', '2, 2, 1, 2', '1, 3, 2, 2'],
+              correctIndex: 1,
+              explanation: 'CH₄ + 2O₂ → CO₂ + 2H₂O gives 1 C, 4 H, and 4 O on both sides.'
             }
           },
           {
             id: 'chem-4',
-            title: 'Acids, Bases & The pH Scale',
-            eli5: 'Acids are sour like lemons, while bases are slippery like soap. The pH scale measures strength from 0 (acidic) to 14 (basic), with 7 as neutral water!',
-            college: 'Acids are proton donors, bases are proton acceptors. pH = −log[H⁺].',
-            keyTakeaway: 'pH Scale: 0-6 (Acidic), 7 (Neutral), 8-14 (Basic)',
-            deepPrompts: [{ prompt: 'How much more acidic is pH 3 than pH 5?', answer: '10² = 100 times more acidic (logarithmic scale).' }],
+            title: 'Acids, Bases & Logarithmic pH',
+            visualHook: 'Picture a tug-of-war between H⁺ ions (acid) and OH⁻ ions (base). When they tie equally at 10⁻⁷ M each, you get pure neutral water at pH 7. Every 1-unit drop in pH means 10× more acid!',
+            eli5: 'pH < 7 is acidic (lemons, vinegar). pH = 7 is neutral (water). pH > 7 is basic (soap, bleach). Each step on the pH scale is a 10× jump in strength!',
+            college: 'pH = −log₁₀[H₃O⁺] and pOH = −log₁₀[OH⁻], linked at 25°C by Kw = [H₃O⁺][OH⁻] = 1.0 × 10⁻¹⁴, so pH + pOH = 14.',
+            blueprint: [
+              'Identify [H⁺] concentration (for strong monoprotic acids like HCl, [H⁺] = Molarity).',
+              'Compute pH = −log₁₀([H⁺]).',
+              'If given [OH⁻], find pOH = −log₁₀([OH⁻]), then pH = 14 − pOH.'
+            ],
+            keyTakeaway: 'AP Chem Formulas: pH = −log[H⁺]  |  pH + pOH = 14',
+            deepPrompts: [
+              {
+                type: 'Numerical Example',
+                prompt: 'Calculate the pH of a 0.001 M (10⁻³ M) HCl solution.',
+                answer: '• HCl is a strong acid, so [H⁺] = 10⁻³ M\n• pH = −log₁₀(10⁻³) = 3.0.'
+              },
+              {
+                type: 'Word Problem',
+                prompt: 'Black coffee has a pH of 5, while tomato juice has a pH of 4. Which is more acidic and by how many times?',
+                answer: '• Lower pH = more acidic (Tomato juice, pH 4).\n• Difference is 5 − 4 = 1 pH unit → 10¹ = 10 times more acidic!'
+              }
+            ],
+            flashcards: [
+              { q: 'If a solution has pOH = 3, what is its pH?', a: 'pH = 14 − 3 = 11 (Basic).' },
+              { q: 'What happens when a strong acid reacts with a strong base?', a: 'Neutralization! They form water (H₂O) and a salt.' }
+            ],
             quiz: {
-              question: 'What pH value represents a completely neutral solution like pure water?',
-              options: ['0', '3', '7', '14'],
-              correctIndex: 2,
-              explanation: 'pH 7 is neutral on the standard logarithmic scale.'
+              question: 'Word Problem: Rainwater in a city has pH 4, while normal rain has pH 6. How many times more acidic is the city’s acid rain?',
+              options: ['2 times', '10 times', '20 times', '100 times'],
+              correctIndex: 3,
+              explanation: 'A difference of 2 pH units (6 − 4 = 2) equals 10² = 100 times greater [H⁺] concentration.'
             }
           }
         ],
@@ -1088,7 +1461,7 @@
           { q: 'How many neutrons are in a neutral atom of Oxygen-16 (Z = 8)?', options: ['6', '8', '10', '16'], correctIndex: 1, explanation: 'Mass number 16 - atomic number 8 = 8 neutrons.' },
           { q: 'What type of bond holds water (H₂O) molecules together internally?', options: ['Ionic bond', 'Polar covalent bond', 'Metallic bond', 'Hydrogen bond'], correctIndex: 1, explanation: 'Oxygen and hydrogen share electrons unequally, creating polar covalent bonds.' },
           { q: 'Balance: __N₂ + __H₂ → __NH₃', options: ['1, 3, 2', '2, 3, 1', '1, 2, 3', '3, 1, 2'], correctIndex: 0, explanation: 'N₂ + 3H₂ → 2NH₃ balances both Nitrogen and Hydrogen.' },
-          { q: 'Which substance is classified as a strong base?', options: ['Lemon juice', 'Pure water', 'Sodium hydroxide (NaOH)', 'Vinegar'], correctIndex: 2, explanation: 'NaOH is a strong alkali/base with a very high pH.' }
+          { q: 'What is the pH of a 1.0 × 10⁻² M HCl solution?', options: ['2', '7', '12', '14'], correctIndex: 0, explanation: 'pH = -log(10⁻²) = 2.' }
         ]
       },
       {
@@ -1101,57 +1474,141 @@
           {
             id: 'physics-1',
             title: 'Newton’s Laws of Motion',
-            eli5: 'Objects are lazy and want to keep doing what they are doing. Pushing a heavy boulder is hard (F = ma), and every action has an equal and opposite reaction.',
-            college: 'Newton’s Laws establish classical mechanics: Inertia, F = ma, and Action-Reaction pairs.',
-            keyTakeaway: 'Core Formula: F = ma',
-            deepPrompts: [{ prompt: 'Force to accelerate 10 kg cart at 3 m/s²?', answer: 'F = 10 × 3 = 30 N.' }],
+            visualHook: 'Picture pushing an empty shopping cart vs. a shopping cart loaded with bricks. With the same push (Force), the empty cart rockets forward while the heavy brick cart accelerates slowly—that is F = ma in action!',
+            eli5: '1st Law: Things keep doing what they are doing unless pushed. 2nd Law: F = ma. 3rd Law: Push on a wall, and the wall pushes back equally hard.',
+            college: 'Newtonian dynamics relates net external force vector ΣF to inertial mass and acceleration: ΣF = dp/dt = ma.',
+            blueprint: [
+              'List given values: mass m (in kg), acceleration a (in m/s²), Force F (in Newtons).',
+              'Find net force (subtract opposing friction if present).',
+              'Solve F = ma (or a = F / m).'
+            ],
+            keyTakeaway: 'Newton’s Second Law: F_net = m × a',
+            deepPrompts: [
+              {
+                type: 'Numerical Example',
+                prompt: 'What force is needed to accelerate a 10 kg cart at 3 m/s²?',
+                answer: 'F = m × a = 10 kg × 3 m/s² = 30 Newtons (N).'
+              },
+              {
+                type: 'Word Problem',
+                prompt: 'A 1,200 kg car experiences 4,000 N of engine thrust forward and 400 N of air drag backward. What is its acceleration?',
+                answer: '• Net Force: 4,000 N − 400 N = 3,600 N\n• Acceleration: a = F_net / m = 3,600 ÷ 1,200 = 3 m/s².'
+              }
+            ],
+            flashcards: [
+              { q: 'What is the difference between Mass and Weight?', a: 'Mass (kg) is the amount of matter in you (never changes). Weight (N) is gravity pulling on your mass (W = mg).' },
+              { q: 'If net force on a moving spaceship is 0 N, does it stop?', a: 'No! By Newton’s 1st Law, it keeps gliding at constant velocity forever.' }
+            ],
             quiz: {
-              question: 'Which equation represents Newton’s Second Law of Motion?',
-              options: ['E = mc²', 'F = ma', 'a = v / t', 'W = mg'],
+              question: 'Word Problem: A 50 kg skater pushes off a wall with a force of 100 N. What is the skater’s acceleration backward?',
+              options: ['0.5 m/s²', '2 m/s²', '50 m/s²', '5,000 m/s²'],
               correctIndex: 1,
-              explanation: 'Newton’s Second Law states Force equals mass times acceleration (F = ma).'
+              explanation: 'By Newton’s 3rd Law the wall pushes back with 100 N. By 2nd Law, a = F / m = 100 / 50 = 2 m/s².'
             }
           },
           {
             id: 'physics-2',
-            title: 'Speed, Velocity & Acceleration',
-            eli5: 'Speed is how fast you drive. Velocity is speed with a direction. Acceleration is stepping on the gas or brakes!',
-            college: 'Speed is scalar distance over time, velocity is vector displacement over time, acceleration is dv/dt.',
-            keyTakeaway: 'Acceleration Formula: a = (Final Velocity − Initial Velocity) / Time',
-            deepPrompts: [{ prompt: 'Car accelerates from rest to 20 m/s in 4s. Acceleration?', answer: '20 / 4 = 5 m/s².' }],
+            title: 'Kinematics: Speed, Velocity & Acceleration',
+            visualHook: 'Picture driving around a circular racetrack at a steady 60 mph. Your Speed never changes, yet your Velocity is constantly changing because your compass direction turns every second!',
+            eli5: 'Speed = Distance ÷ Time. Acceleration = how fast your velocity changes each second.',
+            college: 'Under constant acceleration, kinematics obeys v = v₀ + at and Δx = v₀t + ½at².',
+            blueprint: [
+              'Identify initial velocity (v₀), final velocity (v_f), time (t), and distance (d).',
+              'Use a = (v_f − v₀) / t for acceleration.',
+              'Use d = v_avg × t for distance.'
+            ],
+            keyTakeaway: 'Kinematics: a = (v_f − v₀) / t  |  Δx = v₀t + ½at²',
+            deepPrompts: [
+              {
+                type: 'Numerical Example',
+                prompt: 'A car accelerates from rest (0 m/s) to 20 m/s in 4 seconds. Find acceleration.',
+                answer: 'a = (20 − 0) / 4 = 5 m/s².'
+              },
+              {
+                type: 'Word Problem',
+                prompt: 'A ball is dropped from rest off a cliff. Ignoring air resistance (g = 10 m/s²), how far does it fall in 3 seconds?',
+                answer: '• Use Δx = v₀t + ½gt² with v₀ = 0:\n• Δx = 0 + 0.5 × 10 × (3²) = 5 × 9 = 45 meters.'
+              }
+            ],
+            flashcards: [
+              { q: 'What does a flat horizontal line on a Velocity vs. Time graph mean?', a: 'Constant velocity (zero acceleration)—the object is still moving at steady speed!' },
+              { q: 'What does the slope of a Position vs. Time graph represent?', a: 'Velocity!' }
+            ],
             quiz: {
-              question: 'What is the key difference between speed and velocity?',
-              options: ['Velocity includes direction, while speed does not', 'Speed is in meters, velocity in seconds', 'No difference', 'Speed only applies to falling objects'],
+              question: 'Word Problem: A train slows down from 30 m/s to 10 m/s in 5 seconds. What is its acceleration?',
+              options: ['−4 m/s²', '4 m/s²', '−8 m/s²', '8 m/s²'],
               correctIndex: 0,
-              explanation: 'Velocity is a vector quantity incorporating directional data.'
+              explanation: 'a = (v_f − v₀) / t = (10 − 30) / 5 = −20 / 5 = −4 m/s².'
             }
           },
           {
             id: 'physics-3',
-            title: 'Work, Energy & Power',
-            eli5: 'Work is pushing something over a distance. Energy is stored battery capacity, power is how fast you burn through it!',
-            college: 'Work transfers energy via force over distance. Kinetic and potential energy sum to total mechanical energy.',
-            keyTakeaway: 'Power Unit: Watts (Joules per second)',
-            deepPrompts: [{ prompt: 'Potential energy of 2 kg book lifted 5m (g = 9.8)?', answer: 'PE = 2 × 9.8 × 5 = 98 J.' }],
+            title: 'Work, Energy & Conservation',
+            visualHook: 'Picture a roller coaster climbing to the top of the tallest hill. At the peak, it stores huge Potential Energy (height). As it plunges down, that height turns into pure Kinetic Energy (speed)—total energy never disappears!',
+            eli5: 'Potential Energy = stored height energy (mgh). Kinetic Energy = moving speed energy (½mv²).',
+            college: 'By the Work-Energy Theorem, W_net = ΔK, and in conservative fields mechanical energy E = K + U remains invariant.',
+            blueprint: [
+              'Identify height h (for PE = mgh) and speed v (for KE = ½mv²).',
+              'Use conservation of energy: PE_top = KE_bottom when friction is zero.',
+              'Compute Work via W = F × d.'
+            ],
+            keyTakeaway: 'KE = ½mv²  |  PE = mgh  |  Work = F × d',
+            deepPrompts: [
+              {
+                type: 'Numerical Example',
+                prompt: 'Find the potential energy of a 2 kg book lifted 5 m high (g = 9.8 m/s²).',
+                answer: 'PE = 2 × 9.8 × 5 = 98 Joules.'
+              },
+              {
+                type: 'Word Problem',
+                prompt: 'How much work is done pushing a crate with 40 N of force across a 6-meter floor?',
+                answer: 'Work = Force × Distance = 40 N × 6 m = 240 Joules.'
+              }
+            ],
+            flashcards: [
+              { q: 'If you DOUBLE a car’s speed, how much does its Kinetic Energy increase?', a: 'By 4 TIMES (2² = 4), because velocity is squared in KE = ½mv²!' },
+              { q: 'What is Power in physics?', a: 'The rate of doing work: Power = Work ÷ Time (measured in Watts).' }
+            ],
             quiz: {
-              question: 'What formula defines gravitational potential energy (PE)?',
-              options: ['½mv²', 'mgh', 'F / a', 'IR'],
-              correctIndex: 1,
-              explanation: 'PE = mass × gravity × height (mgh).'
+              question: 'Word Problem: A 4 kg bowling ball rolls at 3 m/s. What is its kinetic energy?',
+              options: ['6 J', '12 J', '18 J', '36 J'],
+              correctIndex: 2,
+              explanation: 'KE = ½mv² = 0.5 × 4 × (3²) = 2 × 9 = 18 Joules.'
             }
           },
           {
             id: 'physics-4',
             title: 'Electricity & Ohm’s Law',
-            eli5: 'Electricity is like water in a pipe. Voltage is water pressure, resistance is narrow pipes, current is flow rate!',
-            college: 'Ohm’s Law relates electrical voltage (V), current (I), and resistance (R).',
-            keyTakeaway: 'Ohm’s Law Formula: V = I × R',
-            deepPrompts: [{ prompt: 'Current in circuit with 12V and 4Ω resistance?', answer: 'I = 12 / 4 = 3 Amperes.' }],
+            visualHook: 'Picture water flowing through a garden hose. Voltage (V) is the water pressure pushing from the faucet, Current (I) is the gallons of water flowing per second, and Resistance (R) is stepping on the hose to squeeze the flow!',
+            eli5: 'V = I × R. Higher voltage pushes MORE current; higher resistance blocks current.',
+            college: 'Ohmic conductors exhibit linear proportionality between potential difference ΔV and current I: V = IR, dissipating power P = IV.',
+            blueprint: [
+              'Identify Voltage V (Volts), Current I (Amperes), and Resistance R (Ohms Ω).',
+              'Use the V = I × R triangle to solve for the unknown.',
+              'Calculate electrical power using P = V × I.'
+            ],
+            keyTakeaway: 'Ohm’s Law: V = I × R  |  Electrical Power: P = V × I',
+            deepPrompts: [
+              {
+                type: 'Numerical Example',
+                prompt: 'Find current in a circuit with 12 V battery and 4 Ω resistor.',
+                answer: 'I = V / R = 12 V / 4 Ω = 3 Amperes (A).'
+              },
+              {
+                type: 'Word Problem',
+                prompt: 'A toaster plugged into a 120 V wall outlet draws 10 A of current. What is the toaster’s resistance and power?',
+                answer: '• Resistance: R = V / I = 120 ÷ 10 = 12 Ω\n• Power: P = V × I = 120 × 10 = 1,200 Watts.'
+              }
+            ],
+            flashcards: [
+              { q: 'What happens to total resistance when you add resistors in SERIES?', a: 'They add straight up: R_total = R₁ + R₂ + R₃ (harder for current to flow).' },
+              { q: 'Why are homes wired in PARALLEL instead of Series?', a: 'In parallel, every outlet gets full 120 V and turning off one lamp doesn’t shut off the whole house!' }
+            ],
             quiz: {
-              question: 'According to Ohm’s Law, what is voltage (V) equal to?',
-              options: ['Current × Resistance (I × R)', 'Current / Resistance', 'Resistance / Current', 'Current + Resistance'],
-              correctIndex: 0,
-              explanation: 'V = I × R defines Ohm’s law.'
+              question: 'Word Problem: A flashlight bulb has a resistance of 3 Ω and runs on a 9 V battery. How much current flows through the bulb?',
+              options: ['0.33 A', '3 A', '12 A', '27 A'],
+              correctIndex: 1,
+              explanation: 'I = V / R = 9 V / 3 Ω = 3 Amperes.'
             }
           }
         ],
@@ -1172,57 +1629,141 @@
           {
             id: 'history-1',
             title: 'Ancient Civilizations & Mesopotamia',
-            eli5: 'Thousands of years ago, humans settled down between two great rivers where flooded soil grew fantastic crops. Writing and cities were born!',
-            college: 'Mesopotamia birthed early urban civilization around 4000 BCE, featuring cuneiform writing and legal codes.',
-            keyTakeaway: 'Invention: Cuneiform writing system & Wheel',
-            deepPrompts: [{ prompt: 'Why did early civilizations develop near river valleys?', answer: 'Fresh drinking water, fertile silt from floods, and easy water transport for trade.' }],
+            visualHook: 'Picture being a prehistoric hunter-gatherer who discovers that planting seeds near two flooding rivers (Tigris & Euphrates) gives so much extra food that you can build permanent brick cities, invent writing, and write the first laws!',
+            eli5: 'Mesopotamia ("land between two rivers") invented farming irrigation, cities, wheels, and cuneiform writing on clay tablets.',
+            college: 'The Neolithic agricultural surplus in the Fertile Crescent catalyzed urban stratification, cuneiform record-keeping, and Hammurabi’s codified legal system.',
+            blueprint: [
+              'Connect geography to survival: River valleys provided fertile silt and irrigation.',
+              'Identify key innovations: Cuneiform writing, bronze tools, and Hammurabi’s Code.',
+              'Analyze social structure: Surplus food enabled specialized jobs (artisans, scribes, rulers).'
+            ],
+            keyTakeaway: 'Fertile Crescent: Tigris & Euphrates Rivers → Agriculture → Cities & Cuneiform',
+            deepPrompts: [
+              {
+                type: 'Concept Analysis',
+                prompt: 'Why did early civilizations develop near river valleys?',
+                answer: '1) Fresh drinking water, 2) Annual floods deposited nutrient-rich silt for farming, and 3) Rivers acted as highways for trade.'
+              },
+              {
+                type: 'Document / Scenario Problem',
+                prompt: 'How did Hammurabi’s Code change ancient society even though its punishments were harsh?',
+                answer: 'It carved laws in stone publicly so rulers could not change rules arbitrarily—establishing the foundation of written rule of law.'
+              }
+            ],
+            flashcards: [
+              { q: 'What does the Greek word "Mesopotamia" literally mean?', a: '"Land between the rivers" (the Tigris and Euphrates in modern-day Iraq).' },
+              { q: 'Why was Cuneiform invented originally?', a: 'To keep accounting records of grain harvests, livestock, and trade transactions!' }
+            ],
             quiz: {
-              question: 'Between which two rivers did ancient Mesopotamia flourish?',
-              options: ['Nile and Amazon', 'Tigris and Euphrates', 'Mississippi and Missouri', 'Yangtze and Yellow River'],
+              question: 'Scenario Question: How did surplus farming directly lead to the invention of writing in ancient Mesopotamia?',
+              options: ['Farmers needed poetry to pass winter', 'Growing trade and grain storage required accurate accounting records', 'Rivers washed away spoken languages', 'Kings banned spoken conversations'],
               correctIndex: 1,
-              explanation: 'Mesopotamia translates to the land between the Tigris and Euphrates rivers.'
+              explanation: 'Food surpluses created complex trade and taxation, requiring scribes to record transactions in cuneiform.'
             }
           },
           {
             id: 'history-2',
-            title: 'Ancient Greece & The Birth of Democracy',
-            eli5: 'In ancient Athens, citizens didn’t have kings. They gathered in a public square to debate and vote directly on laws together!',
-            college: 'Ancient Greece consisted of independent city-states. Athens pioneered direct democracy in the 5th century BCE.',
-            keyTakeaway: 'Legacy: Direct democracy, philosophy, and Olympic games',
-            deepPrompts: [{ prompt: 'Contrast Athenian direct democracy with modern representative democracy.', answer: 'Athenian citizens voted directly on laws; modern democracies elect representatives.' }],
+            title: 'Ancient Greece & Democracy',
+            visualHook: 'Picture a rocky mountain landscape where isolated valleys became independent city-states. In Athens, instead of obeying a single pharaoh or king, citizens walked up to a hillside assembly to debate and vote on every law themselves!',
+            eli5: 'Athens invented Direct Democracy (citizens vote directly on laws), while Sparta built a strict military society.',
+            college: 'Fifth-century BCE Athens instituted direct participatory democracy (Ekklesia) alongside Socratic philosophy, contrasting sharply with Spartan oligarchic militarism.',
+            blueprint: [
+              'Contrast Athens (education, arts, direct democracy) vs. Sparta (military discipline, oligarchy).',
+              'Distinguish Direct Democracy (citizens vote on laws) from Representative Democracy (electing officials).',
+              'Trace intellectual legacy: Socrates, Plato, and Aristotle.'
+            ],
+            keyTakeaway: 'Athenian Democracy: Citizens vote directly on legislation in the Assembly.',
+            deepPrompts: [
+              {
+                type: 'Concept Analysis',
+                prompt: 'Contrast Athenian direct democracy with modern U.S. representative democracy.',
+                answer: 'In Athens, eligible citizens gathered in person to vote on every law directly. In modern representative democracies, millions of citizens elect representatives to vote on their behalf.'
+              },
+              {
+                type: 'Document / Scenario Problem',
+                prompt: 'How did Greece’s mountainous geography shape its political system?',
+                answer: 'Steep mountains and islands separated communities, preventing one central empire and creating independent city-states (poleis).'
+              }
+            ],
+            flashcards: [
+              { q: 'What was a Greek "Polis"?', a: 'An independent city-state (like Athens or Sparta) with its own government, army, and laws.' },
+              { q: 'Who taught Alexander the Great?', a: 'Aristotle (who was taught by Plato, who was taught by Socrates!).' }
+            ],
             quiz: {
-              question: 'Which ancient Greek city-state is credited with inventing direct democracy?',
+              question: 'Which ancient Greek city-state pioneered direct democracy?',
               options: ['Sparta', 'Athens', 'Troy', 'Corinth'],
               correctIndex: 1,
-              explanation: 'Athens established the world’s first direct democratic system.'
+              explanation: 'Athens established the world’s first direct democratic assembly.'
             }
           },
           {
             id: 'history-3',
             title: 'The Roman Empire & Its Legacy',
-            eli5: 'Rome grew into a massive empire, building incredible stone roads, giant arenas like the Colosseum, and laws that shaped the modern world.',
-            college: 'Rising from a republic to a vast Mediterranean empire, Rome engineered advanced infrastructure and established civil law.',
-            keyTakeaway: 'Legacy: Engineering, legal codes, Romance languages, and architecture',
-            deepPrompts: [{ prompt: 'What was the Pax Romana?', answer: 'A 200-year period of relative peace and stability across the Roman Empire.' }],
+            visualHook: 'Picture an engineering superpower spanning three continents, connected by 50,000 miles of paved stone highways and giant stone aqueducts carrying mountain water straight into bustling city fountains.',
+            eli5: 'Rome started as a Republic (citizens elected leaders), grew into a massive Empire, and gave us concrete arches, aqueducts, and legal principles like "innocent until proven guilty."',
+            college: 'Rome transitioned from a senatorial Republic to an autocratic Principate under Augustus, unifying the Mediterranean during the Pax Romana through Roman law and civil engineering.',
+            blueprint: [
+              'Trace political shift: Roman Republic (elected Senate) → Roman Empire (Emperor Augustus).',
+              'Identify engineering marvels: Arches, concrete domes, roads, and aqueducts.',
+              'Analyze fall of Western Rome (476 CE): Overexpansion, economic inflation, political instability, and invasions.'
+            ],
+            keyTakeaway: 'Roman Legacy: Republic government, Civil Law, Aqueducts & Romance Languages',
+            deepPrompts: [
+              {
+                type: 'Concept Analysis',
+                prompt: 'What was the Pax Romana?',
+                answer: 'A 200-year era of relative peace, trade stability, and architectural growth across the Roman Empire starting under Augustus.'
+              },
+              {
+                type: 'Document / Scenario Problem',
+                prompt: 'Name three major reasons the Western Roman Empire collapsed in 476 CE.',
+                answer: '1) Borders became too huge and expensive to defend, 2) Severe tax inflation and corrupt leadership, and 3) Repeated invasions by Germanic tribes.'
+              }
+            ],
+            flashcards: [
+              { q: 'What were the "Twelve Tables" in Rome?', a: 'Rome’s first written code of laws displayed publicly in the Forum so all citizens knew their legal rights.' },
+              { q: 'What architectural feature allowed Romans to build huge aqueducts and the Colosseum?', a: 'The rounded stone Arch and waterproof Roman Concrete!' }
+            ],
             quiz: {
-              question: 'What engineering marvel allowed ancient Rome to transport fresh water?',
-              options: ['Aqueducts', 'Steam trains', 'Suspension bridges', 'Electric cables'],
+              question: 'What engineering marvel allowed ancient Rome to transport fresh mountain water into cities?',
+              options: ['Aqueducts', 'Steam trains', 'Suspension bridges', 'Windmills'],
               correctIndex: 0,
-              explanation: 'Roman aqueducts transported water across valleys using gravity.'
+              explanation: 'Roman aqueducts used precisely sloped stone channels and arches to carry water via gravity.'
             }
           },
           {
             id: 'history-4',
             title: 'The Renaissance & Scientific Revolution',
-            eli5: 'After the Middle Ages, Europe experienced a massive cultural awakening called the Renaissance (rebirth), reviving art, science, and questioning the universe.',
-            college: 'Beginning in 14th-century Italy, the Renaissance revived classical art and humanist philosophy, fueling the Scientific Revolution.',
-            keyTakeaway: 'Shift: Transition from dogmatic tradition to empirical scientific inquiry',
-            deepPrompts: [{ prompt: 'What role did the Medici family play?', answer: 'They used their banking wealth in Florence to generously patronize artists and scholars.' }],
+            visualHook: 'Picture Europe waking up from centuries of feudal stagnation in Florence, Italy—rediscovering ancient Greek science, inventing the printing press to spread books like wildfire, and pointing telescopes at the stars!',
+            eli5: 'Renaissance means "rebirth" of art and learning. Humanism focused on human potential, and the Printing Press spread new ideas across Europe.',
+            college: 'Fourteenth-century Italian Humanism revived classical texts and empirical observation, catalyzing Gutenberg’s print revolution and the Copernican-Newtonian Scientific Revolution.',
+            blueprint: [
+              'Understand Humanism: Shifting focus from purely medieval dogma to human achievement, science, and classical learning.',
+              'Connect Gutenberg’s Printing Press (1440) to rapid literacy and scientific sharing.',
+              'Trace the Scientific Method: Testing hypotheses through experiments rather than blind tradition.'
+            ],
+            keyTakeaway: 'Catalyst Chain: Italian Humanism + Printing Press → Scientific Revolution',
+            deepPrompts: [
+              {
+                type: 'Concept Analysis',
+                prompt: 'How did Gutenberg’s Printing Press transform Europe?',
+                answer: 'Books could be printed in days instead of hand-copied for months, making books cheap, boosting literacy, and spreading scientific discoveries rapidly.'
+              },
+              {
+                type: 'Document / Scenario Problem',
+                prompt: 'How did Galileo and Copernicus change humanity’s view of the universe?',
+                answer: 'They proved the Heliocentric model—that Earth orbits the Sun rather than sitting stationary at the center of the universe.'
+              }
+            ],
+            flashcards: [
+              { q: 'Why did the Renaissance start in Italy?', a: 'Italian port cities like Florence and Venice grew wealthy from Mediterranean trade, allowing patrons like the Medici family to fund artists and scientists.' },
+              { q: 'What does "Heliocentric" mean?', a: 'Sun-centered! Copernicus and Galileo showed the planets revolve around the Sun.' }
+            ],
             quiz: {
-              question: 'What does the word "Renaissance" literally translate to?',
-              options: ['Industrial machine', 'Rebirth', 'Dark Age', 'Golden Empire'],
+              question: 'What invention most accelerated the spread of Renaissance and scientific ideas across Europe?',
+              options: ['The steam engine', 'Gutenberg’s movable-type printing press', 'The telegraph', 'The compass'],
               correctIndex: 1,
-              explanation: 'Renaissance is French for "rebirth".'
+              explanation: 'Gutenberg’s printing press enabled rapid, inexpensive mass production of books and scientific papers.'
             }
           }
         ],
@@ -1236,15 +1777,17 @@
     ];
 
     // =========================================================================
-    // 3. INTERACTIVE LESSON, QUIZ & FINAL TEST LOGIC
+    // 3. INTERACTIVE LESSON, FLASHCARDS, QUIZ & FINAL TEST LOGIC
     // =========================================================================
     let activeSubjectId = null;
     let activeItemIndex = 0;
     let explanationMode = 'eli5';
+    let currentLessonCardIdx = 0;
 
     function openSubjectModal(subjectId, itemIdx = 0) {
       activeSubjectId = subjectId;
       activeItemIndex = itemIdx;
+      currentLessonCardIdx = 0;
       document.getElementById('lesson-modal').classList.remove('hidden');
       document.body.classList.add('overflow-hidden');
       renderLessonModal();
@@ -1335,31 +1878,48 @@
         statusBadge.textContent = '✅ Mastered (+50 XP)';
         statusBadge.className = 'text-xs font-mono px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30';
       } else {
-        statusBadge.textContent = '📖 Active Lesson';
+        statusBadge.textContent = '📖 First-Time Deep Guide';
         statusBadge.className = 'text-xs font-mono px-3 py-1 rounded-full bg-brand-500/15 text-brand-400 border border-brand-500/30';
       }
 
+      // Visual Mental Picture Hook
+      document.getElementById('lesson-visual-hook').textContent = lesson.visualHook;
+
+      // Explanation Body
       const modeTag = explanationMode === 'eli5'
-        ? '<span class="inline-block text-[11px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded bg-brand-cyan/15 text-brand-cyan mb-2">🧸 Explain Like I\'m 5 Mode</span>'
-        : '<span class="inline-block text-[11px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded bg-brand-purple/20 text-brand-purple mb-2">🎓 Standard Tutoring Mode</span>';
+        ? '<span class="inline-block text-[11px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded bg-brand-cyan/15 text-brand-cyan mb-2">🧸 Intuitive First-Time Breakdown</span>'
+        : '<span class="inline-block text-[11px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded bg-brand-purple/20 text-brand-purple mb-2">🎓 Formal Academic & AP Standard</span>';
 
       document.getElementById('lesson-explanation-body').innerHTML = `
         ${modeTag}
         <p>${explanationMode === 'eli5' ? lesson.eli5 : lesson.college}</p>
       `;
+
+      // Step-by-step solving blueprint
+      const blueprintList = document.getElementById('lesson-blueprint-steps');
+      blueprintList.innerHTML = lesson.blueprint.map(step => `<li>${step}</li>`).join('');
+
       document.getElementById('lesson-formula-box').textContent = lesson.keyTakeaway;
 
+      // Numerical Examples & Word Problems
       const promptsList = document.getElementById('deep-prompts-list');
       const answerBox = document.getElementById('deep-prompt-answer-box');
       answerBox.classList.add('hidden');
 
       promptsList.innerHTML = lesson.deepPrompts.map((dp, i) => `
-        <button onclick="revealDeepPrompt('${subj.id}', ${idx}, ${i})" class="text-left p-3.5 rounded-xl bg-dark-bg/80 hover:bg-brand-purple/15 border border-white/10 hover:border-brand-purple/40 transition-all flex items-start gap-2.5 group">
-          <span class="text-brand-purple font-mono text-xs mt-0.5">Q${i + 1}</span>
-          <span class="text-xs sm:text-sm font-semibold text-slate-200 group-hover:text-white">${dp.prompt}</span>
+        <button onclick="revealDeepPrompt('${subj.id}', ${idx}, ${i})" class="text-left p-4 rounded-xl bg-dark-bg/85 hover:bg-brand-purple/15 border border-white/10 hover:border-brand-purple/40 transition-all space-y-1.5 group">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded ${dp.type === 'Word Problem' ? 'bg-amber-500/20 text-amber-300' : 'bg-brand-cyan/20 text-brand-cyan'}">${dp.type}</span>
+            <span class="text-[11px] text-brand-purple font-mono group-hover:underline">Show Steps →</span>
+          </div>
+          <div class="text-xs sm:text-sm font-semibold text-slate-200 group-hover:text-white">${dp.prompt}</div>
         </button>
       `).join('');
 
+      // Lesson Flashcard Deck
+      renderLessonFlashcard();
+
+      // Quiz Check
       document.getElementById('quiz-question-text').textContent = lesson.quiz.question;
       const feedbackBox = document.getElementById('quiz-feedback-box');
       const feedbackEl = document.getElementById('quiz-feedback');
@@ -1382,12 +1942,45 @@
       `).join('');
     }
 
+    function renderLessonFlashcard() {
+      const subj = curriculums.find(s => s.id === activeSubjectId);
+      const lesson = subj.lessons[activeItemIndex];
+      const cards = lesson.flashcards || [];
+      if (cards.length === 0) return;
+
+      const cardEl = document.getElementById('lesson-flashcard-el');
+      cardEl.classList.remove('flipped');
+      const card = cards[currentLessonCardIdx % cards.length];
+      document.getElementById('lesson-card-counter').textContent = `Card ${(currentLessonCardIdx % cards.length) + 1} of ${cards.length}`;
+      document.getElementById('lesson-fc-front').textContent = card.q;
+      document.getElementById('lesson-fc-back').textContent = card.a;
+    }
+
+    function flipLessonFlashcard() {
+      document.getElementById('lesson-flashcard-el').classList.toggle('flipped');
+    }
+
+    function cycleLessonFlashcard(dir) {
+      const subj = curriculums.find(s => s.id === activeSubjectId);
+      const lesson = subj.lessons[activeItemIndex];
+      const len = lesson.flashcards.length;
+      currentLessonCardIdx = (currentLessonCardIdx + dir + len) % len;
+      if (dir > 0) {
+        userState.xp += 10;
+        userState.cardsMastered++;
+        logLessonActivity(1);
+        playSuccessChime();
+        updateDashboardUI();
+      }
+      renderLessonFlashcard();
+    }
+
     function revealDeepPrompt(subjId, lessonIdx, promptIdx) {
       const subj = curriculums.find(s => s.id === subjId);
       const dp = subj.lessons[lessonIdx].deepPrompts[promptIdx];
       const answerBox = document.getElementById('deep-prompt-answer-box');
-      document.getElementById('deep-prompt-selected-title').textContent = `🔬 Solution Guide: ${dp.prompt}`;
-      document.getElementById('deep-prompt-selected-text').textContent = dp.answer;
+      document.getElementById('deep-prompt-selected-title').textContent = `🔬 ${dp.type} Walkthrough: ${dp.prompt}`;
+      document.getElementById('deep-prompt-selected-text').innerHTML = dp.answer.replace(/\n/g, '<br>');
       answerBox.classList.remove('hidden');
       playSuccessChime();
     }
@@ -1421,7 +2014,7 @@
       } else {
         feedbackEl.textContent = '❌ Incorrect. Read below for AI Tutoring on why you got it wrong.';
         feedbackEl.className = 'text-xs font-bold text-red-400';
-        aiExplanationEl.textContent = `🤖 AI Tutor Analysis: You selected option ${String.fromCharCode(65 + selectedIndex)}, but that is incorrect. Why? ${lesson.quiz.explanation} Review the lesson above and try again!`;
+        aiExplanationEl.textContent = `🤖 AI Tutor Analysis: You selected option ${String.fromCharCode(65 + selectedIndex)}, which is incorrect. Why? ${lesson.quiz.explanation} Review the visual picture and blueprint above and try again!`;
       }
     }
 
@@ -1531,7 +2124,7 @@
             </div>
             <div class="space-y-2">
               <button onclick="openSubjectModal('${subj.id}', 0)" class="w-full py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-brand-600 to-brand-purple text-white shadow-lg shadow-brand-500/20 hover:opacity-95 transition">
-                📚 Open Lessons & Quizzes
+                📚 Open Deep Lessons, Flashcards & Quizzes
               </button>
               <button onclick="openSubjectModal('${subj.id}', 4)" class="w-full py-2.5 rounded-xl text-xs font-bold ${testDone ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30' : 'bg-amber-500/15 text-amber-300 border border-amber-500/30 hover:bg-amber-500/25'} transition">
                 ${testDone ? '✅ Review Final Test' : '📝 Take Final Test (+200 XP)'}
@@ -1547,13 +2140,14 @@
     }
 
     // =========================================================================
-    // 4. GOD TIER AI TUTOR STUDIO (REAL STEP-BY-STEP SOLVER + LIVE GEMINI API)
+    // 4. VERSATILE UNIVERSAL AI TUTOR STUDIO (AP CHEM, PHYSICS, MATH, NOTES & LIVE GEMINI)
     // =========================================================================
-    let aiTutorMode = 'eli5';
+    let aiTutorMode = 'college';
 
     function openAiTutorModal() {
       document.getElementById('ai-tutor-modal').classList.remove('hidden');
       document.body.classList.add('overflow-hidden');
+      setAiTutorMode(aiTutorMode);
     }
 
     function closeAiTutorModal() {
@@ -1582,35 +2176,133 @@
     function fillSampleAiPrompt(type) {
       const notesEl = document.getElementById('ai-tutor-notes');
       const qEl = document.getElementById('ai-tutor-question');
-      if (type === 'algebra') {
-        notesEl.value = 'Solving two-step linear equations in the form ax + b = c using inverse operations.';
-        qEl.value = 'Solve 4x - 9 = 23';
+      if (type === 'apchem') {
+        notesEl.value = 'AP Chemistry Acid-Base & Equilibrium: Strong monoprotic acids (HCl, HNO3, HBr) dissociate 100% in aqueous solution, so [H3O+] equals the initial molarity. pH = -log10([H3O+]), and pH + pOH = 14 at 25°C. For Le Chatelier’s Principle, adding a reactant shifts equilibrium toward products.';
+        qEl.value = 'Calculate the pH and pOH of a 0.025 M HCl solution at 25°C, and explain what happens to [OH-]';
+      } else if (type === 'apphysics') {
+        notesEl.value = 'AP Physics 1 Kinematics & Dynamics: Under constant acceleration, v_f = v_0 + a*t and delta_x = v_0*t + 0.5*a*t^2. Net force equals mass times acceleration (F_net = m*a).';
+        qEl.value = 'A 1500 kg car accelerates uniformly from 10 m/s to 30 m/s in 4 seconds. Find its acceleration, displacement, and net force.';
       } else if (type === 'quadratic') {
-        notesEl.value = 'Quadratic equations take the standard form ax^2 + bx + c = 0 and can be solved by factoring or the quadratic formula.';
-        qEl.value = 'Solve x^2 - 5x + 6 = 0';
-      } else if (type === 'pemdas') {
-        notesEl.value = 'Order of Operations: Parentheses, Exponents, Multiplication/Division (left to right), Addition/Subtraction (left to right).';
-        qEl.value = 'Evaluate 12 + 3 * (8 - 2)^2 / 4';
-      } else if (type === 'notes') {
-        notesEl.value = 'Covalent bonds form when two nonmetal atoms share pairs of valence electrons to achieve a full outer octet shell. Polar covalent bonds occur when one atom has higher electronegativity and pulls shared electrons closer, creating partial charges (delta+ and delta-).';
-        qEl.value = 'Why is a water molecule polar based on these notes?';
+        notesEl.value = 'Quadratic Equations: Standard form ax^2 + bx + c = 0. Solved by factoring or quadratic formula x = (-b ± sqrt(b^2 - 4ac)) / 2a.';
+        qEl.value = 'Solve x^2 - 7x + 12 = 0';
+      } else if (type === 'wordproblem') {
+        notesEl.value = 'Linear Modeling: y = mx + b where m is rate of change and b is initial starting value.';
+        qEl.value = 'A cloud storage plan costs $12 setup fee plus $4 per month. How many months can you buy for $60?';
       }
     }
 
-    // Helper: Format numbers cleanly
     function fmtNum(n) {
       if (Math.abs(n - Math.round(n)) < 1e-9) return Math.round(n).toString();
       return parseFloat(n.toFixed(4)).toString();
     }
 
-    // Built-in Deep Step-by-Step Math & Note Analysis Engine
-    function buildDeepTutorSolution(question, notes, mode) {
+    // Universal Domain-Aware Deep Solver
+    function buildUniversalTutorSolution(question, notes, mode) {
+      const combined = `${notes} ${question}`.toLowerCase();
       const cleanQ = question.replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-').trim();
       const isEli5 = mode === 'eli5';
 
-      // 1. Check Quadratic Equation: ax^2 + bx + c = 0
+      // DOMAIN A: AP CHEMISTRY / CHEMISTRY SOLVER
+      if (/\b(ph|poh|molarity|mol|hcl|naoh|equilibrium|kc|kp|le chatelier|enthalpy|entropy|gibbs|stoichiometry|ideal gas|pv=nrt|titration|buffer|ka|kb|chem)\b/i.test(combined)) {
+        document.getElementById('detected-domain-badge').textContent = 'AP Chemistry / General Chemistry';
+
+        // Check pH calculation from molarity
+        const phMolMatch = combined.match(/(\d*\.?\d+(?:e[+-]?\d+)?)\s*m\b/i);
+        if (/\bph\b/i.test(combined) && phMolMatch) {
+          const conc = parseFloat(phMolMatch[1]);
+          const isBase = /\b(naoh|koh|oh-|base|hydroxide)\b/i.test(combined);
+          if (conc > 0) {
+            if (!isBase) {
+              const ph = -Math.log10(conc);
+              const poh = 14 - ph;
+              const ohConc = Math.pow(10, -poh);
+              return `
+                <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+                  <div class="text-[11px] font-mono text-emerald-400 uppercase font-bold">✅ Exact AP Chemistry Solution</div>
+                  <div class="text-base sm:text-lg font-extrabold text-white font-mono mt-1">pH = ${ph.toFixed(2)}  |  pOH = ${poh.toFixed(2)}  |  [OH⁻] = ${ohConc.toExponential(2)} M</div>
+                </div>
+                <div class="space-y-3">
+                  <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
+                    <div class="font-bold text-white text-xs">Step 1: Determine Hydronium Concentration [H₃O⁺]</div>
+                    <p class="text-xs text-slate-300">${isEli5
+                      ? `Strong acids break apart 100% in water, so every molecule releases an H⁺ ion. That means [H⁺] is simply <strong>${conc} M</strong>.`
+                      : `Because the monoprotic strong acid undergoes complete ionization in aqueous medium (HA + H₂O → H₃O⁺ + A⁻), the equilibrium hydronium concentration equals the analytical molarity: <strong>[H₃O⁺] = ${conc} M</strong>.`}</p>
+                  </div>
+                  <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
+                    <div class="font-bold text-white text-xs">Step 2: Apply pH = −log₁₀([H₃O⁺])</div>
+                    <p class="text-xs text-slate-300">pH = −log₁₀(${conc}) = <strong>${ph.toFixed(2)}</strong>.</p>
+                  </div>
+                  <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
+                    <div class="font-bold text-white text-xs">Step 3: Solve for pOH and [OH⁻] via Autoionization of Water (Kw = 1.0 × 10⁻¹⁴)</div>
+                    <p class="text-xs text-slate-300">${isEli5
+                      ? `At room temperature, pH and pOH always add up to 14. So pOH = 14 − ${ph.toFixed(2)} = <strong>${poh.toFixed(2)}</strong>. As acid goes up, [OH⁻] drops to <strong>${ohConc.toExponential(2)} M</strong>.`
+                      : `Using pKw = pH + pOH = 14.00 at 25°C: pOH = 14.00 − ${ph.toFixed(2)} = <strong>${poh.toFixed(2)}</strong>. Via Kw = [H₃O⁺][OH⁻] = 1.0 × 10⁻¹⁴, [OH⁻] = 10⁻ᵖᴼᴴ = <strong>${ohConc.toExponential(2)} M</strong>.`}</p>
+                  </div>
+                </div>
+              `;
+            } else {
+              const poh = -Math.log10(conc);
+              const ph = 14 - poh;
+              return `
+                <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+                  <div class="text-[11px] font-mono text-emerald-400 uppercase font-bold">✅ Exact AP Chemistry Solution</div>
+                  <div class="text-base sm:text-lg font-extrabold text-white font-mono mt-1">pOH = ${poh.toFixed(2)}  |  pH = ${ph.toFixed(2)}</div>
+                </div>
+                <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300 space-y-1">
+                  <div><strong>Step 1:</strong> Strong base dissociates completely: [OH⁻] = ${conc} M.</div>
+                  <div><strong>Step 2:</strong> pOH = −log₁₀(${conc}) = <strong>${poh.toFixed(2)}</strong>.</div>
+                  <div><strong>Step 3:</strong> pH = 14.00 − ${poh.toFixed(2)} = <strong>${ph.toFixed(2)}</strong>.</div>
+                </div>
+              `;
+            }
+          }
+        }
+      }
+
+      // DOMAIN B: AP PHYSICS / KINEMATICS & FORCE SOLVER
+      if (/\b(kg|m\/s|velocity|acceleration|kinematics|newton|force|kinetic energy|momentum|voltage|ohm|physics)\b/i.test(combined)) {
+        document.getElementById('detected-domain-badge').textContent = 'AP Physics / Mechanics';
+        const massMatch = combined.match(/(\d+\.?\d*)\s*kg/i);
+        const velMatches = [...combined.matchAll(/(\d+\.?\d*)\s*m\/s\b/gi)].map(m => parseFloat(m[1]));
+        const timeMatch = combined.match(/(\d+\.?\d*)\s*(?:s|sec|seconds)\b/i);
+
+        if (velMatches.length >= 2 && timeMatch) {
+          const v0 = velMatches[0];
+          const vf = velMatches[1];
+          const t = parseFloat(timeMatch[1]);
+          const a = (vf - v0) / t;
+          const dx = v0 * t + 0.5 * a * t * t;
+          const mass = massMatch ? parseFloat(massMatch[1]) : null;
+          const force = mass ? mass * a : null;
+
+          return `
+            <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+              <div class="text-[11px] font-mono text-emerald-400 uppercase font-bold">✅ Exact AP Physics Solution</div>
+              <div class="text-base sm:text-lg font-extrabold text-white font-mono mt-1">a = ${fmtNum(a)} m/s²  |  Δx = ${fmtNum(dx)} m${force !== null ? `  |  F_net = ${fmtNum(force)} N` : ''}</div>
+            </div>
+            <div class="space-y-3">
+              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
+                <div class="font-bold text-white text-xs">Step 1: Calculate Constant Acceleration (a = (v_f − v₀) / t)</div>
+                <p class="text-xs text-slate-300">a = (${fmtNum(vf)} m/s − ${fmtNum(v0)} m/s) ÷ ${fmtNum(t)} s = <strong>${fmtNum(a)} m/s²</strong>.</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
+                <div class="font-bold text-white text-xs">Step 2: Calculate Displacement (Δx = v₀t + ½at²)</div>
+                <p class="text-xs text-slate-300">Δx = (${fmtNum(v0)})(${fmtNum(t)}) + 0.5(${fmtNum(a)})(${fmtNum(t)})² = ${fmtNum(v0 * t)} + ${fmtNum(0.5 * a * t * t)} = <strong>${fmtNum(dx)} meters</strong>.</p>
+              </div>
+              ${force !== null ? `
+              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
+                <div class="font-bold text-white text-xs">Step 3: Apply Newton’s Second Law (F_net = m × a)</div>
+                <p class="text-xs text-slate-300">F_net = ${fmtNum(mass)} kg × ${fmtNum(a)} m/s² = <strong>${fmtNum(force)} Newtons</strong>.</p>
+              </div>` : ''}
+            </div>
+          `;
+        }
+      }
+
+      // DOMAIN C: QUADRATIC EQUATIONS
       const quadMatch = cleanQ.match(/([+-]?\s*\d*\.?\d*)\s*x\s*(?:\^2|²)\s*([+-]\s*\d*\.?\d*)?\s*x?\s*([+-]\s*\d+\.?\d*)?\s*=\s*([+-]?\s*\d+\.?\d*)/i);
       if (quadMatch) {
+        document.getElementById('detected-domain-badge').textContent = 'Algebra / Quadratic Analysis';
         let aStr = (quadMatch[1] || '1').replace(/\s+/g, '');
         if (aStr === '' || aStr === '+') aStr = '1';
         if (aStr === '-') aStr = '-1';
@@ -1624,27 +2316,24 @@
         const cRaw = parseFloat((quadMatch[3] || '0').replace(/\s+/g, ''));
         const rhs = parseFloat((quadMatch[4] || '0').replace(/\s+/g, ''));
         const c = cRaw - rhs;
-
         const disc = b * b - 4 * a * c;
+
         let finalAns = '';
         let rootSteps = '';
-
         if (disc > 0) {
           const r1 = (-b + Math.sqrt(disc)) / (2 * a);
           const r2 = (-b - Math.sqrt(disc)) / (2 * a);
           finalAns = `x = ${fmtNum(r1)}  and  x = ${fmtNum(r2)}`;
-          rootSteps = isEli5
-            ? `Since the number inside the square root (${fmtNum(disc)}) is positive, we get two real answers by adding and subtracting √${fmtNum(disc)} = ${fmtNum(Math.sqrt(disc))}:<br>• x₁ = (${fmtNum(-b)} + ${fmtNum(Math.sqrt(disc))}) ÷ ${fmtNum(2 * a)} = <strong>${fmtNum(r1)}</strong><br>• x₂ = (${fmtNum(-b)} − ${fmtNum(Math.sqrt(disc))}) ÷ ${fmtNum(2 * a)} = <strong>${fmtNum(r2)}</strong>`
-            : `Because the discriminant Δ = ${fmtNum(disc)} > 0, there are two distinct real roots:<br>• x₁ = (−(${fmtNum(b)}) + √${fmtNum(disc)}) / (2·${fmtNum(a)}) = (${fmtNum(-b)} + ${fmtNum(Math.sqrt(disc))}) / ${fmtNum(2 * a)} = <strong>${fmtNum(r1)}</strong><br>• x₂ = (−(${fmtNum(b)}) − √${fmtNum(disc)}) / (2·${fmtNum(a)}) = (${fmtNum(-b)} − ${fmtNum(Math.sqrt(disc))}) / ${fmtNum(2 * a)} = <strong>${fmtNum(r2)}</strong>`;
+          rootSteps = `x₁ = (${fmtNum(-b)} + √${fmtNum(disc)}) / ${fmtNum(2 * a)} = <strong>${fmtNum(r1)}</strong><br>x₂ = (${fmtNum(-b)} − √${fmtNum(disc)}) / ${fmtNum(2 * a)} = <strong>${fmtNum(r2)}</strong>`;
         } else if (disc === 0) {
           const r = -b / (2 * a);
           finalAns = `x = ${fmtNum(r)} (Double Root)`;
-          rootSteps = `Since Δ = 0, the parabola touches the x-axis at exactly one repeated root: x = ${fmtNum(-b)} / ${fmtNum(2 * a)} = <strong>${fmtNum(r)}</strong>.`;
+          rootSteps = `x = ${fmtNum(-b)} / ${fmtNum(2 * a)} = <strong>${fmtNum(r)}</strong>`;
         } else {
           const realPart = fmtNum(-b / (2 * a));
           const imagPart = fmtNum(Math.sqrt(-disc) / (2 * a));
           finalAns = `x = ${realPart} ± ${imagPart}i`;
-          rootSteps = `Since Δ = ${fmtNum(disc)} < 0, the roots are complex conjugates: x = (${fmtNum(-b)} ± √(${fmtNum(disc)})) / ${fmtNum(2 * a)} = <strong>${realPart} ± ${imagPart}i</strong>.`;
+          rootSteps = `Complex roots: <strong>${realPart} ± ${imagPart}i</strong>`;
         }
 
         return `
@@ -1652,33 +2341,24 @@
             <div class="text-[11px] font-mono text-emerald-400 uppercase font-bold">✅ Exact Final Answer</div>
             <div class="text-lg font-extrabold text-white font-mono mt-1">${finalAns}</div>
           </div>
-
           <div class="space-y-3">
-            <div class="text-xs font-mono text-brand-400 uppercase font-bold">🔍 Deep Step-by-Step Walkthrough</div>
-            
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">Step 1: Set the Equation to Standard Form (ax² + bx + c = 0)</div>
-              <p class="text-xs text-slate-300">${isEli5
-                ? `First, make sure everything is on the left side and 0 is on the right side. That gives us: <strong>${fmtNum(a)}x² + (${fmtNum(b)})x + (${fmtNum(c)}) = 0</strong>. Here, a = ${fmtNum(a)}, b = ${fmtNum(b)}, and c = ${fmtNum(c)}.`
-                : `Normalize the quadratic polynomial into canonical form ax² + bx + c = 0 by subtracting ${fmtNum(rhs)} from both sides: <strong>${fmtNum(a)}x² + (${fmtNum(b)})x + (${fmtNum(c)}) = 0</strong>, identifying coefficients a = ${fmtNum(a)}, b = ${fmtNum(b)}, c = ${fmtNum(c)}.`}</p>
+            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
+              <strong>Step 1 (Standard Form):</strong> ${fmtNum(a)}x² + (${fmtNum(b)})x + (${fmtNum(c)}) = 0
             </div>
-
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">Step 2: Calculate the Discriminant (Δ = b² − 4ac)</div>
-              <p class="text-xs text-slate-300">Substitute a, b, and c into b² − 4ac:<br>Δ = (${fmtNum(b)})² − 4(${fmtNum(a)})(${fmtNum(c)}) = ${fmtNum(b * b)} − (${fmtNum(4 * a * c)}) = <strong>${fmtNum(disc)}</strong>.</p>
+            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
+              <strong>Step 2 (Discriminant Δ = b² − 4ac):</strong> Δ = (${fmtNum(b)})² − 4(${fmtNum(a)})(${fmtNum(c)}) = <strong>${fmtNum(disc)}</strong>
             </div>
-
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">Step 3: Apply the Quadratic Formula x = (−b ± √Δ) / 2a</div>
-              <p class="text-xs text-slate-300">${rootSteps}</p>
+            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
+              <strong>Step 3 (Quadratic Formula):</strong><br>${rootSteps}
             </div>
           </div>
         `;
       }
 
-      // 2. Check Linear Equation: ax + b = c
+      // DOMAIN D: LINEAR EQUATIONS (ax + b = c)
       const linMatch = cleanQ.match(/([+-]?\s*\d*\.?\d*)\s*([a-zA-Z])\s*([+-]\s*\d+\.?\d*)?\s*=\s*([+-]?\s*\d+\.?\d*)/);
       if (linMatch && !cleanQ.includes('^2') && !cleanQ.includes('²')) {
+        document.getElementById('detected-domain-badge').textContent = 'Algebra 1 / Linear Equations';
         let aStr = (linMatch[1] || '1').replace(/\s+/g, '');
         if (aStr === '' || aStr === '+') aStr = '1';
         if (aStr === '-') aStr = '-1';
@@ -1686,174 +2366,107 @@
         const variable = linMatch[2];
         const b = parseFloat((linMatch[3] || '0').replace(/\s+/g, ''));
         const c = parseFloat(linMatch[4].replace(/\s+/g, ''));
-
         const afterAddSub = c - b;
         const xVal = afterAddSub / a;
-
-        const step1Text = b === 0
-          ? `There is no constant added or subtracted on the left side, so ${fmtNum(a)}${variable} is already isolated.`
-          : b > 0
-            ? (isEli5
-              ? `We see <strong>+${fmtNum(b)}</strong> hanging onto ${variable}. To undo addition, subtract <strong>${fmtNum(b)}</strong> from both sides so the seesaw stays balanced:<br>${fmtNum(a)}${variable} + ${fmtNum(b)} − ${fmtNum(b)} = ${fmtNum(c)} − ${fmtNum(b)}  ⇒  <strong>${fmtNum(a)}${variable} = ${fmtNum(afterAddSub)}</strong>`
-              : `Apply the Additive Inverse Property by subtracting ${fmtNum(b)} from both sides of the equality to isolate the variable term:<br>${fmtNum(a)}${variable} = ${fmtNum(c)} − ${fmtNum(b)}  ⇒  <strong>${fmtNum(a)}${variable} = ${fmtNum(afterAddSub)}</strong>`)
-            : (isEli5
-              ? `We see <strong>− ${fmtNum(Math.abs(b))}</strong> next to ${variable}. To undo subtraction, add <strong>${fmtNum(Math.abs(b))}</strong> to both sides:<br>${fmtNum(a)}${variable} − ${fmtNum(Math.abs(b))} + ${fmtNum(Math.abs(b))} = ${fmtNum(c)} + ${fmtNum(Math.abs(b))}  ⇒  <strong>${fmtNum(a)}${variable} = ${fmtNum(afterAddSub)}</strong>`
-              : `Apply the Additive Inverse Property by adding ${fmtNum(Math.abs(b))} to both sides to isolate the variable term:<br>${fmtNum(a)}${variable} = ${fmtNum(c)} + ${fmtNum(Math.abs(b))}  ⇒  <strong>${fmtNum(a)}${variable} = ${fmtNum(afterAddSub)}</strong>`);
-
-        const step2Text = isEli5
-          ? `Now ${variable} is being multiplied by ${fmtNum(a)}. Divide both sides by <strong>${fmtNum(a)}</strong> to get ${variable} all by itself:<br>${variable} = ${fmtNum(afterAddSub)} ÷ ${fmtNum(a)} = <strong>${fmtNum(xVal)}</strong>`
-          : `Apply the Multiplicative Inverse Property by dividing both sides by the leading coefficient ${fmtNum(a)}:<br>${variable} = ${fmtNum(afterAddSub)} / ${fmtNum(a)} = <strong>${fmtNum(xVal)}</strong>`;
-
-        const checkVal = a * xVal + b;
 
         return `
           <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
             <div class="text-[11px] font-mono text-emerald-400 uppercase font-bold">✅ Exact Final Answer</div>
             <div class="text-lg font-extrabold text-white font-mono mt-1">${variable} = ${fmtNum(xVal)}</div>
           </div>
-
           <div class="space-y-3">
-            <div class="text-xs font-mono text-brand-400 uppercase font-bold">🔍 Deep Step-by-Step Walkthrough</div>
-            
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">Step 1: Isolate the Variable Term (${fmtNum(a)}${variable})</div>
-              <p class="text-xs text-slate-300">${step1Text}</p>
+            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
+              <strong>Step 1 (Isolate ${fmtNum(a)}${variable}):</strong> Move ${fmtNum(b)} to the right side → ${fmtNum(a)}${variable} = ${fmtNum(c)} − (${fmtNum(b)}) = <strong>${fmtNum(afterAddSub)}</strong>
             </div>
-
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">Step 2: Solve for ${variable}</div>
-              <p class="text-xs text-slate-300">${step2Text}</p>
+            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
+              <strong>Step 2 (Divide by ${fmtNum(a)}):</strong> ${variable} = ${fmtNum(afterAddSub)} ÷ ${fmtNum(a)} = <strong>${fmtNum(xVal)}</strong>
             </div>
-
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">Step 3: Verification Check (Plug ${variable} = ${fmtNum(xVal)} Back In)</div>
-              <p class="text-xs text-slate-300">Substitute ${fmtNum(xVal)} into the original equation: ${fmtNum(a)}(${fmtNum(xVal)}) ${b >= 0 ? '+ ' + fmtNum(b) : '- ' + fmtNum(Math.abs(b))} = ${fmtNum(checkVal)}. Since ${fmtNum(checkVal)} = ${fmtNum(c)}, the solution is 100% verified!</p>
+            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
+              <strong>Step 3 (Verify):</strong> ${fmtNum(a)}(${fmtNum(xVal)}) + (${fmtNum(b)}) = ${fmtNum(a * xVal + b)} ✓
             </div>
           </div>
         `;
       }
 
-      // 3. Check Arithmetic / PEMDAS Expression
+      // DOMAIN E: WORD PROBLEM RATE + FIXED FEE SOLVER (e.g., "$12 setup fee plus $4 per month... for $60")
+      const moneyNums = [...cleanQ.matchAll(/\$\s*(\d+\.?\d*)/g)].map(m => parseFloat(m[1]));
+      if (moneyNums.length === 3 && /\b(per|each|every)\b/i.test(cleanQ)) {
+        document.getElementById('detected-domain-badge').textContent = 'Applied Algebra Word Problem';
+        const [fee, rate, total] = moneyNums;
+        const ans = (total - fee) / rate;
+        return `
+          <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+            <div class="text-[11px] font-mono text-emerald-400 uppercase font-bold">✅ Exact Word Problem Solution</div>
+            <div class="text-lg font-extrabold text-white font-mono mt-1">x = ${fmtNum(ans)} units/months</div>
+          </div>
+          <div class="space-y-3">
+            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
+              <strong>Step 1 (Translate Words into y = mx + b):</strong> $${rate}x + $${fee} = $${total}
+            </div>
+            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
+              <strong>Step 2 (Subtract Fixed Fee $${fee}):</strong> $${rate}x = $${total} − $${fee} = <strong>$${fmtNum(total - fee)}</strong>
+            </div>
+            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
+              <strong>Step 3 (Divide by Rate $${rate}):</strong> x = ${fmtNum(total - fee)} ÷ ${rate} = <strong>${fmtNum(ans)}</strong>
+            </div>
+          </div>
+        `;
+      }
+
+      // DOMAIN F: ARITHMETIC / PEMDAS EXPRESSION
       const mathExprMatch = cleanQ.match(/(?:evaluate|calculate|simplify|solve|what is)?\s*([0-9+\-*/().^\s]+)\??$/i);
       if (mathExprMatch && /[0-9]/.test(mathExprMatch[1]) && /[+\-*/^]/.test(mathExprMatch[1])) {
+        document.getElementById('detected-domain-badge').textContent = 'Arithmetic / PEMDAS';
         const expr = mathExprMatch[1].trim();
         try {
-          let stepLog = [];
-          let currentExpr = expr;
-
-          // Step 1: Parentheses
-          if (/\([^()]+\)/.test(currentExpr)) {
-            currentExpr = currentExpr.replace(/\(([^()]+)\)/g, (_, inner) => {
-              const val = Function(`"use strict"; return (${inner.replace(/\^/g, '**')})`)();
-              stepLog.push(`<strong>Parentheses:</strong> Evaluate (${inner}) = <strong>${fmtNum(val)}</strong> → expression becomes <code>${expr.replace(`(${inner})`, fmtNum(val))}</code>`);
-              return fmtNum(val);
-            });
-          }
-
-          // Step 2: Exponents
-          if (/(\d+\.?\d*)\s*\^\s*(\d+\.?\d*)/.test(currentExpr)) {
-            currentExpr = currentExpr.replace(/(\d+\.?\d*)\s*\^\s*(\d+\.?\d*)/g, (_, base, exp) => {
-              const val = Math.pow(parseFloat(base), parseFloat(exp));
-              stepLog.push(`<strong>Exponents:</strong> Compute ${base}^${exp} = <strong>${fmtNum(val)}</strong>`);
-              return fmtNum(val);
-            });
-          }
-
-          const finalVal = Function(`"use strict"; return (${currentExpr.replace(/\^/g, '**')})`)();
+          const finalVal = Function(`"use strict"; return (${expr.replace(/\^/g, '**')})`)();
           if (!isNaN(finalVal) && isFinite(finalVal)) {
-            stepLog.push(`<strong>Multiply/Divide then Add/Subtract (Left to Right):</strong> Evaluating remaining operations yields <strong>${fmtNum(finalVal)}</strong>.`);
-
             return `
               <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
                 <div class="text-[11px] font-mono text-emerald-400 uppercase font-bold">✅ Exact Final Answer</div>
                 <div class="text-lg font-extrabold text-white font-mono mt-1">${expr} = ${fmtNum(finalVal)}</div>
               </div>
-
-              <div class="space-y-3">
-                <div class="text-xs font-mono text-brand-400 uppercase font-bold">🔍 PEMDAS Step-by-Step Breakdown</div>
-                ${stepLog.map((s, idx) => `
-                  <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
-                    <span class="font-mono text-brand-400 font-bold mr-1.5">Step ${idx + 1}:</span> ${s}
-                  </div>
-                `).join('')}
+              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
+                <strong>PEMDAS Evaluation:</strong> Following Parentheses → Exponents → Multiply/Divide (left to right) → Add/Subtract (left to right) evaluates <code>${expr}</code> to <strong>${fmtNum(finalVal)}</strong>.
               </div>
             `;
           }
         } catch (err) {}
       }
 
-      // 4. Deep Note-Grounded & Conceptual Analyzer
+      // DOMAIN G: UNIVERSAL NOTE-GROUNDED & CONCEPTUAL SYNTHESIS
+      document.getElementById('detected-domain-badge').textContent = notes ? 'Custom Notes Synthesis' : 'Multidisciplinary Tutor';
       const stopWords = new Set(['what', 'why', 'how', 'when', 'where', 'who', 'is', 'are', 'the', 'a', 'an', 'in', 'on', 'of', 'to', 'for', 'with', 'and', 'or', 'that', 'this', 'it', 'do', 'does', 'can', 'you', 'explain', 'solve', 'me', 'my', 'notes', 'from', 'based']);
       const qKeywords = cleanQ.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2 && !stopWords.has(w));
 
-      let matchedSentences = [];
-      let allSentences = [];
-      if (notes) {
-        allSentences = notes.split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(Boolean);
-        matchedSentences = allSentences.filter(sentence => {
-          const lower = sentence.toLowerCase();
-          return qKeywords.some(kw => lower.includes(kw));
-        });
-      }
-
+      let allSentences = notes ? notes.split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(Boolean) : [];
+      let matchedSentences = allSentences.filter(s => qKeywords.some(kw => s.toLowerCase().includes(kw)));
       const relevantContext = matchedSentences.length > 0 ? matchedSentences : allSentences.slice(0, 3);
-      const directAnswer = relevantContext.length > 0
+
+      const coreAnswer = relevantContext.length > 0
         ? relevantContext.join(' ')
-        : `To solve "${question}", identify the governing rule or definition, break the problem into known variables vs. unknowns, and apply step-by-step logical deduction.`;
+        : `To answer "${question}", isolate the governing law or historical/scientific mechanism, connect cause to effect, and support your conclusion with concrete evidence.`;
 
-      if (isEli5) {
-        return `
-          <div class="p-4 rounded-xl bg-brand-cyan/10 border border-brand-cyan/30 space-y-1">
-            <div class="text-[11px] font-mono text-brand-cyan uppercase font-bold">🧸 Direct Answer (Simple Words)</div>
-            <p class="text-sm font-semibold text-white">${directAnswer}</p>
+      return `
+        <div class="p-4 rounded-xl ${isEli5 ? 'bg-brand-cyan/10 border-brand-cyan/30' : 'bg-brand-purple/10 border-brand-purple/30'} border space-y-1">
+          <div class="text-[11px] font-mono ${isEli5 ? 'text-brand-cyan' : 'text-brand-purple'} uppercase font-bold">
+            ${isEli5 ? '🧸 Clear First-Time Answer' : '🎓 Comprehensive Academic Synthesis'}
           </div>
-
-          <div class="space-y-3">
-            <div class="text-xs font-mono text-brand-400 uppercase font-bold">🔍 How to Understand & Solve It Step-by-Step</div>
-
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">Step 1: Spot the Main Clues</div>
-              <p class="text-xs text-slate-300">Look at the key words in your question: <strong>${qKeywords.length > 0 ? qKeywords.join(', ') : 'the core concept'}</strong>. ${notes ? 'We scanned your notes and pulled out the exact sentences that match these clues.' : 'Tip: Paste your class notes in Box 1 above so I can pull exact facts straight from your teacher\'s material!'}</p>
-            </div>
-
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">Step 2: Real-Life Picture</div>
-              <p class="text-xs text-slate-300">Think of this like putting together LEGO bricks: every rule in your notes is one brick. Connect the cause (what happens first) to the effect (the final result) without skipping any middle pieces.</p>
-            </div>
-
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">Step 3: How to Write Your Answer on a Test</div>
-              <p class="text-xs text-slate-300">1) State the main rule in one short sentence. 2) Point to the specific evidence or numbers from the problem. 3) Conclude with how that proves your final answer.</p>
-            </div>
+          <p class="text-sm font-semibold text-white">${coreAnswer}</p>
+        </div>
+        <div class="space-y-3">
+          <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300 space-y-1">
+            <div class="font-bold text-white">Step 1: Key Concepts Identified</div>
+            <p>Focus terms: <strong>${qKeywords.length > 0 ? qKeywords.join(', ') : 'core subject concepts'}</strong>. ${notes ? `Matched ${relevantContext.length} key sentence(s) directly from your pasted notes.` : 'Tip: Paste your class notes or full AP question in Box 1 for targeted syllabus extraction!'}</p>
           </div>
-        `;
-      } else {
-        return `
-          <div class="p-4 rounded-xl bg-brand-purple/10 border border-brand-purple/30 space-y-1">
-            <div class="text-[11px] font-mono text-brand-purple uppercase font-bold">🎓 Direct Academic Synthesis</div>
-            <p class="text-sm font-semibold text-white">${directAnswer}</p>
+          <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300 space-y-1">
+            <div class="font-bold text-white">Step 2: How to Write a Full-Credit Response</div>
+            <p>${isEli5
+              ? '1) State the main idea in plain words. 2) Give one concrete example or number from your notes. 3) Explain how that example proves your answer.'
+              : '1) Open with a direct thesis defining the governing principle. 2) Present quantitative derivations or primary textual evidence. 3) Conclude by explicitly linking the mechanism back to the prompt.'}</p>
           </div>
-
-          <div class="space-y-3">
-            <div class="text-xs font-mono text-brand-400 uppercase font-bold">🔬 Rigorous Step-by-Step Analytical Framework</div>
-
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">1. Problem Decomposition & Key Terms</div>
-              <p class="text-xs text-slate-300">Target concepts identified: <strong>${qKeywords.length > 0 ? qKeywords.join(', ') : 'core theoretical principles'}</strong>. ${notes ? `Extracted ${relevantContext.length} high-relevance proposition(s) from your supplied source text.` : 'No supplementary notes provided; applying general domain principles.'}</p>
-            </div>
-
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">2. Mechanistic Reasoning & Derivation</div>
-              <p class="text-xs text-slate-300">To construct a complete solution: (a) define the underlying axiom or conservation law governing the system, (b) establish causal relationships between variables or historical/scientific conditions, and (c) verify that no boundary exceptions invalidate the conclusion.</p>
-            </div>
-
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">3. Exam-Ready Conclusion Structure</div>
-              <p class="text-xs text-slate-300">Present your thesis statement first, substantiate each claim with quantitative data or textual citations, and explicitly link your evidence back to the prompt's core question.</p>
-            </div>
-          </div>
-        `;
-      }
+        </div>
+      `;
     }
 
     async function generateAiTutorResponse() {
@@ -1865,25 +2478,26 @@
       const modeLabel = document.getElementById('active-response-mode-label');
       const generateBtn = document.getElementById('ai-generate-btn');
 
-      if (!question) {
-        alert('Please enter a question or equation for the AI Tutor!');
+      if (!question && !notes) {
+        alert('Please enter a question or paste your notes for the AI Tutor!');
         return;
       }
 
+      const activeQuestion = question || 'Summarize and explain the key concepts and how to solve problems in these notes.';
       outputContainer.classList.remove('hidden');
-      modeLabel.textContent = aiTutorMode === 'eli5' ? 'ELI5 Simplified Mode' : 'College Deep-Dive Mode';
+      modeLabel.textContent = aiTutorMode === 'eli5' ? 'ELI5 Simplified Mode' : 'College / AP Level';
 
-      // If user provided a live Gemini API key, call Gemini 3.8 Flash directly
       if (apiKey) {
         generateBtn.disabled = true;
-        generateBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Thinking Deeply...';
-        responseTextEl.innerHTML = '<div class="text-xs font-mono text-brand-400 animate-pulse">Generating step-by-step solution via Gemini API...</div>';
+        generateBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Solving with Live Gemini AI...';
+        document.getElementById('detected-domain-badge').textContent = 'Live Gemini AI';
+        responseTextEl.innerHTML = '<div class="text-xs font-mono text-brand-400 animate-pulse">Generating complete step-by-step response...</div>';
 
         const stylePrompt = aiTutorMode === 'eli5'
-          ? 'Explain in super clear, friendly everyday words (Explain Like I am 5/10 years old), using simple analogies, while still giving the exact final answer and every numbered step to solve it.'
-          : 'Provide a rigorous, college-level academic deep dive with exact mathematical/scientific derivations, clear numbered steps, theoretical reasoning, and the exact final answer.';
+          ? 'Explain in super clear, friendly everyday words as if teaching a learner seeing this for the very first time, using a vivid mental picture, while still giving the exact final answer and every numbered step to solve it.'
+          : 'Provide a rigorous, college/AP-level expert answer tailored to the exact subject (e.g. AP Chemistry, AP Physics, Calculus, History) with complete multi-step derivations, theoretical reasoning, and the exact final answer.';
 
-        const fullPrompt = `${stylePrompt}\n\n${notes ? `Student Notes Context:\n${notes}\n\n` : ''}Student Question / Problem:\n${question}`;
+        const fullPrompt = `${stylePrompt}\n\n${notes ? `Notes / Context:\n${notes}\n\n` : ''}Question / Problem:\n${activeQuestion}`;
 
         try {
           const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${encodeURIComponent(apiKey)}`, {
@@ -1906,18 +2520,15 @@
             logLessonActivity(1);
             updateDashboardUI();
             generateBtn.disabled = false;
-            generateBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Solve & Explain Step-by-Step';
+            generateBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Generate Complete Step-by-Step Answer';
             return;
           }
-        } catch (err) {
-          // Fall back gracefully to built-in deep solver if network/key fails
-        }
+        } catch (err) {}
         generateBtn.disabled = false;
-        generateBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Solve & Explain Step-by-Step';
+        generateBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Generate Complete Step-by-Step Answer';
       }
 
-      // Built-in Deep Step-by-Step Solver (Zero API key required)
-      responseTextEl.innerHTML = buildDeepTutorSolution(question, notes, aiTutorMode);
+      responseTextEl.innerHTML = buildUniversalTutorSolution(activeQuestion, notes, aiTutorMode);
       playSuccessChime();
       userState.xp += 15;
       logLessonActivity(1);
@@ -2024,13 +2635,15 @@
     }
 
     // =========================================================================
-    // 6. FLASHCARDS DECK
+    // 6. MAIN DASHBOARD FLASHCARDS DECK
     // =========================================================================
     const flashcardsDeck = [
-      { topic: 'Algebra 1', q: 'What does the slope-intercept form equation look like?', a: 'y = mx + b, where m is the slope and b is the y-intercept.' },
-      { topic: 'Geometry', q: 'What is the Pythagorean Theorem formula for right triangles?', a: 'a² + b² = c².' },
-      { topic: 'Chemistry', q: 'What is the pH of a neutral solution like pure water?', a: '7.' },
-      { topic: 'Physics', q: 'What does Newton’s Second Law state?', a: 'Force equals mass times acceleration (F = ma).' }
+      { topic: 'Algebra 1', q: 'How do you solve a two-step linear equation like 3x + 7 = 22?', a: '1. Undo +7 by subtracting 7 from both sides (3x = 15). 2. Undo ×3 by dividing both sides by 3 (x = 5).' },
+      { topic: 'Geometry', q: 'How do you find a missing LEG of a right triangle when given hypotenuse c and leg a?', a: 'Subtract the squares: b² = c² − a², then take the square root!' },
+      { topic: 'Chemistry', q: 'How do you find the pH of a strong acid like 0.01 M HCl?', a: 'Since [H⁺] = 10⁻² M, take pH = −log₁₀(10⁻²) = 2.' },
+      { topic: 'Physics', q: 'How do you find acceleration when a car speeds up from v₀ to v_f in time t?', a: 'Use a = (v_f − v₀) ÷ t (change in velocity divided by time).' },
+      { topic: 'Pre-Algebra', q: 'How do you solve a proportion word problem like 3/4 = x/20?', a: 'Cross-multiply diagonally (4x = 60), then divide by 4 to get x = 15.' },
+      { topic: 'World History', q: 'How did surplus farming in Mesopotamia lead to cuneiform writing?', a: 'Extra grain created trade and taxes, requiring scribes to keep accounting records on clay tablets.' }
     ];
     let currentCardIndex = 0;
 
