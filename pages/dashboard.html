@@ -71,6 +71,7 @@
     }
   </script>
 
+  <!-- Custom CSS for specialized effects -->
   <style>
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: #080811; }
@@ -178,6 +179,7 @@
 
           <!-- Command Navigation Links -->
           <div class="flex items-center gap-2 sm:gap-3 flex-wrap justify-end">
+            <!-- God Tier AI Tutor Button -->
             <button onclick="openAiTutorModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-brand-600 via-brand-purple to-brand-cyan shadow-lg shadow-brand-500/30 hover:scale-105 transition-all flex items-center gap-2">
               <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> AI Tutor Studio
             </button>
@@ -271,7 +273,9 @@
               <span class="text-xs text-emerald-400 font-semibold px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full font-mono" id="heatmap-active-days">0 Days Active</span>
             </div>
             
-            <div class="grid grid-cols-10 gap-2.5 my-3" id="heatmap-grid"></div>
+            <div class="grid grid-cols-10 gap-2.5 my-3" id="heatmap-grid">
+              <!-- Heatmap blocks generated dynamically -->
+            </div>
 
             <div class="flex justify-between items-center text-xs text-slate-400 mt-3 font-mono">
               <span id="today-lessons-label">Today: 0 lessons completed</span>
@@ -290,7 +294,10 @@
           <div class="glass-panel rounded-3xl p-6 spotlight-card">
             <h3 class="font-bold text-white text-lg mb-1 flex items-center gap-2"><i class="fa-solid fa-trophy text-amber-400"></i> Trophy Cabinet</h3>
             <p class="text-xs text-slate-400 mb-4">Earn rare badges by reaching milestones.</p>
-            <div class="grid grid-cols-2 gap-3 max-h-[220px] overflow-y-auto pr-1" id="badges-container"></div>
+            
+            <div class="grid grid-cols-2 gap-3 max-h-[220px] overflow-y-auto pr-1" id="badges-container">
+              <!-- Badges rendered dynamically -->
+            </div>
           </div>
 
         </div>
@@ -312,7 +319,9 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="subjects-grid"></div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="subjects-grid">
+            <!-- Subject Cards rendered by JS -->
+          </div>
         </div>
 
         <!-- LIVE INTERACTIVE WORKSPACE HUB -->
@@ -566,17 +575,19 @@
         </div>
       </div>
 
-      <!-- FINAL TEST VIEW (Hidden by default) -->
+      <!-- FINAL TEST VIEW (Hidden by default, shown when Final Test pill is clicked) -->
       <div id="final-test-view" class="hidden space-y-6">
         <div class="glass-panel rounded-2xl p-6 border border-amber-500/30 bg-amber-500/5 space-y-4">
           <div class="flex items-center justify-between flex-wrap gap-2">
             <h3 class="text-xl font-bold text-amber-300"><i class="fa-solid fa-file-lines mr-2"></i> End-of-Course Final Test</h3>
             <span class="text-xs font-mono px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40" id="test-score-badge">Complete all questions (+200 XP)</span>
           </div>
-          <p class="text-xs text-slate-300">Answer all final test questions below. Review your answers and read the AI Tutor analysis on any incorrect response.</p>
+          <p class="text-xs text-slate-300">Answer all final test questions below. Review your answers and click "Ask AI Why I Got It Wrong" on any incorrect response for personalized tutoring.</p>
         </div>
 
-        <div id="final-test-questions-container" class="space-y-6"></div>
+        <div id="final-test-questions-container" class="space-y-6">
+          <!-- Rendered dynamically -->
+        </div>
 
         <div class="flex justify-end pt-4">
           <button onclick="submitFinalTest()" class="px-8 py-3.5 bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-black rounded-xl shadow-lg shadow-amber-500/30 hover:scale-105 transition text-xs">
@@ -594,10 +605,10 @@
   </div>
 
   <!-- =========================================================================
-       GOD TIER AI TUTOR STUDIO MODAL (DEEP STEP-BY-STEP SOLVER)
+       GOD TIER AI TUTOR STUDIO MODAL
        ========================================================================= -->
   <div id="ai-tutor-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-    <div class="glass-panel bg-[#0b0c16] border border-brand-500/30 rounded-3xl max-w-4xl w-full max-h-[92vh] overflow-y-auto shadow-[0_0_60px_rgba(99,102,241,0.25)] p-6 sm:p-8 relative space-y-6">
+    <div class="glass-panel bg-[#0b0c16] border border-brand-500/30 rounded-3xl max-w-3xl w-full max-h-[92vh] overflow-y-auto shadow-[0_0_60px_rgba(99,102,241,0.25)] p-6 sm:p-8 relative space-y-6">
       
       <!-- Modal Header -->
       <div class="flex items-center justify-between border-b border-white/10 pb-5">
@@ -609,7 +620,7 @@
           </div>
           <div>
             <div class="text-[11px] font-mono text-brand-400 uppercase tracking-widest">GOD TIER AI TUTOR STUDIO</div>
-            <h2 class="text-xl sm:text-2xl font-extrabold text-white">Deep Step-by-Step Problem Solver & Note Analyzer</h2>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-white">Paste Notes & Ask Anything</h2>
           </div>
         </div>
         <button onclick="closeAiTutorModal()" class="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition">
@@ -617,76 +628,50 @@
         </button>
       </div>
 
-      <!-- Quick Sample Prompts Bar -->
-      <div class="space-y-2">
-        <div class="text-[11px] font-mono text-slate-400 uppercase">Try a Sample Problem (Click to Fill):</div>
-        <div class="flex flex-wrap gap-2">
-          <button onclick="fillSampleAiPrompt('algebra')" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-brand-500/20 border border-white/10 text-xs text-slate-300 transition">📐 Solve: 4x - 9 = 23</button>
-          <button onclick="fillSampleAiPrompt('quadratic')" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-brand-500/20 border border-white/10 text-xs text-slate-300 transition">📈 Quadratic: x^2 - 5x + 6 = 0</button>
-          <button onclick="fillSampleAiPrompt('pemdas')" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-brand-500/20 border border-white/10 text-xs text-slate-300 transition">🔢 Evaluate: 12 + 3 * (8 - 2)^2 / 4</button>
-          <button onclick="fillSampleAiPrompt('notes')" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-brand-500/20 border border-white/10 text-xs text-slate-300 transition">🧬 Analyze Biology/Chemistry Notes</button>
-        </div>
-      </div>
-
       <!-- Input Area -->
       <div class="space-y-4">
         <div>
           <label class="text-xs font-mono text-slate-300 uppercase mb-1.5 block flex items-center justify-between">
-            <span>1. Paste Your Study Notes, Textbook Passage, or Word Problem Context:</span>
-            <span class="text-slate-500 text-[10px]">Optional</span>
+            <span>1. Paste Your Study Notes / Text Context:</span>
+            <span class="text-slate-500 text-[10px]">Optional but recommended</span>
           </label>
-          <textarea id="ai-tutor-notes" rows="3" placeholder="Paste lecture notes, a word problem, or formulas here..." class="w-full p-4 rounded-2xl bg-dark-bg/90 border border-white/10 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-brand-500 transition-colors resize-y"></textarea>
+          <textarea id="ai-tutor-notes" rows="4" placeholder="Paste your lecture notes, textbook excerpt, or formula sheet here..." class="w-full p-4 rounded-2xl bg-dark-bg/90 border border-white/10 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-brand-500 transition-colors resize-y"></textarea>
         </div>
 
         <div>
           <label class="text-xs font-mono text-slate-300 uppercase mb-1.5 block">
-            2. Enter Your Question or Equation to Solve Step-by-Step:
+            2. Ask Your Question:
           </label>
-          <input type="text" id="ai-tutor-question" placeholder="e.g., Solve 3x + 7 = 22, or Explain how covalent bonds work from my notes" class="w-full px-4 py-3 rounded-xl bg-dark-bg/90 border border-white/10 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-brand-500 transition-colors">
+          <input type="text" id="ai-tutor-question" placeholder="e.g., Explain this concept in simple terms, or how do I solve this problem?" class="w-full px-4 py-3 rounded-xl bg-dark-bg/90 border border-white/10 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-brand-500 transition-colors">
         </div>
-
-        <!-- Optional Live Gemini API Key -->
-        <details class="bg-dark-bg/60 border border-white/10 rounded-xl p-3 text-xs">
-          <summary class="cursor-pointer font-mono text-slate-400 hover:text-white flex items-center justify-between">
-            <span>🔑 Optional: Connect Live Gemini API Key (for Unlimited Open-Ended Questions)</span>
-            <span class="text-[10px] text-brand-400">Built-in Solver works without key</span>
-          </summary>
-          <div class="mt-3 space-y-2">
-            <p class="text-[11px] text-slate-400">Leave blank to use Mindly's built-in step-by-step math & note analyzer. Or paste a Gemini API key to query <code class="text-brand-300">gemini-3.8-flash</code> directly from your browser.</p>
-            <input type="password" id="gemini-api-key-input" placeholder="AIzaSy..." class="w-full px-3 py-2 rounded-lg bg-dark-bg border border-white/15 text-xs text-slate-200 font-mono focus:outline-none focus:border-brand-500">
-          </div>
-        </details>
 
         <!-- Depth Mode Selector -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-dark-bg/80 p-3 rounded-2xl border border-white/10">
-          <span class="text-xs font-semibold text-slate-300">Choose Explanation Depth:</span>
+          <span class="text-xs font-semibold text-slate-300">Choose Explanation Level:</span>
           <div class="flex items-center gap-2 bg-white/5 p-1 rounded-xl">
             <button id="ai-mode-eli5" onclick="setAiTutorMode('eli5')" class="px-4 py-2 rounded-lg text-xs font-bold transition-all bg-brand-cyan text-slate-950 shadow-md">
               🧸 Simplify (ELI5)
             </button>
             <button id="ai-mode-college" onclick="setAiTutorMode('college')" class="px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white">
-              🎓 College / Deep Dive
+              🎓 College / Academic
             </button>
           </div>
         </div>
 
-        <button id="ai-generate-btn" onclick="generateAiTutorResponse()" class="w-full py-3.5 bg-gradient-to-r from-brand-600 via-brand-purple to-brand-cyan text-white font-bold rounded-xl shadow-lg shadow-brand-500/30 hover:opacity-95 transition text-xs sm:text-sm flex items-center justify-center gap-2">
-          <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Solve & Explain Step-by-Step
+        <button onclick="generateAiTutorResponse()" class="w-full py-3.5 bg-gradient-to-r from-brand-600 via-brand-purple to-brand-cyan text-white font-bold rounded-xl shadow-lg shadow-brand-500/30 hover:opacity-95 transition text-xs sm:text-sm flex items-center justify-center gap-2">
+          <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Generate God-Tier Explanation
         </button>
       </div>
 
       <!-- AI Response Output Box -->
       <div id="ai-tutor-output-container" class="hidden space-y-3 pt-4 border-t border-white/10">
-        <div class="flex items-center justify-between flex-wrap gap-2">
+        <div class="flex items-center justify-between">
           <span class="text-xs font-mono text-brand-400 uppercase font-bold flex items-center gap-2">
-            <i class="fa-solid fa-robot"></i> Solution & Deep Breakdown (<span id="active-response-mode-label">ELI5 Mode</span>)
+            <i class="fa-solid fa-robot"></i> AI Tutor Response (<span id="active-response-mode-label">ELI5 Mode</span>)
           </span>
-          <div class="flex items-center gap-2">
-            <button onclick="switchModeAndRegenerate()" class="text-[11px] text-brand-300 hover:text-white bg-brand-500/15 px-2.5 py-1 rounded-lg border border-brand-500/30 transition">🔄 Switch Depth Mode</button>
-            <button onclick="copyAiResponse()" class="text-[11px] text-slate-400 hover:text-white bg-white/5 px-2.5 py-1 rounded-lg border border-white/10 transition">📋 Copy</button>
-          </div>
+          <button onclick="copyAiResponse()" class="text-[11px] text-slate-400 hover:text-white bg-white/5 px-2.5 py-1 rounded-lg border border-white/10 transition">📋 Copy</button>
         </div>
-        <div id="ai-tutor-response-text" class="p-5 rounded-2xl bg-dark-bg border border-brand-500/30 text-sm text-slate-200 leading-relaxed space-y-4"></div>
+        <div id="ai-tutor-response-text" class="p-5 rounded-2xl bg-dark-bg border border-brand-500/30 text-sm text-slate-200 leading-relaxed space-y-3"></div>
       </div>
 
     </div>
@@ -1235,11 +1220,13 @@
       }
     ];
 
+    const TOTAL_CURRICULUM_LESSONS = curriculums.reduce((sum, s) => sum + s.lessons.length, 0);
+
     // =========================================================================
     // 3. INTERACTIVE LESSON, QUIZ & FINAL TEST LOGIC
     // =========================================================================
     let activeSubjectId = null;
-    let activeItemIndex = 0;
+    let activeItemIndex = 0; // 0 to 3 for lessons, 4 for Final Test
     let explanationMode = 'eli5';
 
     function openSubjectModal(subjectId, itemIdx = 0) {
@@ -1268,6 +1255,7 @@
       document.getElementById('modal-subject-category').textContent = subj.category;
       document.getElementById('modal-subject-title').textContent = subj.title;
 
+      // Render pills (Lessons 1-4 + Final Test)
       const pillsContainer = document.getElementById('modal-lesson-pills');
       let pillsHtml = subj.lessons.map((l, idx) => {
         const done = userState.completedLessons.includes(l.id);
@@ -1281,7 +1269,7 @@
             <span>${done ? '✅' : `0${idx + 1}`}</span>
             <span>${l.title}</span>
           </button>
-        `;
+        ;`;
       }).join('');
 
       const testDone = userState.completedTests.includes(subj.id);
@@ -1303,11 +1291,13 @@
       const modeSwitcher = document.getElementById('mode-switcher-container');
 
       if (activeItemIndex === 4) {
+        // Render Final Test View
         lessonView.classList.add('hidden');
         modeSwitcher.classList.add('hidden');
         testView.classList.remove('hidden');
         renderFinalTestView(subj);
       } else {
+        // Render Lesson & Quiz View
         testView.classList.add('hidden');
         lessonView.classList.remove('hidden');
         modeSwitcher.classList.remove('hidden');
@@ -1319,6 +1309,7 @@
       const lesson = subj.lessons[idx];
       const isCompleted = userState.completedLessons.includes(lesson.id);
 
+      // Mode toggle styling
       const eli5Btn = document.getElementById('mode-btn-eli5');
       const collegeBtn = document.getElementById('mode-btn-college');
       if (explanationMode === 'eli5') {
@@ -1349,6 +1340,7 @@
       `;
       document.getElementById('lesson-formula-box').textContent = lesson.keyTakeaway;
 
+      // Practice Problems
       const promptsList = document.getElementById('deep-prompts-list');
       const answerBox = document.getElementById('deep-prompt-answer-box');
       answerBox.classList.add('hidden');
@@ -1360,6 +1352,7 @@
         </button>
       `).join('');
 
+      // Quiz Check
       document.getElementById('quiz-question-text').textContent = lesson.quiz.question;
       const feedbackBox = document.getElementById('quiz-feedback-box');
       const feedbackEl = document.getElementById('quiz-feedback');
@@ -1547,7 +1540,7 @@
     }
 
     // =========================================================================
-    // 4. GOD TIER AI TUTOR STUDIO (REAL STEP-BY-STEP SOLVER + LIVE GEMINI API)
+    // 4. GOD TIER AI TUTOR STUDIO LOGIC
     // =========================================================================
     let aiTutorMode = 'eli5';
 
@@ -1574,350 +1567,43 @@
       }
     }
 
-    function switchModeAndRegenerate() {
-      setAiTutorMode(aiTutorMode === 'eli5' ? 'college' : 'eli5');
-      generateAiTutorResponse();
-    }
-
-    function fillSampleAiPrompt(type) {
-      const notesEl = document.getElementById('ai-tutor-notes');
-      const qEl = document.getElementById('ai-tutor-question');
-      if (type === 'algebra') {
-        notesEl.value = 'Solving two-step linear equations in the form ax + b = c using inverse operations.';
-        qEl.value = 'Solve 4x - 9 = 23';
-      } else if (type === 'quadratic') {
-        notesEl.value = 'Quadratic equations take the standard form ax^2 + bx + c = 0 and can be solved by factoring or the quadratic formula.';
-        qEl.value = 'Solve x^2 - 5x + 6 = 0';
-      } else if (type === 'pemdas') {
-        notesEl.value = 'Order of Operations: Parentheses, Exponents, Multiplication/Division (left to right), Addition/Subtraction (left to right).';
-        qEl.value = 'Evaluate 12 + 3 * (8 - 2)^2 / 4';
-      } else if (type === 'notes') {
-        notesEl.value = 'Covalent bonds form when two nonmetal atoms share pairs of valence electrons to achieve a full outer octet shell. Polar covalent bonds occur when one atom has higher electronegativity and pulls shared electrons closer, creating partial charges (delta+ and delta-).';
-        qEl.value = 'Why is a water molecule polar based on these notes?';
-      }
-    }
-
-    // Helper: Format numbers cleanly
-    function fmtNum(n) {
-      if (Math.abs(n - Math.round(n)) < 1e-9) return Math.round(n).toString();
-      return parseFloat(n.toFixed(4)).toString();
-    }
-
-    // Built-in Deep Step-by-Step Math & Note Analysis Engine
-    function buildDeepTutorSolution(question, notes, mode) {
-      const cleanQ = question.replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-').trim();
-      const isEli5 = mode === 'eli5';
-
-      // 1. Check Quadratic Equation: ax^2 + bx + c = 0
-      const quadMatch = cleanQ.match(/([+-]?\s*\d*\.?\d*)\s*x\s*(?:\^2|²)\s*([+-]\s*\d*\.?\d*)?\s*x?\s*([+-]\s*\d+\.?\d*)?\s*=\s*([+-]?\s*\d+\.?\d*)/i);
-      if (quadMatch) {
-        let aStr = (quadMatch[1] || '1').replace(/\s+/g, '');
-        if (aStr === '' || aStr === '+') aStr = '1';
-        if (aStr === '-') aStr = '-1';
-        const a = parseFloat(aStr);
-
-        let bStr = (quadMatch[2] || '0').replace(/\s+/g, '');
-        if (bStr === '+') bStr = '1';
-        if (bStr === '-') bStr = '-1';
-        const b = parseFloat(bStr || '0');
-
-        const cRaw = parseFloat((quadMatch[3] || '0').replace(/\s+/g, ''));
-        const rhs = parseFloat((quadMatch[4] || '0').replace(/\s+/g, ''));
-        const c = cRaw - rhs;
-
-        const disc = b * b - 4 * a * c;
-        let finalAns = '';
-        let rootSteps = '';
-
-        if (disc > 0) {
-          const r1 = (-b + Math.sqrt(disc)) / (2 * a);
-          const r2 = (-b - Math.sqrt(disc)) / (2 * a);
-          finalAns = `x = ${fmtNum(r1)}  and  x = ${fmtNum(r2)}`;
-          rootSteps = isEli5
-            ? `Since the number inside the square root (${fmtNum(disc)}) is positive, we get two real answers by adding and subtracting √${fmtNum(disc)} = ${fmtNum(Math.sqrt(disc))}:<br>• x₁ = (${fmtNum(-b)} + ${fmtNum(Math.sqrt(disc))}) ÷ ${fmtNum(2 * a)} = <strong>${fmtNum(r1)}</strong><br>• x₂ = (${fmtNum(-b)} − ${fmtNum(Math.sqrt(disc))}) ÷ ${fmtNum(2 * a)} = <strong>${fmtNum(r2)}</strong>`
-            : `Because the discriminant Δ = ${fmtNum(disc)} > 0, there are two distinct real roots:<br>• x₁ = (−(${fmtNum(b)}) + √${fmtNum(disc)}) / (2·${fmtNum(a)}) = (${fmtNum(-b)} + ${fmtNum(Math.sqrt(disc))}) / ${fmtNum(2 * a)} = <strong>${fmtNum(r1)}</strong><br>• x₂ = (−(${fmtNum(b)}) − √${fmtNum(disc)}) / (2·${fmtNum(a)}) = (${fmtNum(-b)} − ${fmtNum(Math.sqrt(disc))}) / ${fmtNum(2 * a)} = <strong>${fmtNum(r2)}</strong>`;
-        } else if (disc === 0) {
-          const r = -b / (2 * a);
-          finalAns = `x = ${fmtNum(r)} (Double Root)`;
-          rootSteps = `Since Δ = 0, the parabola touches the x-axis at exactly one repeated root: x = ${fmtNum(-b)} / ${fmtNum(2 * a)} = <strong>${fmtNum(r)}</strong>.`;
-        } else {
-          const realPart = fmtNum(-b / (2 * a));
-          const imagPart = fmtNum(Math.sqrt(-disc) / (2 * a));
-          finalAns = `x = ${realPart} ± ${imagPart}i`;
-          rootSteps = `Since Δ = ${fmtNum(disc)} < 0, the roots are complex conjugates: x = (${fmtNum(-b)} ± √(${fmtNum(disc)})) / ${fmtNum(2 * a)} = <strong>${realPart} ± ${imagPart}i</strong>.`;
-        }
-
-        return `
-          <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
-            <div class="text-[11px] font-mono text-emerald-400 uppercase font-bold">✅ Exact Final Answer</div>
-            <div class="text-lg font-extrabold text-white font-mono mt-1">${finalAns}</div>
-          </div>
-
-          <div class="space-y-3">
-            <div class="text-xs font-mono text-brand-400 uppercase font-bold">🔍 Deep Step-by-Step Walkthrough</div>
-            
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">Step 1: Set the Equation to Standard Form (ax² + bx + c = 0)</div>
-              <p class="text-xs text-slate-300">${isEli5
-                ? `First, make sure everything is on the left side and 0 is on the right side. That gives us: <strong>${fmtNum(a)}x² + (${fmtNum(b)})x + (${fmtNum(c)}) = 0</strong>. Here, a = ${fmtNum(a)}, b = ${fmtNum(b)}, and c = ${fmtNum(c)}.`
-                : `Normalize the quadratic polynomial into canonical form ax² + bx + c = 0 by subtracting ${fmtNum(rhs)} from both sides: <strong>${fmtNum(a)}x² + (${fmtNum(b)})x + (${fmtNum(c)}) = 0</strong>, identifying coefficients a = ${fmtNum(a)}, b = ${fmtNum(b)}, c = ${fmtNum(c)}.`}</p>
-            </div>
-
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">Step 2: Calculate the Discriminant (Δ = b² − 4ac)</div>
-              <p class="text-xs text-slate-300">Substitute a, b, and c into b² − 4ac:<br>Δ = (${fmtNum(b)})² − 4(${fmtNum(a)})(${fmtNum(c)}) = ${fmtNum(b * b)} − (${fmtNum(4 * a * c)}) = <strong>${fmtNum(disc)}</strong>.</p>
-            </div>
-
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">Step 3: Apply the Quadratic Formula x = (−b ± √Δ) / 2a</div>
-              <p class="text-xs text-slate-300">${rootSteps}</p>
-            </div>
-          </div>
-        `;
-      }
-
-      // 2. Check Linear Equation: ax + b = c
-      const linMatch = cleanQ.match(/([+-]?\s*\d*\.?\d*)\s*([a-zA-Z])\s*([+-]\s*\d+\.?\d*)?\s*=\s*([+-]?\s*\d+\.?\d*)/);
-      if (linMatch && !cleanQ.includes('^2') && !cleanQ.includes('²')) {
-        let aStr = (linMatch[1] || '1').replace(/\s+/g, '');
-        if (aStr === '' || aStr === '+') aStr = '1';
-        if (aStr === '-') aStr = '-1';
-        const a = parseFloat(aStr);
-        const variable = linMatch[2];
-        const b = parseFloat((linMatch[3] || '0').replace(/\s+/g, ''));
-        const c = parseFloat(linMatch[4].replace(/\s+/g, ''));
-
-        const afterAddSub = c - b;
-        const xVal = afterAddSub / a;
-
-        const step1Text = b === 0
-          ? `There is no constant added or subtracted on the left side, so ${fmtNum(a)}${variable} is already isolated.`
-          : b > 0
-            ? (isEli5
-              ? `We see <strong>+${fmtNum(b)}</strong> hanging onto ${variable}. To undo addition, subtract <strong>${fmtNum(b)}</strong> from both sides so the seesaw stays balanced:<br>${fmtNum(a)}${variable} + ${fmtNum(b)} − ${fmtNum(b)} = ${fmtNum(c)} − ${fmtNum(b)}  ⇒  <strong>${fmtNum(a)}${variable} = ${fmtNum(afterAddSub)}</strong>`
-              : `Apply the Additive Inverse Property by subtracting ${fmtNum(b)} from both sides of the equality to isolate the variable term:<br>${fmtNum(a)}${variable} = ${fmtNum(c)} − ${fmtNum(b)}  ⇒  <strong>${fmtNum(a)}${variable} = ${fmtNum(afterAddSub)}</strong>`)
-            : (isEli5
-              ? `We see <strong>− ${fmtNum(Math.abs(b))}</strong> next to ${variable}. To undo subtraction, add <strong>${fmtNum(Math.abs(b))}</strong> to both sides:<br>${fmtNum(a)}${variable} − ${fmtNum(Math.abs(b))} + ${fmtNum(Math.abs(b))} = ${fmtNum(c)} + ${fmtNum(Math.abs(b))}  ⇒  <strong>${fmtNum(a)}${variable} = ${fmtNum(afterAddSub)}</strong>`
-              : `Apply the Additive Inverse Property by adding ${fmtNum(Math.abs(b))} to both sides to isolate the variable term:<br>${fmtNum(a)}${variable} = ${fmtNum(c)} + ${fmtNum(Math.abs(b))}  ⇒  <strong>${fmtNum(a)}${variable} = ${fmtNum(afterAddSub)}</strong>`);
-
-        const step2Text = isEli5
-          ? `Now ${variable} is being multiplied by ${fmtNum(a)}. Divide both sides by <strong>${fmtNum(a)}</strong> to get ${variable} all by itself:<br>${variable} = ${fmtNum(afterAddSub)} ÷ ${fmtNum(a)} = <strong>${fmtNum(xVal)}</strong>`
-          : `Apply the Multiplicative Inverse Property by dividing both sides by the leading coefficient ${fmtNum(a)}:<br>${variable} = ${fmtNum(afterAddSub)} / ${fmtNum(a)} = <strong>${fmtNum(xVal)}</strong>`;
-
-        const checkVal = a * xVal + b;
-
-        return `
-          <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
-            <div class="text-[11px] font-mono text-emerald-400 uppercase font-bold">✅ Exact Final Answer</div>
-            <div class="text-lg font-extrabold text-white font-mono mt-1">${variable} = ${fmtNum(xVal)}</div>
-          </div>
-
-          <div class="space-y-3">
-            <div class="text-xs font-mono text-brand-400 uppercase font-bold">🔍 Deep Step-by-Step Walkthrough</div>
-            
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">Step 1: Isolate the Variable Term (${fmtNum(a)}${variable})</div>
-              <p class="text-xs text-slate-300">${step1Text}</p>
-            </div>
-
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">Step 2: Solve for ${variable}</div>
-              <p class="text-xs text-slate-300">${step2Text}</p>
-            </div>
-
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">Step 3: Verification Check (Plug ${variable} = ${fmtNum(xVal)} Back In)</div>
-              <p class="text-xs text-slate-300">Substitute ${fmtNum(xVal)} into the original equation: ${fmtNum(a)}(${fmtNum(xVal)}) ${b >= 0 ? '+ ' + fmtNum(b) : '- ' + fmtNum(Math.abs(b))} = ${fmtNum(checkVal)}. Since ${fmtNum(checkVal)} = ${fmtNum(c)}, the solution is 100% verified!</p>
-            </div>
-          </div>
-        `;
-      }
-
-      // 3. Check Arithmetic / PEMDAS Expression
-      const mathExprMatch = cleanQ.match(/(?:evaluate|calculate|simplify|solve|what is)?\s*([0-9+\-*/().^\s]+)\??$/i);
-      if (mathExprMatch && /[0-9]/.test(mathExprMatch[1]) && /[+\-*/^]/.test(mathExprMatch[1])) {
-        const expr = mathExprMatch[1].trim();
-        try {
-          let stepLog = [];
-          let currentExpr = expr;
-
-          // Step 1: Parentheses
-          if (/\([^()]+\)/.test(currentExpr)) {
-            currentExpr = currentExpr.replace(/\(([^()]+)\)/g, (_, inner) => {
-              const val = Function(`"use strict"; return (${inner.replace(/\^/g, '**')})`)();
-              stepLog.push(`<strong>Parentheses:</strong> Evaluate (${inner}) = <strong>${fmtNum(val)}</strong> → expression becomes <code>${expr.replace(`(${inner})`, fmtNum(val))}</code>`);
-              return fmtNum(val);
-            });
-          }
-
-          // Step 2: Exponents
-          if (/(\d+\.?\d*)\s*\^\s*(\d+\.?\d*)/.test(currentExpr)) {
-            currentExpr = currentExpr.replace(/(\d+\.?\d*)\s*\^\s*(\d+\.?\d*)/g, (_, base, exp) => {
-              const val = Math.pow(parseFloat(base), parseFloat(exp));
-              stepLog.push(`<strong>Exponents:</strong> Compute ${base}^${exp} = <strong>${fmtNum(val)}</strong>`);
-              return fmtNum(val);
-            });
-          }
-
-          const finalVal = Function(`"use strict"; return (${currentExpr.replace(/\^/g, '**')})`)();
-          if (!isNaN(finalVal) && isFinite(finalVal)) {
-            stepLog.push(`<strong>Multiply/Divide then Add/Subtract (Left to Right):</strong> Evaluating remaining operations yields <strong>${fmtNum(finalVal)}</strong>.`);
-
-            return `
-              <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
-                <div class="text-[11px] font-mono text-emerald-400 uppercase font-bold">✅ Exact Final Answer</div>
-                <div class="text-lg font-extrabold text-white font-mono mt-1">${expr} = ${fmtNum(finalVal)}</div>
-              </div>
-
-              <div class="space-y-3">
-                <div class="text-xs font-mono text-brand-400 uppercase font-bold">🔍 PEMDAS Step-by-Step Breakdown</div>
-                ${stepLog.map((s, idx) => `
-                  <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300">
-                    <span class="font-mono text-brand-400 font-bold mr-1.5">Step ${idx + 1}:</span> ${s}
-                  </div>
-                `).join('')}
-              </div>
-            `;
-          }
-        } catch (err) {}
-      }
-
-      // 4. Deep Note-Grounded & Conceptual Analyzer
-      const stopWords = new Set(['what', 'why', 'how', 'when', 'where', 'who', 'is', 'are', 'the', 'a', 'an', 'in', 'on', 'of', 'to', 'for', 'with', 'and', 'or', 'that', 'this', 'it', 'do', 'does', 'can', 'you', 'explain', 'solve', 'me', 'my', 'notes', 'from', 'based']);
-      const qKeywords = cleanQ.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2 && !stopWords.has(w));
-
-      let matchedSentences = [];
-      let allSentences = [];
-      if (notes) {
-        allSentences = notes.split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(Boolean);
-        matchedSentences = allSentences.filter(sentence => {
-          const lower = sentence.toLowerCase();
-          return qKeywords.some(kw => lower.includes(kw));
-        });
-      }
-
-      const relevantContext = matchedSentences.length > 0 ? matchedSentences : allSentences.slice(0, 3);
-      const directAnswer = relevantContext.length > 0
-        ? relevantContext.join(' ')
-        : `To solve "${question}", identify the governing rule or definition, break the problem into known variables vs. unknowns, and apply step-by-step logical deduction.`;
-
-      if (isEli5) {
-        return `
-          <div class="p-4 rounded-xl bg-brand-cyan/10 border border-brand-cyan/30 space-y-1">
-            <div class="text-[11px] font-mono text-brand-cyan uppercase font-bold">🧸 Direct Answer (Simple Words)</div>
-            <p class="text-sm font-semibold text-white">${directAnswer}</p>
-          </div>
-
-          <div class="space-y-3">
-            <div class="text-xs font-mono text-brand-400 uppercase font-bold">🔍 How to Understand & Solve It Step-by-Step</div>
-
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">Step 1: Spot the Main Clues</div>
-              <p class="text-xs text-slate-300">Look at the key words in your question: <strong>${qKeywords.length > 0 ? qKeywords.join(', ') : 'the core concept'}</strong>. ${notes ? 'We scanned your notes and pulled out the exact sentences that match these clues.' : 'Tip: Paste your class notes in Box 1 above so I can pull exact facts straight from your teacher\'s material!'}</p>
-            </div>
-
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">Step 2: Real-Life Picture</div>
-              <p class="text-xs text-slate-300">Think of this like putting together LEGO bricks: every rule in your notes is one brick. Connect the cause (what happens first) to the effect (the final result) without skipping any middle pieces.</p>
-            </div>
-
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">Step 3: How to Write Your Answer on a Test</div>
-              <p class="text-xs text-slate-300">1) State the main rule in one short sentence. 2) Point to the specific evidence or numbers from the problem. 3) Conclude with how that proves your final answer.</p>
-            </div>
-          </div>
-        `;
-      } else {
-        return `
-          <div class="p-4 rounded-xl bg-brand-purple/10 border border-brand-purple/30 space-y-1">
-            <div class="text-[11px] font-mono text-brand-purple uppercase font-bold">🎓 Direct Academic Synthesis</div>
-            <p class="text-sm font-semibold text-white">${directAnswer}</p>
-          </div>
-
-          <div class="space-y-3">
-            <div class="text-xs font-mono text-brand-400 uppercase font-bold">🔬 Rigorous Step-by-Step Analytical Framework</div>
-
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">1. Problem Decomposition & Key Terms</div>
-              <p class="text-xs text-slate-300">Target concepts identified: <strong>${qKeywords.length > 0 ? qKeywords.join(', ') : 'core theoretical principles'}</strong>. ${notes ? `Extracted ${relevantContext.length} high-relevance proposition(s) from your supplied source text.` : 'No supplementary notes provided; applying general domain principles.'}</p>
-            </div>
-
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">2. Mechanistic Reasoning & Derivation</div>
-              <p class="text-xs text-slate-300">To construct a complete solution: (a) define the underlying axiom or conservation law governing the system, (b) establish causal relationships between variables or historical/scientific conditions, and (c) verify that no boundary exceptions invalidate the conclusion.</p>
-            </div>
-
-            <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1">
-              <div class="font-bold text-white text-xs">3. Exam-Ready Conclusion Structure</div>
-              <p class="text-xs text-slate-300">Present your thesis statement first, substantiate each claim with quantitative data or textual citations, and explicitly link your evidence back to the prompt's core question.</p>
-            </div>
-          </div>
-        `;
-      }
-    }
-
-    async function generateAiTutorResponse() {
+    function generateAiTutorResponse() {
       const notes = document.getElementById('ai-tutor-notes').value.trim();
       const question = document.getElementById('ai-tutor-question').value.trim();
-      const apiKey = document.getElementById('gemini-api-key-input').value.trim();
       const outputContainer = document.getElementById('ai-tutor-output-container');
       const responseTextEl = document.getElementById('ai-tutor-response-text');
       const modeLabel = document.getElementById('active-response-mode-label');
-      const generateBtn = document.getElementById('ai-generate-btn');
 
       if (!question) {
-        alert('Please enter a question or equation for the AI Tutor!');
+        alert('Please enter a question for the AI Tutor!');
         return;
       }
 
       outputContainer.classList.remove('hidden');
-      modeLabel.textContent = aiTutorMode === 'eli5' ? 'ELI5 Simplified Mode' : 'College Deep-Dive Mode';
+      modeLabel.textContent = aiTutorMode === 'eli5' ? 'ELI5 Simplified Mode' : 'College Academic Mode';
 
-      // If user provided a live Gemini API key, call Gemini 3.8 Flash directly
-      if (apiKey) {
-        generateBtn.disabled = true;
-        generateBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Thinking Deeply...';
-        responseTextEl.innerHTML = '<div class="text-xs font-mono text-brand-400 animate-pulse">Generating step-by-step solution via Gemini API...</div>';
-
-        const stylePrompt = aiTutorMode === 'eli5'
-          ? 'Explain in super clear, friendly everyday words (Explain Like I am 5/10 years old), using simple analogies, while still giving the exact final answer and every numbered step to solve it.'
-          : 'Provide a rigorous, college-level academic deep dive with exact mathematical/scientific derivations, clear numbered steps, theoretical reasoning, and the exact final answer.';
-
-        const fullPrompt = `${stylePrompt}\n\n${notes ? `Student Notes Context:\n${notes}\n\n` : ''}Student Question / Problem:\n${question}`;
-
-        try {
-          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${encodeURIComponent(apiKey)}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: fullPrompt }] }]
-            })
-          });
-          const data = await res.json();
-          const aiText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (aiText) {
-            const formattedHtml = aiText
-              .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>')
-              .replace(/\n\n/g, '</p><p>')
-              .replace(/\n/g, '<br>');
-            responseTextEl.innerHTML = `<p>${formattedHtml}</p>`;
-            playSuccessChime();
-            userState.xp += 15;
-            logLessonActivity(1);
-            updateDashboardUI();
-            generateBtn.disabled = false;
-            generateBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Solve & Explain Step-by-Step';
-            return;
-          }
-        } catch (err) {
-          // Fall back gracefully to built-in deep solver if network/key fails
-        }
-        generateBtn.disabled = false;
-        generateBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i> Solve & Explain Step-by-Step';
+      let simulatedAnswer = '';
+      if (aiTutorMode === 'eli5') {
+        simulatedAnswer = `
+          <p><strong>🧸 Simple Breakdown:</strong></p>
+          <p>Imagine you're explaining this to a smart 10-year-old friend! Based on your notes${notes ? ' and the context provided' : ''}, your question about <em>"${question}"</em> boils down to this:</p>
+          <p>Think of it like building blocks or baking a recipe. Every part connects step-by-step so nothing falls apart. If you master the core idea first, the tricky parts become super easy!</p>
+          <div class="p-3 rounded-xl bg-brand-cyan/10 border border-brand-cyan/30 text-brand-300 text-xs font-mono">
+            💡 <strong>Quick Takeaway:</strong> Break the problem into tiny pieces and solve them one at a time!
+          </div>
+        `;
+      } else {
+        simulatedAnswer = `
+          <p><strong>🎓 Rigorous Academic Analysis:</strong></p>
+          <p>From an advanced collegiate perspective regarding your query <em>"${question}"</em>${notes ? ' analyzed against your submitted notes' : ''}:</p>
+          <p>This principle relies on foundational axioms and structural frameworks. When evaluating the core mechanics, systematic application of first principles yields precise theoretical derivations.</p>
+          <div class="p-3 rounded-xl bg-brand-purple/10 border border-brand-purple/30 text-brand-purple text-xs font-mono">
+            🔬 <strong>Theoretical Synthesis:</strong> Rigorous analytical verification requires checking boundary conditions and validating underlying theorems.
+          </div>
+        `;
       }
 
-      // Built-in Deep Step-by-Step Solver (Zero API key required)
-      responseTextEl.innerHTML = buildDeepTutorSolution(question, notes, aiTutorMode);
+      responseTextEl.innerHTML = simulatedAnswer;
       playSuccessChime();
       userState.xp += 15;
       logLessonActivity(1);
@@ -1927,7 +1613,7 @@
     function copyAiResponse() {
       const text = document.getElementById('ai-tutor-response-text').innerText;
       navigator.clipboard.writeText(text);
-      alert('Solution copied to clipboard!');
+      alert('AI response copied to clipboard!');
     }
 
     // =========================================================================
@@ -1994,7 +1680,7 @@
         labelsContainer.appendChild(label);
       }
 
-      const totalItems = 24 + 6;
+      const totalItems = 24 + 6; // 24 lessons + 6 tests
       const currentProgress = userState.completedLessons.length + userState.completedTests.length;
       const retentionPct = Math.min(100, Math.round((currentProgress / totalItems) * 100));
       document.getElementById('retention-score-text').textContent = `${retentionPct}%`;
@@ -2069,7 +1755,7 @@
     }
 
     // =========================================================================
-    // 7. AMBIENT MUSIC & SOUND FX (WEB AUDIO API)
+    // 7. WORKING AMBIENT MUSIC & SOUND FX (WEB AUDIO API)
     // =========================================================================
     let audioCtx = null;
     let ambientGain = null;
